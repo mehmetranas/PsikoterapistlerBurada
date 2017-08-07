@@ -1,0 +1,20 @@
+﻿@model PsikoterapsitlerBurada.Models.QuestionViewModel
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Soru Oluştur</h2>
+@using (Html.BeginForm("Create", "Question"))
+{
+    <div class="form-group">
+        @Html.LabelFor(q => q.QuestionText)
+        @Html.TextAreaFor(q => q.QuestionText, new { @class = "form-control", rows = "10"})
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(q => q.Category)
+        @Html.DropDownListFor(q => q.Category.Id, new SelectList(Model.Categories, "Id","CategoryName"), "Seçiniz", new {@class = "form-control"})
+    </div>
+    <button type="submit" class="btn btn-primary">Oluştur</button>
+}
