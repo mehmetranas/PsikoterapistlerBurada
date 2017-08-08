@@ -1,0 +1,31 @@
+﻿@model IEnumerable<PsikoterapsitlerBurada.Models.Question>
+@{
+    ViewBag.Title = "GetUnAskedQuestions";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Sorulmayan Sorular</h2>
+
+<div class="container">
+    <div class="row">
+        <table class="table table-bordered">
+            <tr>
+                <th colspan="2">
+                    Soru
+                </th>
+            </tr>
+    
+            @foreach (var question in Model)
+            {
+                <tr>
+                    <td>
+                        @question.QuestionText
+                    </td>
+                    <td>
+                        @Html.ActionLink("Sor","SelectUserToAskQuestion","Question",new {id = question.Id},null)
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>

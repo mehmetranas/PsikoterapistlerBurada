@@ -1,0 +1,63 @@
+﻿@using PsikoterapsitlerBurada.Models 
+@model PsikoterapsitlerBurada.Models.SelectUserToAskQuestionViewModel
+@{
+    ViewBag.Title = "SelectUserToAskQuestion";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Soru</h2>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="jumbotron">
+            <h3>Soru</h3>
+            <p>@Model.Question.QuestionText</p>
+        </div>
+    </div>
+    <div class="col-md-6"><table class="table">
+            <tr>
+                <th>Kullanıcı İsmi</th>
+                <th>Kategorisi</th>
+                <th>Rating</th>
+                <th></th>
+            </tr>
+            @foreach (var item in Model.Users)
+            {
+                <tr>
+                    <td>@item.UserName</td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <button class="btn btn-link username" id="@item.Id" data-username="@item.UserName">Seç</button>
+                        @*@Html.ActionLink("Seç", "", "", new {@class = "btn btn-info btn-sm"})*@
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+    <div class="selected-users">
+        <table>
+            <tr>
+                <th>Seçilenler</th>
+            </tr>
+        </table>
+    </div>
+</div>
+@section scripts
+{
+    <script>
+        $(document).ready(function() {
+            $(".username").click(function(e) {
+                var selectedUserId = $(e.target).attr('id');
+                var questionId = @Model.Question.Id;
+
+                $.post("/api/selectedusers", { selectedUserId: selectedUserId, questionId: questionId })
+                    .done(function(message) {
+                        console.log("Success");
+                        
+                    })
+                    .fail(function () { console.log("Failed") });
+            });
+        });
+    </script>
+}

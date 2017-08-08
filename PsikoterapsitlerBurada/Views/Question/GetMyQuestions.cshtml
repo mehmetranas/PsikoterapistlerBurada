@@ -1,0 +1,35 @@
+﻿@model IEnumerable<PsikoterapsitlerBurada.Models.Question>
+@{
+    ViewBag.Title = "GetMyQuestions";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Sorulan Sorular</h2>
+
+<div class="container">
+    <div class="row">
+        <table>
+            <tr>
+                <th>Soru</th>
+                <th>Kimlere Sordun</th>
+            </tr>
+            @foreach (var question in Model)
+            {
+                <tr>
+                    <td>
+                        @question.QuestionText
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @foreach (var user in question.AskedToWhom)
+                        {
+                            <span>user.UserName, </span>
+                        }
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>
+
