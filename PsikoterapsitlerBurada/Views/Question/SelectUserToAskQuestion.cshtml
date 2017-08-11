@@ -14,50 +14,91 @@
             <p>@Model.Question.QuestionText</p>
         </div>
     </div>
-    <div class="col-md-6"><table class="table">
+    <div class="col-md-6">
+        <table class="table js-users">
             <tr>
                 <th>Kullanıcı İsmi</th>
                 <th>Kategorisi</th>
                 <th>Rating</th>
                 <th></th>
             </tr>
-            @foreach (var item in Model.Users)
+            @foreach (var user in Model.Users)
             {
                 <tr>
-                    <td>@item.UserName</td>
+                    <td>@user.UserName</td>
                     <td></td>
                     <td></td>
                     <td>
-                        <button class="btn btn-link username" id="@item.Id" data-username="@item.UserName">Seç</button>
+                        <button class="btn btn-link js-username" id="@user.Id" data-username="@user.UserName">Seç</button>
                         @*@Html.ActionLink("Seç", "", "", new {@class = "btn btn-info btn-sm"})*@
                     </td>
                 </tr>
             }
         </table>
     </div>
-    <div class="selected-users">
-        <table>
+    
+        <table class="table-bordered" id="table-selected-users">
             <tr>
                 <th>Seçilenler</th>
             </tr>
         </table>
     </div>
-</div>
+
 @section scripts
 {
     <script>
         $(document).ready(function() {
-            $(".username").click(function(e) {
-                var selectedUserId = $(e.target).attr('id');
-                var questionId = @Model.Question.Id;
+            var questionId = @Model.Question.Id;
+
+            $(".js-username").click(function(select) {
+                var selectedUserId = $(select.target).attr('id');
+                var selectButton = document.getElementById(selectedUserId);
 
                 $.post("/api/selectedusers", { selectedUserId: selectedUserId, questionId: questionId })
-                    .done(function(message) {
-                        console.log("Success");
-                        
+                    .done(function () {
+                        userAdded();
                     })
                     .fail(function () { console.log("Failed") });
+
+
+                function userAdded() {
+                    selectButton.innerText = "Eklendi";
+                    selectButton.disabled = true;
+                    var username = $(select.target).attr("data-username");
+                    var table = document.getElementById("table-selected-users");
+                    var row = table.insertRow(table.rows.length);
+                    var userCell = row.insertCell(0);
+                    var actionCell = row.insertCell(1);
+                    var removeUser = document.createElement("button");
+                    removeUser.innerText = "Çıkar";
+                    removeUser.setAttribute("user-id", selectedUserId);
+                    removeUser.className = "btn btn-link js-remove-user";
+                    userCell.innerHTML = username;
+                    actionCell.appendChild(removeUser);
+
+                    $(".js-remove-user").click(function (remove) {
+
+                        var removeUserId = $(remove.target).attr("user-id");
+                        var removeButton = $(this);
+                        var userButton = document.getElementById(removeUserId);
+
+                        $.post("/api/RemoveSelectedUsers", { selectedUserId: removeUserId, questionId: questionId })
+                            .done(function () {
+                                userRemove();
+                            })
+                            .fail(function () { console.log("Failed") });
+
+                        function userRemove() {
+                            userButton.innerText = "Seç";
+                            userButton.disabled = false;
+                            removeButton.closest("tr").remove();
+                        }
+                    });
+                }
             });
+
+            
         });
-    </script>
+
+</script>
 }

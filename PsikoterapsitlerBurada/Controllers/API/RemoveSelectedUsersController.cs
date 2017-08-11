@@ -1,21 +1,25 @@
-﻿using PsikoterapsitlerBurada.DTOs;
-using PsikoterapsitlerBurada.Models;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Web.Http;
+using PsikoterapsitlerBurada.DTOs;
+using PsikoterapsitlerBurada.Models;
 
-namespace PsikoterapsitlerBurada.Controllers
+namespace PsikoterapsitlerBurada.Controllers.API
 {
-    public class SelectedUsersController : ApiController
+    public class RemoveSelectedUsersController : ApiController
     {
         private ApplicationDbContext _context;
 
-        public SelectedUsersController()
+        public RemoveSelectedUsersController()
         {
             _context = new ApplicationDbContext();
         }
 
         [HttpPost]
-        public IHttpActionResult AddUsersToTheQuestion(SelectedUserDto selectedUserDto)
+        public IHttpActionResult RemoveSelectedUserFromTheQuestion(SelectedUserDto selectedUserDto)
         {
             var selectedUser = _context.Users.SingleOrDefault(u => u.Id == selectedUserDto.SelectedUserId);
             var question = _context.Questions.SingleOrDefault(q => q.Id == selectedUserDto.QuestionId);
@@ -24,9 +28,10 @@ namespace PsikoterapsitlerBurada.Controllers
             {
                 return BadRequest("Hata oluştu, lütfen tekrar deneyin.");
             }
-            question.AskedToWhom.Add(selectedUser);
+
+            selectedUser.QuestionsAsked.Remove(question);
             _context.SaveChanges();
-            return Ok("Tebrikler! Sorunuz Yolda.");
+            return Ok();
         }
     }
 }

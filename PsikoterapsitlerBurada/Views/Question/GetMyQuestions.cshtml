@@ -8,7 +8,7 @@
 
 <div class="container">
     <div class="row">
-        <table>
+        <table class="table-bordered">
             <tr>
                 <th>Soru</th>
                 <th>Kimlere Sordun</th>
@@ -18,18 +18,16 @@
                 <tr>
                     <td>
                         @question.QuestionText
-                    </td>
-                </tr>
-                <tr>
+                    </td> 
                     <td>
                         @foreach (var user in question.AskedToWhom)
                         {
-                            <span>user.UserName, </span>
+                            <span>@user.UserName</span>
                         }
                     </td>
                 </tr>
             }
         </table>
-    </div>
+       </div>
 </div>
 

@@ -29,7 +29,7 @@ namespace PsikoterapsitlerBurada.Models
                 .HasMany(u => u.AskedToWhom)
                 .WithMany(q => q.QuestionsAsked)
                 .Map(m => m.ToTable("QuestionsAskedWhom"));
-
+           
             base.OnModelCreating(modelBuilder);
         }
     }

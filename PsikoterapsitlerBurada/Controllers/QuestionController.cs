@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNet.Identity;
 using PsikoterapsitlerBurada.Models;
 using System;
+using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -16,7 +17,7 @@ namespace PsikoterapsitlerBurada.Controllers
         }
 
         // GET: Question
-        [Authorize]
+        [System.Web.Mvc.Authorize]
         public ActionResult Create()
         {
             QuestionViewModel viewModel = new QuestionViewModel()
@@ -40,13 +41,13 @@ namespace PsikoterapsitlerBurada.Controllers
                 QuestionText = model.QuestionText,
                 DateTime = DateTime.Now,
                 WhoAsked = user,
-                Category = category,
+                Category = category
             };
 
             _context.Questions.Add(question);
             _context.SaveChanges();
             var questionId = _context.Questions.Max(q => q.Id);
-            return RedirectToAction("SelectUserToAskQuestion", questionId);
+            return RedirectToAction("SelectUserToAskQuestion", new {id = questionId});
         }
 
         [Authorize]
@@ -66,7 +67,7 @@ namespace PsikoterapsitlerBurada.Controllers
         public ActionResult GetMyQuestions()
         {
             var userId = User.Identity.GetUserId();
-            var myQuestions = _context.Questions.Where(q => q.WhoAsked.Id == userId);
+            var myQuestions = _context.Questions.Where(q => q.WhoAsked.Id == userId).Include("WhoAsked").Include("AskedToWhom").ToList();
             return View(myQuestions);
         }
 
