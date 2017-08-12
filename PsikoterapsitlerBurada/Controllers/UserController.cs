@@ -6,6 +6,7 @@ using System.Web.Mvc;
 
 namespace PsikoterapsitlerBurada.Controllers
 {
+    [Authorize]
     public class UserController : Controller
     {
         private ApplicationDbContext _context;
@@ -15,7 +16,6 @@ namespace PsikoterapsitlerBurada.Controllers
             _context = new ApplicationDbContext();
         }
 
-        [Authorize]
         public ActionResult GetMyQuestions()
         {
             var userId = User.Identity.GetUserId();
@@ -23,7 +23,6 @@ namespace PsikoterapsitlerBurada.Controllers
             return View(myQuestions);
         }
 
-        [Authorize]
         public ActionResult GetUnAskedQuestions()
         {
             var userId = User.Identity.GetUserId();
@@ -31,16 +30,16 @@ namespace PsikoterapsitlerBurada.Controllers
             return View(questions);
         }
 
-        [Authorize]
         public ActionResult GetQustionAskedToMe()
         {
             var userId = User.Identity.GetUserId();
-            var user = _context.Users.SingleOrDefault(u => u.Id == userId);
+            var user = _context.Users.
+                SingleOrDefault(u => u.Id == userId);
+
+            var questions = _context.Questions.Include("WhoAsked").Where(q => q.AskedToWhom.Any(u => u.Id == userId)).ToList().OrderBy(d => d.DateTime);
 
             if (user == null) return HttpNotFound();
 
-            var questions = user.QuestionsAsked;
-            
             return View(questions);
         }
     }
