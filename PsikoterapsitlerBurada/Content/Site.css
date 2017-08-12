@@ -36,41 +36,27 @@ p.question-text:hover {
 
 
 .who-asked {
-    display: table-cell;
-    vertical-align: bottom;
-    color: grey;
+ color: grey;
 }
-
-
-.outer {
-    display: table;
-}
-
-.inner {
-    display: table-cell;
-    vertical-align: bottom;
-}
-
-
 
 /*Set Answers Page*/
 .vote-counter {
     margin-top:10px
 }
 
-div.vote-counter {
-    margin: auto;
-    display: block
+table.questions .glyphicon-chevron-up:hover, table.questions .glyphicon-chevron-down:hover {
+    color: darkgoldenrod;
+    cursor: pointer
 }
 
-.media span:hover {
-    cursor: pointer;
-    color: #daa520
+div.rating {
+    margin-top: 15px;
+}
+
+p.rating {
+    margin-bottom: 0px;
+    font-size: 18px
 }
 
 
-/*Bootstrap Overloads*/
 
-.media-heading {
-    color:brown
-}

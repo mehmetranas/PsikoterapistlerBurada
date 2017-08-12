@@ -1,5 +1,5 @@
-using System.Data.Entity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using System.Data.Entity;
 
 namespace PsikoterapsitlerBurada.Models
 {
@@ -29,7 +29,7 @@ namespace PsikoterapsitlerBurada.Models
                 .HasMany(u => u.AskedToWhom)
                 .WithMany(q => q.QuestionsAsked)
                 .Map(m => m.ToTable("QuestionsAskedWhom"));
-           
+
             base.OnModelCreating(modelBuilder);
         }
     }

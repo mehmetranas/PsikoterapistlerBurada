@@ -1,9 +1,9 @@
-﻿@model IEnumerable<PsikoterapsitlerBurada.Models.Question>
+﻿
+@model IEnumerable<PsikoterapsitlerBurada.Models.Question>
 @{
-    ViewBag.Title = "Home Page";
+    ViewBag.Title = "GetQustionAskedToMe";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<h4>Sorular</h4>
 
 @foreach (var question in Model)
 {
@@ -24,22 +24,27 @@
                                     <span class="glyphicon glyphicon-chevron-down"></span>
                                 </div>
                             </div>
-                            <div class="text-center">
-                                <h4 class="">0</h4>
+                            <div class="text-center rating">
+                                <p class="rating">0</p>
                                 <span class="label label-default">Cevap</span>
                             </div>
-                            </div>
+                        </div>
                     </div>
                 </td>
                 <td class="question-text">
-                        <div class="question-text">
-                            <p class="question-text">@question.QuestionText
-                            </p>
-                        </div>
-                        <small class="who-asked pull-right">@question.WhoAsked.UserName</small>
+                    <div class="question-text">
+                        <p>@question.QuestionText
+                        </p>
+                    </div>
+                    @if (question.WhoAsked != null)
+                    {<small class="who-asked pull-right">
+                         @question.WhoAsked.UserName
+                     </small>
+                    }
                 </td>
             </tr>
-        </table>  
+        </table> 
+        <button class="btn btn-link btn-sm pull-right">Cevapla</button>
     </div>
 }
 
