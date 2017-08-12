@@ -53,8 +53,16 @@ namespace PsikoterapsitlerBurada.Controllers
         [Authorize]
         public ActionResult SelectUserToAskQuestion(int id)
         {
-            var users = _context.Users.ToList(); //There is a problem that get all users properties, only get username, ctg. and rating
+            var askedToWhom = _context.Questions.Include("AskedToWhom").SingleOrDefault(q => q.Id == id).AskedToWhom;
+
+            if (askedToWhom.Count != 0)
+            {
+                return HttpNotFound();
+            }
+
             var question = _context.Questions.SingleOrDefault(q => q.Id == id);
+            var userId = User.Identity.GetUserId();
+            var users = _context.Users.Where(u => u.Id != userId).ToList(); //There is a problem that get all users properties, only get username, ctg. and rating
             var viewModel = new SelectUserToAskQuestionViewModel()
             {
                 Users = users,

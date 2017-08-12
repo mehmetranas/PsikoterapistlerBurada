@@ -22,3 +22,14 @@ select,
 textarea {
     max-width: 280px;
 }
+
+
+/*Set Home Page Question Bars*/
+.vote-counter {
+    margin-top:10px
+}
+
+.media span:hover {
+    cursor: pointer;
+    color: #daa520
+}
