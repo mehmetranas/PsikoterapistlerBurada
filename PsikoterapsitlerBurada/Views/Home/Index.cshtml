@@ -1,17 +1,39 @@
-﻿@{
+﻿@model IEnumerable<PsikoterapsitlerBurada.Models.Question>
+@{
     ViewBag.Title = "Home Page";
 }
 
-<div class="jumbotron">
-    <div class="media">
-        <div class="media-left pull-left">
-            <span class="glyphicon glyphicon-chevron-up"></span>
-            <p class="vote-counter text-center">0</p>
-            <span class="glyphicon glyphicon-chevron-down"></span>
-        </div>
-        <div class="media-body">
+<h4>Sorular</h4>
 
-            <p>Tincidunt integer eu augue augue nunc elit dolor, luctus placerat scelerisque euismod, iaculis eu lacus nunc mi elit, vehicula ut laoreet ac, aliquam sit amet justo nunc tempor, metus vel.</p>
-        </div>
+@foreach (var question in Model)
+{
+    <div class="jumbotron">
+        <table class="table questions">
+            <tr>
+                <td>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="text-center">
+                                <h4 class="">0</h4>
+                                <span class="label label-default">Cevap</span>
+                            </div>
+                            <div class="text-center">
+                                <h4 class="">0</h4>
+                                <span class="label label-default">Puan</span>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                <td class="question-text">
+                        <div class="question-text">
+                            <p class="question-text">@question.QuestionText
+                            </p>
+                        </div>
+                        <small class="who-asked pull-right">@question.WhoAsked.UserName</small>
+                </td>
+            </tr>
+        </table>  
     </div>
-</div>
+}
+
+

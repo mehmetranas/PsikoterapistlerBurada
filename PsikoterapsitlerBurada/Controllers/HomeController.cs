@@ -1,16 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using PsikoterapsitlerBurada.Models;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace PsikoterapsitlerBurada.Controllers
 {
     public class HomeController : Controller
     {
+        private ApplicationDbContext _context;
+
+        public HomeController()
+        {
+            _context = new ApplicationDbContext();
+        }
+        
         public ActionResult Index()
         {
-            return View();
+            var questions = _context.Questions.Include("Category").Include("WhoAsked").Where(q => q.AskedToWhom.Count != 0).ToList();
+            
+            return View(questions);
         }
 
         public ActionResult About()

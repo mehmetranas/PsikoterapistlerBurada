@@ -23,13 +23,54 @@ textarea {
     max-width: 280px;
 }
 
+/*Set home page question text*/
 
-/*Set Home Page Question Bars*/
+p.question-text {
+    margin: auto
+}
+
+p.question-text:hover {
+    cursor: pointer;
+    color:darkcyan
+}
+
+
+.who-asked {
+    display: table-cell;
+    vertical-align: bottom;
+    color: grey;
+}
+
+
+.outer {
+    display: table;
+}
+
+.inner {
+    display: table-cell;
+    vertical-align: bottom;
+}
+
+
+
+/*Set Answers Page*/
 .vote-counter {
     margin-top:10px
+}
+
+div.vote-counter {
+    margin: auto;
+    display: block
 }
 
 .media span:hover {
     cursor: pointer;
     color: #daa520
+}
+
+
+/*Bootstrap Overloads*/
+
+.media-heading {
+    color:brown
 }
