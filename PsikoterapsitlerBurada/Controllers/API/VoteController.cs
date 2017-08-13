@@ -3,13 +3,14 @@ using PsikoterapsitlerBurada.Models;
 using System;
 using System.Linq;
 using System.Web.Http;
+using PsikoterapsitlerBurada.DTOs;
 
 namespace PsikoterapsitlerBurada.Controllers.API
 {
     [Authorize]
     public class VoteController : ApiController
     {
-        private ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
 
         public VoteController( )
         {
@@ -17,26 +18,26 @@ namespace PsikoterapsitlerBurada.Controllers.API
         }
 
         [HttpPost]
-        public IHttpActionResult UpVote(int id)
+        public IHttpActionResult VoteAction(VoteDto voteDto)
         {
             var userId = User.Identity.GetUserId();
             var question = _context.Questions
                 .Include("Votes")
-                .SingleOrDefault(q => q.Id == id);
+                .SingleOrDefault(q => q.Id == voteDto.QuestionId);
 
             var isVoteUp = question != null && question.Votes.Any(v => v.UserId == userId);
 
             if (isVoteUp)
             {
-                return BadRequest("Daha önce oy kullanmışsınız.");
+                return BadRequest();
             }
            
             var vote = new Vote()
             {
-                QuestionId = id,
+                QuestionId = voteDto.QuestionId,
                 UserId = userId,
                 DateTime = DateTime.Now,
-                VoteState = 1
+                VoteState = voteDto.VoteAction
             };
 
             _context.Votes.Add(vote);
@@ -45,7 +46,7 @@ namespace PsikoterapsitlerBurada.Controllers.API
             return Ok();
         }
 
-        [HttpGet]
+        [System.Web.Http.HttpGet]
         public int GetVotes(int id)
         {
             var votes = _context.Votes.Where(v => v.QuestionId == id).Sum(s => s.VoteState);

@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Web;
 
-namespace PsikoterapsitlerBurada.Models
+namespace PsikoterapsitlerBurada.Models.ViewModels
 {
     public class QuestionViewModel
     {
@@ -17,5 +16,11 @@ namespace PsikoterapsitlerBurada.Models
         [DisplayName("Kategori")]
         public Category Category { get; set; }
         public IEnumerable<Category> Categories { get; set; }
+        public IEnumerable<Vote> Votes { get; set; }
+
+        public int TotalVotes
+        {
+            get { return Votes.Sum(v => v.VoteState); }
+        }
     }
 }

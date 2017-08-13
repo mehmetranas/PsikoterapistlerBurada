@@ -3,6 +3,7 @@ using PsikoterapsitlerBurada.Models;
 using System;
 using System.Linq;
 using System.Web.Mvc;
+using PsikoterapsitlerBurada.Models.ViewModels;
 
 namespace PsikoterapsitlerBurada.Controllers
 {

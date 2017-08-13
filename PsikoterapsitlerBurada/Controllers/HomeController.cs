@@ -21,7 +21,7 @@ namespace PsikoterapsitlerBurada.Controllers
                 .Include("Votes")
                 .Where(q => q.AskedToWhom.Count != 0)
                 .ToList(); 
-            
+
             return View(questions);
         }
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace PsikoterapsitlerBurada.Models
 {
@@ -21,5 +22,9 @@ namespace PsikoterapsitlerBurada.Models
         [Required]
         public Category Category { get; set; }
         public ICollection<Vote> Votes { get; set; }
+        public int TotalVotes
+        {
+            get { return Votes.Sum(v => v.VoteState); }
+        }
     }
 }

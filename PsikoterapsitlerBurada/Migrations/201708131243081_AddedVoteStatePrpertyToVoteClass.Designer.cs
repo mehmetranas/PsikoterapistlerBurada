@@ -13,7 +13,7 @@ namespace PsikoterapsitlerBurada.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201708122022392_AddedVoteStatePrpertyToVoteClass"; }
+            get { return "201708131243081_AddedVoteStatePrpertyToVoteClass"; }
         }
         
         string IMigrationMetadata.Source
