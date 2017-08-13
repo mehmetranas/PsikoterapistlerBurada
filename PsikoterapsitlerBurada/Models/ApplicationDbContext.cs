@@ -7,6 +7,7 @@ namespace PsikoterapsitlerBurada.Models
     {
         public DbSet<Question> Questions { get; set; }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<Vote> Votes { get; set; }
 
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)

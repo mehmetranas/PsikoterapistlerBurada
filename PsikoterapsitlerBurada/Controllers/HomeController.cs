@@ -15,7 +15,12 @@ namespace PsikoterapsitlerBurada.Controllers
         
         public ActionResult Index()
         {
-            var questions = _context.Questions.Include("Category").Include("WhoAsked").Where(q => q.AskedToWhom.Count != 0).ToList();
+            var questions = _context.Questions
+                .Include("Category")
+                .Include("WhoAsked")
+                .Include("Votes")
+                .Where(q => q.AskedToWhom.Count != 0)
+                .ToList(); 
             
             return View(questions);
         }

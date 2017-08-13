@@ -202,6 +202,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\API\RemoveSelectedUsersController.cs" />
     <Compile Include="Controllers\API\SelectedUsersController.cs" />
+    <Compile Include="Controllers\API\VoteController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\QuestionController.cs" />
@@ -222,13 +223,13 @@
     <Compile Include="Migrations\201708071614248_PopulateCategoryTable.Designer.cs">
       <DependentUpon>201708071614248_PopulateCategoryTable.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201708111255289_AddedIsAskedToQuestionClass.cs" />
-    <Compile Include="Migrations\201708111255289_AddedIsAskedToQuestionClass.Designer.cs">
-      <DependentUpon>201708111255289_AddedIsAskedToQuestionClass.cs</DependentUpon>
+    <Compile Include="Migrations\201708121958543_AddedVoteClass.cs" />
+    <Compile Include="Migrations\201708121958543_AddedVoteClass.Designer.cs">
+      <DependentUpon>201708121958543_AddedVoteClass.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201708111300534_SetIsAskedPropertyBydefaultValueOfFalse.cs" />
-    <Compile Include="Migrations\201708111300534_SetIsAskedPropertyBydefaultValueOfFalse.Designer.cs">
-      <DependentUpon>201708111300534_SetIsAskedPropertyBydefaultValueOfFalse.cs</DependentUpon>
+    <Compile Include="Migrations\201708122022392_AddedVoteStatePrpertyToVoteClass.cs" />
+    <Compile Include="Migrations\201708122022392_AddedVoteStatePrpertyToVoteClass.Designer.cs">
+      <DependentUpon>201708122022392_AddedVoteStatePrpertyToVoteClass.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -239,6 +240,7 @@
     <Compile Include="Models\Question.cs" />
     <Compile Include="Models\QuestionViewModel.cs" />
     <Compile Include="Models\SelectUserToAskQuestionViewModel.cs" />
+    <Compile Include="Models\Vote.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -311,6 +313,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Vote\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -328,11 +331,11 @@
     <EmbeddedResource Include="Migrations\201708071614248_PopulateCategoryTable.resx">
       <DependentUpon>201708071614248_PopulateCategoryTable.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201708111255289_AddedIsAskedToQuestionClass.resx">
-      <DependentUpon>201708111255289_AddedIsAskedToQuestionClass.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201708121958543_AddedVoteClass.resx">
+      <DependentUpon>201708121958543_AddedVoteClass.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201708111300534_SetIsAskedPropertyBydefaultValueOfFalse.resx">
-      <DependentUpon>201708111300534_SetIsAskedPropertyBydefaultValueOfFalse.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201708122022392_AddedVoteStatePrpertyToVoteClass.resx">
+      <DependentUpon>201708122022392_AddedVoteStatePrpertyToVoteClass.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

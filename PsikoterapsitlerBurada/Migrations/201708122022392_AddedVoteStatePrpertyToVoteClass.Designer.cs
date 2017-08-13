@@ -7,13 +7,13 @@ namespace PsikoterapsitlerBurada.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class SetIsAskedPropertyBydefaultValueOfFalse : IMigrationMetadata
+    public sealed partial class AddedVoteStatePrpertyToVoteClass : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(SetIsAskedPropertyBydefaultValueOfFalse));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(AddedVoteStatePrpertyToVoteClass));
         
         string IMigrationMetadata.Id
         {
-            get { return "201708111300534_SetIsAskedPropertyBydefaultValueOfFalse"; }
+            get { return "201708122022392_AddedVoteStatePrpertyToVoteClass"; }
         }
         
         string IMigrationMetadata.Source

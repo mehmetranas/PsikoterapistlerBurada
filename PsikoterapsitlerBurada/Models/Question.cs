@@ -9,6 +9,7 @@ namespace PsikoterapsitlerBurada.Models
         public Question()
         {
             AskedToWhom = new HashSet<ApplicationUser>();
+            Votes = new HashSet<Vote>();
         }
         public int Id { get; set; }
         [Required]
@@ -19,5 +20,6 @@ namespace PsikoterapsitlerBurada.Models
         public DateTime? DateTime { get; set; }
         [Required]
         public Category Category { get; set; }
+        public ICollection<Vote> Votes { get; set; }
     }
 }
