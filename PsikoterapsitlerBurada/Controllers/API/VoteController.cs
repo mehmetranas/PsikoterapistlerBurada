@@ -26,11 +26,24 @@ namespace PsikoterapsitlerBurada.Controllers.API
                 .SingleOrDefault(q => q.Id == voteDto.QuestionId);
 
 
-            var isVoteUp = question != null && question.Votes.Any(v => v.UserId == userId);
+            var isVote = question != null && question.Votes.Any(v => v.UserId == userId);
 
-            if (isVoteUp)
+            if (isVote)
             {
+                var userVote = question.Votes.SingleOrDefault(v => v.UserId == userId);
+                var userVoteState = userVote.VoteState;
+                var canVote = userVoteState + voteDto.VoteAction == 0 || userVoteState == 0;
+
+                if (!canVote)
+                {
                 return Json(new {@isVoteUp = true});
+                }
+
+                userVote.VoteState += voteDto.VoteAction;
+                _context.SaveChanges();
+                if (userVote.VoteState == 0) return Json(new {isRollBack = true});
+                
+                return Ok();
             }
            
             var vote = new Vote()

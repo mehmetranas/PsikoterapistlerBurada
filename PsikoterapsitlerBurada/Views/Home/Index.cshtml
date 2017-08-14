@@ -15,16 +15,17 @@
                         <div class="col-md-12">
                             <div class="vote">
                                 <div class="text-center">
-                                    <span 
-                                        class="glyphicon glyphicon-chevron-up js-vote-up" 
-                                          id = @question.Id></span>
+                                    <span class="glyphicon glyphicon-chevron-up js-vote"
+                                          data-vote-action = "1"
+                                          data-questionId = @question.Id></span>
                                 </div>
                                 <div class="text-center">
                                     <p class="vote-counter">@question.TotalVotes</p>
                                 </div>
                                 <div class="text-center">
-                                    <span class="glyphicon glyphicon-chevron-down js-vote-down" 
-                                          id = @question.Id></span>
+                                    <span class="glyphicon glyphicon-chevron-down js-vote" 
+                                          data-vote-action = "-1"
+                                          data-questionId = @question.Id></span>
                                 </div>
                             </div>
                             <div class="text-center">
@@ -48,44 +49,44 @@
 
 @section scripts{
     <script>
+
         $(document).ready(function() {
 
-            function vote(voteData) {
+            $(".js-vote").click(function (e) {
                 var auth = @User.Identity.IsAuthenticated.ToString().ToLower();
                 if (!auth) {
                     console.log("Oy kullanmak için giriş yapmalısın.");
                     return;
                 }
 
-                var element = document.getElementById(voteData.questionId);
+                var element = e.target;
+                var voteCounter = $(element).closest(".vote").find(".vote-counter")[0];
                 var voteDto = {
-                    voteAction: voteData.voteAction,
-                    questionId: voteData.questionId
-                };
+                    voteAction: parseInt(element.getAttribute("data-vote-action")),
+                    questionId: $(element).attr("data-questionId")
+            };
+
                 $.post("/api/vote", voteDto)
                     .success(function(data, status, xhr) {
                         if (xhr.responseJSON && xhr.responseJSON.isVoteUp) {
-                            alert("sometihing");
+                            alert("Daha önce bu soru için oy hakkınızı kullandınız.");
                             return;
                         }
 
-                        element.style.color = "darkgoldenrod";
-                        var voteCount = parseInt(element.closest(".vote").getElementsByTagName("p")[0].innerText);
-                        voteCount += voteData.voteAction;
-                        element.closest(".vote").getElementsByTagName("p")[0].innerText = voteCount;
+                        if (xhr.responseJSON && xhr.responseJSON.isRollBack) {
+                            var elements = $(element).closest(".vote").find(".js-vote");
+                            elements[0].style.color = "black";
+                            elements[1].style.color = "black";
+                        } else {
+                            element.style.color = "goldenrod";
+                        }
+
+                        voteCounter.innerText = parseInt(voteCounter.innerText) + parseInt(voteDto.voteAction);
                     })
                     .fail(function(xhr, status) {
                         console.log("Fail");
                     });
-            }
-
-            $(".js-vote-up").click(function (e) {
-               vote({ questionId: e.target.id, voteAction: 1 });
             });
-
-            $(".js-vote-down").click(function(e) {
-                vote({ questionId: e.target.id, voteAction: -1 });
             });
-        });
     </script>
 }
