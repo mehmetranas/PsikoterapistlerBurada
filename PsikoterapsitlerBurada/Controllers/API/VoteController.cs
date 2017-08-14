@@ -25,6 +25,7 @@ namespace PsikoterapsitlerBurada.Controllers.API
                 .Include("Votes")
                 .SingleOrDefault(q => q.Id == voteDto.QuestionId);
 
+
             var isVoteUp = question != null && question.Votes.Any(v => v.UserId == userId);
 
             if (isVoteUp)

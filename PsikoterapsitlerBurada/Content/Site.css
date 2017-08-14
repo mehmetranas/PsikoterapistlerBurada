@@ -46,7 +46,6 @@ p.question-text:hover {
 
 table.questions .glyphicon-chevron-up:hover, table.questions .glyphicon-chevron-down:hover {
     font-size: 20px;
-    
     color: darkgoldenrod;
     cursor: pointer
 }

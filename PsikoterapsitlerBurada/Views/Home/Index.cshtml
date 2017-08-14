@@ -70,6 +70,9 @@
                         }
 
                         element.style.color = "darkgoldenrod";
+                        var voteCount = parseInt(element.closest(".vote").getElementsByTagName("p")[0].innerText);
+                        voteCount += voteData.voteAction;
+                        element.closest(".vote").getElementsByTagName("p")[0].innerText = voteCount;
                     })
                     .fail(function(xhr, status) {
                         console.log("Fail");
@@ -77,7 +80,7 @@
             }
 
             $(".js-vote-up").click(function (e) {
-                vote({ questionId: e.target.id, voteAction: 1 });
+               vote({ questionId: e.target.id, voteAction: 1 });
             });
 
             $(".js-vote-down").click(function(e) {
