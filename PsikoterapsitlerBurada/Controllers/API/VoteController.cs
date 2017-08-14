@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNet.Identity;
+using PsikoterapsitlerBurada.DTOs;
 using PsikoterapsitlerBurada.Models;
 using System;
 using System.Linq;
 using System.Web.Http;
-using PsikoterapsitlerBurada.DTOs;
 
 namespace PsikoterapsitlerBurada.Controllers.API
 {
@@ -29,7 +29,7 @@ namespace PsikoterapsitlerBurada.Controllers.API
 
             if (isVoteUp)
             {
-                return BadRequest();
+                return Json(new {@isVoteUp = true});
             }
            
             var vote = new Vote()

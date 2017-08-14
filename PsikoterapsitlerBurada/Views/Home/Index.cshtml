@@ -17,13 +17,14 @@
                                 <div class="text-center">
                                     <span 
                                         class="glyphicon glyphicon-chevron-up js-vote-up" 
-                                          data-question-id = @question.Id></span>
+                                          id = @question.Id></span>
                                 </div>
                                 <div class="text-center">
                                     <p class="vote-counter">@question.TotalVotes</p>
                                 </div>
                                 <div class="text-center">
-                                    <span class="glyphicon glyphicon-chevron-down js-vote-down" data-question-id = @question.Id></span>
+                                    <span class="glyphicon glyphicon-chevron-down js-vote-down" 
+                                          id = @question.Id></span>
                                 </div>
                             </div>
                             <div class="text-center">
@@ -47,38 +48,41 @@
 
 @section scripts{
     <script>
-        $(document).ready(function () {
-            $(".js-vote-up").click(function(e) {
+        $(document).ready(function() {
 
+            function vote(voteData) {
                 var auth = @User.Identity.IsAuthenticated.ToString().ToLower();
                 if (!auth) {
                     console.log("Oy kullanmak için giriş yapmalısın.");
                     return;
                 }
 
-                var questionId = parseInt($(e.target).attr("data-question-id"));
+                var element = document.getElementById(voteData.questionId);
                 var voteDto = {
-                    voteAction: 1,
-                    questionId: questionId
+                    voteAction: voteData.voteAction,
+                    questionId: voteData.questionId
                 };
-                $.post("/api/vote", voteDto);
+                $.post("/api/vote", voteDto)
+                    .success(function(data, status, xhr) {
+                        if (xhr.responseJSON && xhr.responseJSON.isVoteUp) {
+                            alert("sometihing");
+                            return;
+                        }
+
+                        element.style.color = "darkgoldenrod";
+                    })
+                    .fail(function(xhr, status) {
+                        console.log("Fail");
+                    });
+            }
+
+            $(".js-vote-up").click(function (e) {
+                vote({ questionId: e.target.id, voteAction: 1 });
             });
 
             $(".js-vote-down").click(function(e) {
-
-                var auth = @User.Identity.IsAuthenticated.ToString().ToLower();
-                if (!auth) {
-                    console.log("Oy kullanmak için giriş yapmalısın.");
-                    return;
-                }
-
-                var questionId = parseInt($(e.target).attr("data-question-id"));
-                var voteDto = {
-                    voteAction: -1,
-                    questionId: questionId
-                };
-                $.post("/api/vote", voteDto);
+                vote({ questionId: e.target.id, voteAction: -1 });
             });
         });
     </script>
- }
+}
