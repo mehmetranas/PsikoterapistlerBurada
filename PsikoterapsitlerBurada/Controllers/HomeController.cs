@@ -1,4 +1,5 @@
-﻿using PsikoterapsitlerBurada.Models;
+﻿using System.Data.Entity;
+using PsikoterapsitlerBurada.Models;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -16,10 +17,12 @@ namespace PsikoterapsitlerBurada.Controllers
         public ActionResult Index()
         {
             var questions = _context.Questions
-                .Include("Category")
-                .Include("WhoAsked")
-                .Include("Votes")
                 .Where(q => q.AskedToWhom.Count != 0)
+                .Include(q => q.Category)
+                .Include(q => q.WhoAsked)
+                .Include(q => q.Votes)
+                .Include(q => q.Answers)
+                .Include(q => q.AskedToWhom)
                 .ToList(); 
 
             return View(questions);

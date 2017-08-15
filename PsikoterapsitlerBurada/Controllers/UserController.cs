@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNet.Identity;
 using PsikoterapsitlerBurada.Models;
+using PsikoterapsitlerBurada.Models.ViewModels;
 using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
@@ -36,11 +37,23 @@ namespace PsikoterapsitlerBurada.Controllers
             var user = _context.Users.
                 SingleOrDefault(u => u.Id == userId);
 
-            var questions = _context.Questions.Include("WhoAsked").Where(q => q.AskedToWhom.Any(u => u.Id == userId)).ToList().OrderBy(d => d.DateTime);
+            var questions = _context.Questions.Include("WhoAsked").Include("Answers").Where(q => q.AskedToWhom.Any(u => u.Id == userId)).ToList().OrderBy(d => d.DateTime);
 
             if (user == null) return HttpNotFound();
 
             return View(questions);
+        }
+
+        [Authorize]
+        public ActionResult WriteAnswer(int id)
+        {
+            var question = _context.Questions.Include("WhoAsked").SingleOrDefault(q => q.Id == id);
+            var viewModel = new AnswerViewModel()
+            {
+                Question = question
+            };
+
+            return View(viewModel);
         }
     }
 }

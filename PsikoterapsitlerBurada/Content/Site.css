@@ -17,21 +17,22 @@
 }
 
 /* Set width on the form input elements since they're 100% wide by default */
-input,
+/*input,
 select,
 textarea {
     max-width: 280px;
-}
+}*/
 
 /*Set home page question text*/
 
-p.question-text {
+a.question-text {
     margin: auto
 }
 
-p.question-text:hover {
+a.question-text:hover {
     cursor: pointer;
-    color:darkcyan
+    color: darkcyan;
+    text-decoration: none
 }
 
 
@@ -58,5 +59,23 @@ p.rating {
     margin-bottom: 0px;
     font-size: 18px
 }
+
+.tag {
+    background-color: darkgray;
+    padding: 5px;
+    -ms-border-radius: 3px;
+    border-radius: 3px;
+    color: aliceblue;
+}
+
+i.like:hover {
+    cursor: pointer;
+    color:deeppink
+}
+
+div.like {
+    margin-bottom: 10px;
+}
+
 
 /*css for javascirpt display effect*/

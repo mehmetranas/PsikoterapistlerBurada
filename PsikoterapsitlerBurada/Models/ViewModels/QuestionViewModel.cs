@@ -18,7 +18,7 @@ namespace PsikoterapsitlerBurada.Models.ViewModels
         public IEnumerable<Category> Categories { get; set; }
         public IEnumerable<Vote> Votes { get; set; }
 
-        public int TotalVotes
+        public int? TotalVotes
         {
             get { return Votes.Sum(v => v.VoteState); }
         }

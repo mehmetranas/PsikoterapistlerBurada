@@ -11,6 +11,7 @@ namespace PsikoterapsitlerBurada.Models
         {
             AskedToWhom = new HashSet<ApplicationUser>();
             Votes = new HashSet<Vote>();
+            Answers = new HashSet<Answer>();
         }
         public int Id { get; set; }
         [Required]
@@ -22,6 +23,7 @@ namespace PsikoterapsitlerBurada.Models
         [Required]
         public Category Category { get; set; }
         public ICollection<Vote> Votes { get; set; }
+        public ICollection<Answer> Answers { get; set; }
         public int TotalVotes
         {
             get { return Votes.Sum(v => v.VoteState); }

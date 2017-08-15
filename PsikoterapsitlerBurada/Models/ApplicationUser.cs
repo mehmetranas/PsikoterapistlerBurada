@@ -15,10 +15,14 @@ namespace PsikoterapsitlerBurada.Models
         {
             AskedQuestions = new HashSet<Question>();
             QuestionsAsked = new HashSet<Question>();
+            LikesAnswers = new HashSet<Answer>();
+            Answers = new HashSet<Answer>();
         }
 
         public virtual ICollection<Question> AskedQuestions { get; set; }
         public virtual ICollection<Question> QuestionsAsked { get; set; }
+        public virtual ICollection<Answer> LikesAnswers { get; set; }
+        public virtual ICollection<Answer> Answers { get; set; }
 
 
 

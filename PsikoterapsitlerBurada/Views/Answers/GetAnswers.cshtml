@@ -1,0 +1,84 @@
+﻿@model PsikoterapsitlerBurada.Models.ViewModels.AnswersViewModel
+@{
+    ViewBag.Title = "GetAnswers";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>GetAnswers</h2>
+
+<div class="panel panel-success">
+    <div class="panel-heading">
+        @foreach (var user in Model.Question.AskedToWhom)
+        {
+            <span class="tag">@user.UserName</span>
+        }
+    </div>
+    <div class="panel-body">
+        @Model.Question.QuestionText
+    </div>
+</div>
+
+<br />
+
+@foreach (var answer in @Model.Answers)
+{
+
+    <div class="well">
+        <div class="media">
+            <div class="media-left media-middle">
+                <a href="#">
+                    <img class="media-object" src="http://lorempixel.com/64/64/people" alt="Picture">
+                </a>
+            </div>
+            <div class="media-body">
+                <h4 class="media-heading">@answer.User.UserName</h4>
+                <p> @answer.AnswerText
+                </p>
+            </div>
+        </div>
+        <div class="like pull-right">
+                <span class="like">10</span>
+                <i class="glyphicon glyphicon-heart like" id = @answer.Id onclick="onClick(id)"></i>
+        </div>
+    </div>
+}
+
+@section scripts{
+    <script>
+        function onClick(answerId) {
+            var element = document.getElementById(answerId);
+            var animatedClasses = " animated bounceIn";
+            if (element.style.color === "deeppink") {
+
+                $.ajax({
+                    method: "delete",
+                    url: "/api/like/" + answerId
+                }).success(function() {
+                    element.style.color = "black";
+                    $(element).removeClass(animatedClasses);
+                });
+                return;
+            }
+
+            $.post("/api/like/" + answerId).success(function() {
+                $(element).addClass(animatedClasses);
+                element.style.color = "deeppink";
+            });
+            return;
+        }
+
+        $(document).ready(function() {
+            $.ajax({
+                url: "/api/like",
+                method: "Get",
+                success: function (data) {
+                    console.log(data);
+                    data.forEach(function(id) {
+                        document.getElementById(id).style.color = "deeppink";
+                    });
+                }
+            });
+        })
+    </script>
+}
+

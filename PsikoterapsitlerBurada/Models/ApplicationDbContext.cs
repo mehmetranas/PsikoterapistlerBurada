@@ -8,6 +8,7 @@ namespace PsikoterapsitlerBurada.Models
         public DbSet<Question> Questions { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Vote> Votes { get; set; }
+        public DbSet<Answer> Answers { get; set; }
 
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
@@ -30,6 +31,11 @@ namespace PsikoterapsitlerBurada.Models
                 .HasMany(u => u.AskedToWhom)
                 .WithMany(q => q.QuestionsAsked)
                 .Map(m => m.ToTable("QuestionsAskedWhom"));
+
+            modelBuilder.Entity<Answer>()
+                .HasMany(a => a.Likes)
+                .WithMany(u => u.LikesAnswers)
+                .Map(m => m.ToTable("Likes"));
 
             base.OnModelCreating(modelBuilder);
         }
