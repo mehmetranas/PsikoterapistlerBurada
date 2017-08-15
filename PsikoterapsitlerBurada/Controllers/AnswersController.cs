@@ -18,7 +18,12 @@ namespace PsikoterapsitlerBurada.Controllers
 
         public ActionResult GetAnswers(int id)
         {
-            var answers = _context.Answers.Where(a => a.Question.Id == id).ToList();
+            var answers = _context.Answers.Where(a => a.Question.Id == id)
+                .Select(a => new AnswerViewModel()
+                {
+                    Answer = a
+                })
+                .ToList();
             var question = _context.Questions
                 .Include(q => q.AskedToWhom)
                 .Include(q => q.WhoAsked)

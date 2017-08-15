@@ -20,7 +20,7 @@
 
 <br />
 
-@foreach (var answer in @Model.Answers)
+@foreach (var answer in Model.Answers)
 {
 
     <div class="well">
@@ -31,14 +31,14 @@
                 </a>
             </div>
             <div class="media-body">
-                <h4 class="media-heading">@answer.User.UserName</h4>
-                <p> @answer.AnswerText
+                <h4 class="media-heading">@answer.Answer.User.UserName</h4>
+                <p> @answer.Answer.AnswerText
                 </p>
             </div>
         </div>
         <div class="like pull-right">
-                <span class="like">10</span>
-                <i class="glyphicon glyphicon-heart like" id = @answer.Id onclick="onClick(id)"></i>
+                <span class="like">@answer.TotalLike</span>
+                <i class="glyphicon glyphicon-heart like" id = @answer.Answer.Id onclick="onClick(id)"></i>
         </div>
     </div>
 }
