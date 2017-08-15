@@ -21,21 +21,23 @@ namespace PsikoterapsitlerBurada.Controllers
             var answers = _context.Answers.Where(a => a.Question.Id == id)
                 .Select(a => new AnswerViewModel()
                 {
-                    Answer = a
+                    Question = a.Question,
+                    AnswerText = a.AnswerText,
+                    User = a.User,
+                    Likes = a.Likes,
+                    DateTime = a.DateTime,
+                    QuestionId = a.QuestionId,
+                    Id = a.Id,
+                    UserId = a.UserId
                 })
                 .ToList();
+
             var question = _context.Questions
                 .Include(q => q.AskedToWhom)
                 .Include(q => q.WhoAsked)
                 .SingleOrDefault(q => q.Id == id);
 
-            var viewModel = new AnswersViewModel()
-            {
-                Question = question,
-                Answers = answers
-            };
-
-            return View(viewModel);
+          return View(answers);
         }
     }
 }

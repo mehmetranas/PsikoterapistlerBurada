@@ -1,4 +1,4 @@
-﻿@model PsikoterapsitlerBurada.Models.ViewModels.AnswersViewModel
+﻿@model ICollection<PsikoterapsitlerBurada.Models.ViewModels.AnswerViewModel>
 @{
     ViewBag.Title = "GetAnswers";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -8,19 +8,19 @@
 
 <div class="panel panel-success">
     <div class="panel-heading">
-        @foreach (var user in Model.Question.AskedToWhom)
+        @foreach (var answers in Model.First().Question.AskedToWhom)
         {
-            <span class="tag">@user.UserName</span>
+            <span class="tag">@answers.UserName</span>
         }
     </div>
     <div class="panel-body">
-        @Model.Question.QuestionText
+        @Model.First().Question.QuestionText
     </div>
 </div>
 
 <br />
 
-@foreach (var answer in Model.Answers)
+@foreach (var answer in Model)
 {
 
     <div class="well">
@@ -31,14 +31,14 @@
                 </a>
             </div>
             <div class="media-body">
-                <h4 class="media-heading">@answer.Answer.User.UserName</h4>
-                <p> @answer.Answer.AnswerText
+                <h4 class="media-heading">@answer.User.UserName</h4>
+                <p> @answer.AnswerText
                 </p>
             </div>
         </div>
         <div class="like pull-right">
                 <span class="like">@answer.TotalLike</span>
-                <i class="glyphicon glyphicon-heart like" id = @answer.Answer.Id onclick="onClick(id)"></i>
+                <i class="glyphicon glyphicon-heart like" id = @answer.Id onclick="onClick(id)"></i>
         </div>
     </div>
 }
