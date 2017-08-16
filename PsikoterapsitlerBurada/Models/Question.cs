@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace PsikoterapsitlerBurada.Models
 {
@@ -9,6 +10,8 @@ namespace PsikoterapsitlerBurada.Models
         public Question()
         {
             AskedToWhom = new HashSet<ApplicationUser>();
+            Votes = new HashSet<Vote>();
+            Answers = new HashSet<Answer>();
         }
         public int Id { get; set; }
         [Required]
@@ -19,5 +22,11 @@ namespace PsikoterapsitlerBurada.Models
         public DateTime? DateTime { get; set; }
         [Required]
         public Category Category { get; set; }
+        public ICollection<Vote> Votes { get; set; }
+        public ICollection<Answer> Answers { get; set; }
+        public int TotalVotes
+        {
+            get { return Votes.Sum(v => v.VoteState); }
+        }
     }
 }

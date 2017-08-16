@@ -7,13 +7,13 @@ namespace PsikoterapsitlerBurada.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class SetIsAskedPropertyBydefaultValueOfFalse : IMigrationMetadata
+    public sealed partial class AddedAnswerTextToAnswerClass : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(SetIsAskedPropertyBydefaultValueOfFalse));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(AddedAnswerTextToAnswerClass));
         
         string IMigrationMetadata.Id
         {
-            get { return "201708111300534_SetIsAskedPropertyBydefaultValueOfFalse"; }
+            get { return "201708150234286_AddedAnswerTextToAnswerClass"; }
         }
         
         string IMigrationMetadata.Source

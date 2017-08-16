@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace PsikoterapsitlerBurada.Models
+namespace PsikoterapsitlerBurada.Models.ViewModels
 {
     public class SelectUserToAskQuestionViewModel
     {

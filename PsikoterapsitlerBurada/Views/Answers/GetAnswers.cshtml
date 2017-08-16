@@ -1,0 +1,105 @@
+﻿@model PsikoterapsitlerBurada.Models.ViewModels.GetAnswerViewModel
+@{
+    ViewBag.Title = "GetAnswers";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>GetAnswers</h2>
+
+<div class="panel panel-success">
+    <div class="panel-heading">
+        @foreach (var user in Model.QuestionViewModel.AskedToWhom)
+        {
+            <span class="tag">@user.UserName</span>
+        }
+    </div>
+    <div class="panel-body">
+        @Model.QuestionViewModel.QuestionText
+    </div>
+</div>
+
+<br />
+
+@foreach (var answer in Model.AnswerViewModels)
+{
+
+    <div class="well js-answer">
+        <div class="media">
+            <div class="media-left media-middle">
+                <a href="#">
+                    <img class="media-object" src="http://lorempixel.com/64/64/people" alt="Picture">
+                </a>
+            </div>
+            <div class="media-body">
+                <h4 class="media-heading">@answer.User.UserName</h4>
+                <p> @answer.AnswerText
+                </p>
+            </div>
+        </div>
+        <div class="like pull-right">
+                <span class="like">@answer.TotalLike</span>
+            <i class="glyphicon glyphicon-heart like" 
+               data-toggle = "tooltip" 
+               title = "Giriş yapmalısınız"
+               id = @answer.Id onclick="onClick(id)"></i>
+        </div>
+    </div>
+}
+
+@section scripts{
+    <script>
+        
+        var isAuth = @User.Identity.IsAuthenticated.ToString().ToLower();
+
+        $(document).ready(function () {
+            if (!isAuth) {
+                $('[data-toggle = "tooltip"]').tooltip();
+                return;
+            } else {
+                $('[data-toggle = "tooltip"]').tooltip("destroy");
+            }
+            $.ajax({
+                url: "/api/like/" + @Model.QuestionViewModel.Id,
+                method: "Get",
+                success: function(data) {
+                    data.forEach(function(id) {
+                        document.getElementById(id).style.color = "deeppink";
+                    });
+                }
+            });
+
+        });
+
+        function onClick(answerId) {
+            if (!isAuth) {
+                return;
+            }
+            var element = document.getElementById(answerId);
+            var likeCountElement = $(element).closest("div").find("span.like");
+            var likeCount = parseInt(likeCountElement.text());
+            var animatedClasses = " animated bounceIn";
+            if (element.style.color === "deeppink") {
+
+                $.ajax({
+                    method: "delete",
+                    url: "/api/like/" + answerId
+                }).success(function() {
+                    element.style.color = "black";
+                    $(element).removeClass(animatedClasses);
+                    likeCount--;
+                    likeCountElement.text(likeCount);
+                });
+                return;
+            }
+
+            $.post("/api/like/" + answerId).success(function() {
+                $(element).addClass(animatedClasses);
+                element.style.color = "deeppink";
+                likeCount++;
+                likeCountElement.text(likeCount);
+            });
+            return;
+        }
+    </script>
+}
+

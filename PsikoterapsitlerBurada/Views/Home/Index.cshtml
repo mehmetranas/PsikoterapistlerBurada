@@ -8,32 +8,103 @@
 @foreach (var question in Model)
 {
     <div class="jumbotron">
-        <table class="table questions">
+        <table class="table-condensed questions">
             <tr>
                 <td>
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="text-center">
-                                <h4 class="">0</h4>
-                                <span class="label label-default">Cevap</span>
+                            <div class="vote">
+                                <div class="text-center">
+                                    <span class="glyphicon glyphicon-chevron-up js-vote"
+                                          data-vote-action="1"
+                                          data-toggle ="tooltip"
+                                          title="Giriş yapmalısınız"
+                                          data-questionId=@question.Id></span>
+                                </div>
+                                <div class="text-center">
+                                    <p class="vote-counter">@question.TotalVotes</p>
+                                </div>
+                                <div class="text-center">
+                                    <span class="glyphicon glyphicon-chevron-down js-vote"
+                                          data-vote-action="-1"
+                                          data-toggle ="tooltip"
+                                          title="Giriş yapmalısınız"
+                                          data-questionId=@question.Id></span>
+                                </div>
                             </div>
-                            <div class="text-center">
-                                <h4 class="">0</h4>
-                                <span class="label label-default">Puan</span>
-                            </div>
+
                         </div>
                     </div>
                 </td>
                 <td class="question-text">
-                        <div class="question-text">
-                            <p class="question-text">@question.QuestionText
-                            </p>
-                        </div>
-                        <small class="who-asked pull-right">@question.WhoAsked.UserName</small>
-                </td>
-            </tr>
-        </table>  
-    </div>
+                    <div class="question-text">
+                        <a href=@Url.Action("GetAnswers","Answers",new {id = question.Id}) class="question-text">
+                            @question.QuestionText
+                    </a>
+                </div>
+                <small class="who-asked pull-right">@question.WhoAsked.UserName</small>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="text-center">
+                    <p>@question.Answers.Count</p>
+                    <span class="label label-default">Cevap</span>
+                </div>
+            </td>
+            <td>
+                @foreach (var user in question.AskedToWhom)
+                {
+                    <span class="tag">@user.UserName</span>
+                }
+            </td>
+        </tr>
+    </table>
+</div>
 }
 
+@section scripts{
+    <script>
 
+        $(document).ready(function() {
+            var auth = @User.Identity.IsAuthenticated.ToString().ToLower();
+            if (!auth) {
+                $('[data-toggle = "tooltip"]').tooltip();
+                return;
+            } else {
+                $('[data-toggle = "tooltip"]').tooltip("destroy");
+
+                $(".js-vote").click(function (e) {
+                  
+                    var element = e.target;
+                    var voteCounter = $(element).closest(".vote").find(".vote-counter")[0];
+                    var voteDto = {
+                        voteAction: parseInt(element.getAttribute("data-vote-action")),
+                        questionId: $(element).attr("data-questionId")
+                    };
+
+                    $.post("/api/vote", voteDto)
+                        .success(function(data, status, xhr) {
+                            if (xhr.responseJSON && xhr.responseJSON.isVoteUp) {
+                                alert("Daha önce bu soru için oy hakkınızı kullandınız.");
+                                return;
+                            }
+
+                            if (xhr.responseJSON && xhr.responseJSON.isRollBack) {
+                                var elements = $(element).closest(".vote").find(".js-vote");
+                                elements[0].style.color = "black";
+                                elements[1].style.color = "black";
+                            } else {
+                                element.style.color = "goldenrod";
+                            }
+
+                            voteCounter.innerText = parseInt(voteCounter.innerText) + parseInt(voteDto.voteAction);
+                        })
+                        .fail(function(xhr, status) {
+                            console.log("Fail");
+                        });
+                });
+            }
+         });
+</script>
+}

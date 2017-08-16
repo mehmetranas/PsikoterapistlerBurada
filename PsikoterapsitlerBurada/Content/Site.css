@@ -17,60 +17,65 @@
 }
 
 /* Set width on the form input elements since they're 100% wide by default */
-input,
+/*input,
 select,
 textarea {
     max-width: 280px;
-}
+}*/
 
 /*Set home page question text*/
 
-p.question-text {
+a.question-text {
     margin: auto
 }
 
-p.question-text:hover {
+a.question-text:hover {
     cursor: pointer;
-    color:darkcyan
+    color: darkcyan;
+    text-decoration: none
 }
 
 
 .who-asked {
-    display: table-cell;
-    vertical-align: bottom;
-    color: grey;
+ color: grey;
 }
-
-
-.outer {
-    display: table;
-}
-
-.inner {
-    display: table-cell;
-    vertical-align: bottom;
-}
-
-
 
 /*Set Answers Page*/
 .vote-counter {
     margin-top:10px
 }
 
-div.vote-counter {
-    margin: auto;
-    display: block
+table.questions .glyphicon-chevron-up:hover, table.questions .glyphicon-chevron-down:hover {
+    font-size: 20px;
+    color: darkgoldenrod;
+    cursor: pointer
 }
 
-.media span:hover {
+div.rating {
+    margin-top: 15px;
+}
+
+p.rating {
+    margin-bottom: 0px;
+    font-size: 18px
+}
+
+.tag {
+    background-color: darkgray;
+    padding: 5px;
+    -ms-border-radius: 3px;
+    border-radius: 3px;
+    color: aliceblue;
+}
+
+i.like:hover {
     cursor: pointer;
-    color: #daa520
+    color:deeppink
+}
+
+div.like {
+    margin-bottom: 10px;
 }
 
 
-/*Bootstrap Overloads*/
-
-.media-heading {
-    color:brown
-}
+/*css for javascirpt display effect*/

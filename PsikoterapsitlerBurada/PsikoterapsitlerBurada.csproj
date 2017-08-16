@@ -45,6 +45,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper, Version=6.1.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.6.1.1\lib\net45\AutoMapper.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Build.Framework" />
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.3\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
@@ -196,16 +199,24 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
+    <Compile Include="App_Start\MappingProfile.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AnswersController.cs" />
+    <Compile Include="Controllers\API\AnswerController.cs" />
+    <Compile Include="Controllers\API\LikeController.cs" />
+    <Compile Include="DTOs\AnswerDto.cs" />
     <Compile Include="Controllers\API\RemoveSelectedUsersController.cs" />
     <Compile Include="Controllers\API\SelectedUsersController.cs" />
+    <Compile Include="Controllers\API\VoteController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\QuestionController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="DTOs\SelectedUserDto.cs" />
+    <Compile Include="DTOs\VoteDto.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -221,33 +232,52 @@
     <Compile Include="Migrations\201708071614248_PopulateCategoryTable.Designer.cs">
       <DependentUpon>201708071614248_PopulateCategoryTable.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201708111255289_AddedIsAskedToQuestionClass.cs" />
-    <Compile Include="Migrations\201708111255289_AddedIsAskedToQuestionClass.Designer.cs">
-      <DependentUpon>201708111255289_AddedIsAskedToQuestionClass.cs</DependentUpon>
+    <Compile Include="Migrations\201708121958543_AddedVoteClass.cs" />
+    <Compile Include="Migrations\201708121958543_AddedVoteClass.Designer.cs">
+      <DependentUpon>201708121958543_AddedVoteClass.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201708111300534_SetIsAskedPropertyBydefaultValueOfFalse.cs" />
-    <Compile Include="Migrations\201708111300534_SetIsAskedPropertyBydefaultValueOfFalse.Designer.cs">
-      <DependentUpon>201708111300534_SetIsAskedPropertyBydefaultValueOfFalse.cs</DependentUpon>
+    <Compile Include="Migrations\201708131243081_AddedVoteStatePrpertyToVoteClass.cs" />
+    <Compile Include="Migrations\201708131243081_AddedVoteStatePrpertyToVoteClass.Designer.cs">
+      <DependentUpon>201708131243081_AddedVoteStatePrpertyToVoteClass.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201708150102051_AddedAnswerClass.cs" />
+    <Compile Include="Migrations\201708150102051_AddedAnswerClass.Designer.cs">
+      <DependentUpon>201708150102051_AddedAnswerClass.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201708150234286_AddedAnswerTextToAnswerClass.cs" />
+    <Compile Include="Migrations\201708150234286_AddedAnswerTextToAnswerClass.Designer.cs">
+      <DependentUpon>201708150234286_AddedAnswerTextToAnswerClass.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201708150752446_RenameForeignKeyBetweenAnswerAndAppUser.cs" />
+    <Compile Include="Migrations\201708150752446_RenameForeignKeyBetweenAnswerAndAppUser.Designer.cs">
+      <DependentUpon>201708150752446_RenameForeignKeyBetweenAnswerAndAppUser.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\Answer.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
     <Compile Include="Models\Category.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
-    <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\ViewModels\AnswersViewModel.cs" />
+    <Compile Include="Models\ViewModels\AnswerViewModel.cs" />
+    <Compile Include="Models\ViewModels\GetAnswerViewModel.cs" />
+    <Compile Include="Models\ViewModels\ManageViewModels.cs" />
     <Compile Include="Models\Question.cs" />
-    <Compile Include="Models\QuestionViewModel.cs" />
-    <Compile Include="Models\SelectUserToAskQuestionViewModel.cs" />
+    <Compile Include="Models\ViewModels\QuestionViewModel.cs" />
+    <Compile Include="Models\ViewModels\SelectUserToAskQuestionViewModel.cs" />
+    <Compile Include="Models\Vote.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\animate.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Scripts\bootbox.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ApplicationInsights.config">
@@ -304,11 +334,15 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Question\Create.cshtml" />
     <Content Include="Views\Question\SelectUserToAskQuestion.cshtml" />
-    <Content Include="Views\Question\GetMyQuestions.cshtml" />
-    <Content Include="Views\Question\GetUnAskedQuestions.cshtml" />
+    <Content Include="Views\User\GetMyQuestions.cshtml" />
+    <Content Include="Views\User\GetUnAskedQuestions.cshtml" />
+    <Content Include="Views\User\GetQustionAskedToMe.cshtml" />
+    <Content Include="Views\Answers\GetAnswers.cshtml" />
+    <Content Include="Views\User\WriteAnswer.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Vote\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -326,11 +360,20 @@
     <EmbeddedResource Include="Migrations\201708071614248_PopulateCategoryTable.resx">
       <DependentUpon>201708071614248_PopulateCategoryTable.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201708111255289_AddedIsAskedToQuestionClass.resx">
-      <DependentUpon>201708111255289_AddedIsAskedToQuestionClass.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201708121958543_AddedVoteClass.resx">
+      <DependentUpon>201708121958543_AddedVoteClass.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201708111300534_SetIsAskedPropertyBydefaultValueOfFalse.resx">
-      <DependentUpon>201708111300534_SetIsAskedPropertyBydefaultValueOfFalse.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201708131243081_AddedVoteStatePrpertyToVoteClass.resx">
+      <DependentUpon>201708131243081_AddedVoteStatePrpertyToVoteClass.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708150102051_AddedAnswerClass.resx">
+      <DependentUpon>201708150102051_AddedAnswerClass.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708150234286_AddedAnswerTextToAnswerClass.resx">
+      <DependentUpon>201708150234286_AddedAnswerTextToAnswerClass.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708150752446_RenameForeignKeyBetweenAnswerAndAppUser.resx">
+      <DependentUpon>201708150752446_RenameForeignKeyBetweenAnswerAndAppUser.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

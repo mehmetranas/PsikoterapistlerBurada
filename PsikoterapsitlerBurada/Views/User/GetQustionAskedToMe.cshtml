@@ -1,0 +1,58 @@
+﻿
+@using Microsoft.AspNet.Identity
+@model IEnumerable<PsikoterapsitlerBurada.Models.Question>
+@{
+    ViewBag.Title = "GetQustionAskedToMe";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@foreach (var question in Model)
+{
+    <div class="jumbotron">
+        <table class="table-condensed questions">
+            <tr>
+                <td>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="vote">
+                                <div class="text-center">
+                                    <span class="glyphicon glyphicon-chevron-up"></span>
+                                </div>
+                                <div class="text-center">
+                                    <span class="vote-counter">10</span>
+                                </div>
+                                <div class="text-center">
+                                    <span class="glyphicon glyphicon-chevron-down"></span>
+                                </div>
+                            </div>
+                            <div class="text-center rating">
+                                <p class="rating">0</p>
+                                <span class="label label-default">Cevap</span>
+                            </div>
+                        </div>
+                    </div>  
+                </td>
+                <td class="question-text">
+                    <div class="question-text">
+                        @question.QuestionText
+                    </div>
+                    @if (question.WhoAsked != null)
+                    {<small class="who-asked pull-right">
+                         @question.WhoAsked.UserName
+                     </small>
+                    }
+                </td>
+            </tr>
+        </table> 
+        @if (question.Answers.Any(a => a.UserId == User.Identity.GetUserId()))
+        {
+            <span class="pull-right"><i class="glyphicon glyphicon-ok"></i> Cevaplandı</span>
+        }
+        else
+        {
+            @Html.ActionLink("Cevapla","WriteAnswer","User", new { id = question.Id}, new {@class = "btn btn-link btn-sm pull-right"})
+        }
+    </div>
+}
+
+
