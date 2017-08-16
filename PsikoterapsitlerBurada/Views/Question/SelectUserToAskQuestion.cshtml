@@ -7,46 +7,57 @@
 
 <h2>Soru</h2>
 
-<div class="row">
-    <div class="col-md-6">
-        <div class="jumbotron">
-            <h3>Soru</h3>
-            <p>@Model.Question.QuestionText</p>
+<div class="panel panel-success">
+    <div class="panel-heading">
+        <span>Bu soru kimlere sormak istersiniz? </span>
         </div>
+    <div class="panel-body">
+        @Model.Question.QuestionText
     </div>
-    <div class="col-md-6">
-        <table class="table js-users">
+</div>
+
+
+<table cellspacing="0" class="table table-striped" id="js-users" width="100%">
+    <thead>
+        <tr>
+            <th>İsim</th>
+            <th>Kategori</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model.Users)
+        {
             <tr>
-                <th>Kullanıcı İsmi</th>
-                <th>Kategorisi</th>
-                <th>Rating</th>
-                <th></th>
+                <td>@user.UserName</td>
+                <td>Kategori</td>
+                <td>
+                    <button class="btn btn-link js-username" id="@user.Id" data-username="@user.UserName">Seç</button>
+                </td>
             </tr>
-            @foreach (var user in Model.Users)
-            {
-                <tr>
-                    <td>@user.UserName</td>
-                    <td></td>
-                    <td></td>
-                    <td>
-                        <button class="btn btn-link js-username" id="@user.Id" data-username="@user.UserName">Seç</button>
-                    </td>
-                </tr>
-            }
-        </table>
-    </div>
-    
-        <table class="table-bordered" id="table-selected-users">
-            <tr>
-                <th>Seçilenler</th>
-            </tr>
-        </table>
-    </div>
+        }
+    </tbody>
+</table>
+
+<hr />
+
+<table class="table table-striped" id="js-selected" width="100%">
+    <tr>
+        <th>Seçilenler</th>
+        <th></th>
+    </tr>
+</table>
+
 
 @section scripts
 {
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
+            //Datatable
+            $(document).ready(function() {
+                $("#js-users").DataTable();
+            });
+
             var questionId = @Model.Question.Id;
 
             $(".js-username").click(function(select) {
@@ -59,12 +70,11 @@
                     })
                     .fail(function () { console.log("Failed") });
 
-
                 function userAdded() {
                     selectButton.innerText = "Eklendi";
                     selectButton.disabled = true;
                     var username = $(select.target).attr("data-username");
-                    var table = document.getElementById("table-selected-users");
+                    var table = document.getElementById("js-selected");
                     var row = table.insertRow(table.rows.length);
                     var userCell = row.insertCell(0);
                     var actionCell = row.insertCell(1);
@@ -74,6 +84,7 @@
                     removeUser.className = "btn btn-link js-remove-user";
                     userCell.innerHTML = username;
                     actionCell.appendChild(removeUser);
+                    $(row).addClass("animated pulse");
 
                     $(".js-remove-user").click(function (remove) {
 
@@ -88,9 +99,15 @@
                             .fail(function () { console.log("Failed") });
 
                         function userRemove() {
+                            var row = removeButton.closest("tr");
                             userButton.innerText = "Seç";
                             userButton.disabled = false;
-                            removeButton.closest("tr").remove();
+                            $(row).addClass("animated fadeOut")
+                                .one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend',
+                                    function() {
+                                        $(this).remove();
+                                    });
+                            //$('#yourElement').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', removeButton.closest("tr").remove());
                         }
                     });
                 }
