@@ -2,7 +2,7 @@
 
 namespace PsikoterapsitlerBurada.Models.ViewModels
 {
-    public class AnswersViewModel
+    public class AnswersViewModelWillDelete
     {
         public Question Question { get; set; }
         public ICollection<AnswerViewModel> Answers { get; set; }

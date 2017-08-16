@@ -4,6 +4,7 @@ using PsikoterapsitlerBurada.Models.ViewModels;
 using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
+using AutoMapper;
 
 namespace PsikoterapsitlerBurada.Controllers
 {
@@ -20,14 +21,19 @@ namespace PsikoterapsitlerBurada.Controllers
         public ActionResult GetMyQuestions()
         {
             var userId = User.Identity.GetUserId();
-            var myQuestions = _context.Questions.Where(q => q.WhoAsked.Id == userId).Include("WhoAsked").Include("AskedToWhom").ToList();
+            var myQuestions = _context.Questions.Where(q => q.WhoAsked.Id == userId).Include("WhoAsked")
+                .Include("AskedToWhom").Select(Mapper.Map<QuestionViewModel>);
+
             return View(myQuestions);
         }
 
         public ActionResult GetUnAskedQuestions()
         {
             var userId = User.Identity.GetUserId();
-            var questions = _context.Questions.Where(q => q.WhoAsked.Id == userId && q.AskedToWhom.Count == 0);
+            var questions = _context.Questions
+                .Where(q => q.WhoAsked.Id == userId && q.AskedToWhom.Count == 0)
+                .Select(Mapper.Map<QuestionViewModel>);
+
             return View(questions);
         }
 

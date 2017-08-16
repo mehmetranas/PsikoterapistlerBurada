@@ -1,33 +1,24 @@
-﻿@model IEnumerable<PsikoterapsitlerBurada.Models.Question>
+﻿@model IEnumerable<PsikoterapsitlerBurada.Models.ViewModels.QuestionViewModel>
 @{
     ViewBag.Title = "GetMyQuestions";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h2>Sorulan Sorular</h2>
-
-<div class="container">
-    <div class="row">
-        <table class="table-bordered">
-            <tr>
-                <th>Soru</th>
-                <th>Kimlere Sordun</th>
-            </tr>
-            @foreach (var question in Model)
+@foreach (var question in Model)
+{
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            <span>Bu soru şunlara soruldu: </span>
+            @foreach (var user in question.AskedToWhom)
             {
-                <tr>
-                    <td>
-                        @question.QuestionText
-                    </td> 
-                    <td>
-                        @foreach (var user in question.AskedToWhom)
-                        {
-                            <span>@user.UserName</span>
-                        }
-                    </td>
-                </tr>
+                <span class="tag">@user.UserName</span>
             }
-        </table>
-       </div>
-</div>
+        </div>
+        <div class="panel-body">
+            @question.QuestionText
+        </div>
+    </div>
+}
+
 

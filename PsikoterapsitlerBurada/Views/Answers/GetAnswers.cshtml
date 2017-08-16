@@ -8,6 +8,7 @@
 
 <div class="panel panel-success">
     <div class="panel-heading">
+        <span>Bu soru şunlara soruldu: </span>
         @foreach (var user in Model.QuestionViewModel.AskedToWhom)
         {
             <span class="tag">@user.UserName</span>
