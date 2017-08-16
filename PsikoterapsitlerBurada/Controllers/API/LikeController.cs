@@ -6,6 +6,7 @@ using System.Web.Http;
 
 namespace PsikoterapsitlerBurada.Controllers.API
 {
+    [Authorize]
     public class LikeController : ApiController
     {
         private ApplicationDbContext _contex;
@@ -49,11 +50,11 @@ namespace PsikoterapsitlerBurada.Controllers.API
         }
 
         [HttpGet]
-        public IEnumerable<int> GetUserLikesAnswersId()
+        public IEnumerable<int> GetUserLikesAnswersId(int id)
         {
             var userId = User.Identity.GetUserId();
             var user = _contex.Users.SingleOrDefault(u => u.Id == userId);
-            var likesAnswersId = user?.LikesAnswers.Select(a => a.Id);
+            var likesAnswersId = user?.LikesAnswers.Where(a => a.QuestionId == id).Select(a => a.Id);
 
             return likesAnswersId;
         }

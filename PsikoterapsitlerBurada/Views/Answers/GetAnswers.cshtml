@@ -1,4 +1,4 @@
-﻿@model ICollection<PsikoterapsitlerBurada.Models.ViewModels.AnswerViewModel>
+﻿@model PsikoterapsitlerBurada.Models.ViewModels.GetAnswerViewModel
 @{
     ViewBag.Title = "GetAnswers";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -8,22 +8,22 @@
 
 <div class="panel panel-success">
     <div class="panel-heading">
-        @foreach (var answers in Model.First().Question.AskedToWhom)
+        @foreach (var user in Model.QuestionViewModel.AskedToWhom)
         {
-            <span class="tag">@answers.UserName</span>
+            <span class="tag">@user.UserName</span>
         }
     </div>
     <div class="panel-body">
-        @Model.First().Question.QuestionText
+        @Model.QuestionViewModel.QuestionText
     </div>
 </div>
 
 <br />
 
-@foreach (var answer in Model)
+@foreach (var answer in Model.AnswerViewModels)
 {
 
-    <div class="well">
+    <div class="well js-answer">
         <div class="media">
             <div class="media-left media-middle">
                 <a href="#">
@@ -47,6 +47,8 @@
     <script>
         function onClick(answerId) {
             var element = document.getElementById(answerId);
+            var likeCountElement = $(element).closest("div").find("span.like");
+            var likeCount = parseInt(likeCountElement.text());
             var animatedClasses = " animated bounceIn";
             if (element.style.color === "deeppink") {
 
@@ -56,6 +58,8 @@
                 }).success(function() {
                     element.style.color = "black";
                     $(element).removeClass(animatedClasses);
+                    likeCount--;
+                    likeCountElement.text(likeCount);
                 });
                 return;
             }
@@ -63,22 +67,23 @@
             $.post("/api/like/" + answerId).success(function() {
                 $(element).addClass(animatedClasses);
                 element.style.color = "deeppink";
+                likeCount++;
+                likeCountElement.text(likeCount);
             });
             return;
         }
 
         $(document).ready(function() {
             $.ajax({
-                url: "/api/like",
+                url: "/api/like/" + @Model.QuestionViewModel.Id,
                 method: "Get",
-                success: function (data) {
-                    console.log(data);
+                success: function(data) {
                     data.forEach(function(id) {
                         document.getElementById(id).style.color = "deeppink";
                     });
                 }
             });
-        })
+        });
     </script>
 }
 

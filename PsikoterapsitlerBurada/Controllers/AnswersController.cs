@@ -1,4 +1,5 @@
-﻿using PsikoterapsitlerBurada.Models;
+﻿using AutoMapper;
+using PsikoterapsitlerBurada.Models;
 using PsikoterapsitlerBurada.Models.ViewModels;
 using System.Data.Entity;
 using System.Linq;
@@ -19,25 +20,26 @@ namespace PsikoterapsitlerBurada.Controllers
         public ActionResult GetAnswers(int id)
         {
             var answers = _context.Answers.Where(a => a.Question.Id == id)
-                .Select(a => new AnswerViewModel()
-                {
-                    Question = a.Question,
-                    AnswerText = a.AnswerText,
-                    User = a.User,
-                    Likes = a.Likes,
-                    DateTime = a.DateTime,
-                    QuestionId = a.QuestionId,
-                    Id = a.Id,
-                    UserId = a.UserId
-                })
+                .Include(a => a.Question)
+                .Include(a => a.User)
+                .Select(Mapper.Map<AnswerViewModel>)
                 .ToList();
-
+           
             var question = _context.Questions
                 .Include(q => q.AskedToWhom)
                 .Include(q => q.WhoAsked)
+                .Select(Mapper.Map<QuestionViewModel>)
                 .SingleOrDefault(q => q.Id == id);
 
-          return View(answers);
+            
+
+            var viewModel = new GetAnswerViewModel()
+            {
+                QuestionViewModel = question,
+                AnswerViewModels = answers
+            };
+
+            return View(viewModel);
         }
     }
 }

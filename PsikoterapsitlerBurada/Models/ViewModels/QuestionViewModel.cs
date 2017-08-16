@@ -22,5 +22,7 @@ namespace PsikoterapsitlerBurada.Models.ViewModels
         {
             get { return Votes.Sum(v => v.VoteState); }
         }
+
+        public int Id { get; set; }
     }
 }
