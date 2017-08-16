@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNet.Identity;
 using PsikoterapsitlerBurada.Models;
 using System;
-using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
+using AutoMapper;
+using PsikoterapsitlerBurada.Models.ViewModels;
 
 namespace PsikoterapsitlerBurada.Controllers
 {
@@ -17,10 +18,10 @@ namespace PsikoterapsitlerBurada.Controllers
         }
 
         // GET: Question
-        [System.Web.Mvc.Authorize]
+        [Authorize]
         public ActionResult Create()
         {
-            QuestionViewModel viewModel = new QuestionViewModel()
+            var viewModel = new QuestionViewModel()
             {
                 Categories = _context.Categories.ToList(),
                 AskedToWhom = _context.Users.ToList() //There is a problem that get all users properties, only get username and Id
@@ -61,29 +62,17 @@ namespace PsikoterapsitlerBurada.Controllers
             }
 
             var question = _context.Questions.SingleOrDefault(q => q.Id == id);
+            var questionViewModel = Mapper.Map<QuestionViewModel>(question);
             var userId = User.Identity.GetUserId();
             var users = _context.Users.Where(u => u.Id != userId).ToList(); //There is a problem that get all users properties, only get username, ctg. and rating
             var viewModel = new SelectUserToAskQuestionViewModel()
             {
                 Users = users,
-                Question = question
+                Question = questionViewModel
             };
             return View(viewModel);
         }
 
-        [Authorize]
-        public ActionResult GetMyQuestions()
-        {
-            var userId = User.Identity.GetUserId();
-            var myQuestions = _context.Questions.Where(q => q.WhoAsked.Id == userId).Include("WhoAsked").Include("AskedToWhom").ToList();
-            return View(myQuestions);
-        }
-
-        public ActionResult GetUnAskedQuestions()
-        {
-            var userId = User.Identity.GetUserId();
-            var questions = _context.Questions.Where(q => q.WhoAsked.Id == userId && q.AskedToWhom.Count == 0);
-            return View(questions);
-        }
+        
     }
 }

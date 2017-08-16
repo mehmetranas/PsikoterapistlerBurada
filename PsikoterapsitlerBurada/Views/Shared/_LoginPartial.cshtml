@@ -18,10 +18,13 @@
                 </a>
                 <ul class="dropdown-menu">
                     <li>
-                        @Html.ActionLink("Sorulan Sorular", "GetMyQuestions", "Question")
+                        @Html.ActionLink("Sorulan Sorular", "GetMyQuestions", "User")
                     </li>
                     <li>
-                        @Html.ActionLink("Sorulmayan Sorular", "GetUnAskedQuestions", "Question")
+                        @Html.ActionLink("Sorulmayan Sorular", "GetUnAskedQuestions", "User")
+                    </li> 
+                    <li>
+                        @Html.ActionLink("Bana Sorulanlar", "GetQustionAskedToMe", "User")
                     </li>
                     <li>
                         @Html.ActionLink("Hesabım", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
