@@ -3,6 +3,7 @@ using PsikoterapsitlerBurada.Models;
 using System;
 using System.Linq;
 using System.Web.Mvc;
+using AutoMapper;
 using PsikoterapsitlerBurada.Models.ViewModels;
 
 namespace PsikoterapsitlerBurada.Controllers
@@ -61,12 +62,13 @@ namespace PsikoterapsitlerBurada.Controllers
             }
 
             var question = _context.Questions.SingleOrDefault(q => q.Id == id);
+            var questionViewModel = Mapper.Map<QuestionViewModel>(question);
             var userId = User.Identity.GetUserId();
             var users = _context.Users.Where(u => u.Id != userId).ToList(); //There is a problem that get all users properties, only get username, ctg. and rating
             var viewModel = new SelectUserToAskQuestionViewModel()
             {
                 Users = users,
-                Question = question
+                Question = questionViewModel
             };
             return View(viewModel);
         }

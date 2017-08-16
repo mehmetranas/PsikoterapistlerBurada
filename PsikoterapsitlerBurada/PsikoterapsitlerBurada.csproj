@@ -258,7 +258,7 @@
     <Compile Include="Models\ApplicationDbContext.cs" />
     <Compile Include="Models\Category.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
-    <Compile Include="Models\ViewModels\AnswersViewModel.cs" />
+    <Compile Include="Models\ViewModels\AnswersViewModelWillDelete.cs" />
     <Compile Include="Models\ViewModels\AnswerViewModel.cs" />
     <Compile Include="Models\ViewModels\GetAnswerViewModel.cs" />
     <Compile Include="Models\ViewModels\ManageViewModels.cs" />
@@ -271,13 +271,32 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\animate.css" />
+    <Content Include="Content\bootstrap-tagsinput.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\datatables\dataTables.bootstrap.css" />
+    <Content Include="Content\datatables\dataTables.bootstrap.min.css" />
+    <Content Include="Content\datatables\dataTables.bootstrap4.css" />
+    <Content Include="Content\datatables\dataTables.bootstrap4.min.css" />
+    <Content Include="Content\datatables\dataTables.foundation.css" />
+    <Content Include="Content\datatables\dataTables.foundation.min.css" />
+    <Content Include="Content\datatables\dataTables.jqueryui.css" />
+    <Content Include="Content\datatables\dataTables.jqueryui.min.css" />
+    <Content Include="Content\datatables\dataTables.material.css" />
+    <Content Include="Content\datatables\dataTables.material.min.css" />
+    <Content Include="Content\datatables\dataTables.semanticui.css" />
+    <Content Include="Content\datatables\dataTables.semanticui.min.css" />
+    <Content Include="Content\datatables\dataTables.uikit.css" />
+    <Content Include="Content\datatables\dataTables.uikit.min.css" />
+    <Content Include="Content\datatables\jquery.dataTables.css" />
+    <Content Include="Content\datatables\jquery.dataTables.min.css" />
+    <Content Include="Content\datatables\jquery.dataTables_themeroller.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\bootbox.min.js" />
+    <Content Include="Scripts\bootstrap-tagsinput.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ApplicationInsights.config">
@@ -288,6 +307,23 @@
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\datatables\dataTables.bootstrap.js" />
+    <Content Include="Scripts\datatables\dataTables.bootstrap.min.js" />
+    <Content Include="Scripts\datatables\dataTables.bootstrap4.js" />
+    <Content Include="Scripts\datatables\dataTables.bootstrap4.min.js" />
+    <Content Include="Scripts\datatables\dataTables.foundation.js" />
+    <Content Include="Scripts\datatables\dataTables.foundation.min.js" />
+    <Content Include="Scripts\datatables\dataTables.jqueryui.js" />
+    <Content Include="Scripts\datatables\dataTables.jqueryui.min.js" />
+    <Content Include="Scripts\datatables\dataTables.material.js" />
+    <Content Include="Scripts\datatables\dataTables.material.min.js" />
+    <Content Include="Scripts\datatables\dataTables.semanticui.js" />
+    <Content Include="Scripts\datatables\dataTables.semanticui.min.js" />
+    <Content Include="Scripts\datatables\dataTables.uikit.js" />
+    <Content Include="Scripts\datatables\dataTables.uikit.min.js" />
+    <Content Include="Scripts\datatables\jquery.dataTables.js" />
+    <Content Include="Scripts\datatables\jquery.dataTables.min.js" />
+    <Content Include="Scripts\datatables\jquery.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -298,6 +334,7 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\typeahead.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

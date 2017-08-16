@@ -1,4 +1,4 @@
-﻿@model IEnumerable<PsikoterapsitlerBurada.Models.Question>
+﻿@model IEnumerable<PsikoterapsitlerBurada.Models.ViewModels.QuestionViewModel>
 @{
     ViewBag.Title = "GetUnAskedQuestions";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -6,26 +6,17 @@
 
 <h2>Sorulmayan Sorular</h2>
 
-<div class="container">
-    <div class="row">
-        <table class="table table-bordered">
-            <tr>
-                <th colspan="2">
-                    Soru
-                </th>
-            </tr>
-    
-            @foreach (var question in Model)
-            {
-                <tr>
-                    <td>
-                        @question.QuestionText
-                    </td>
-                    <td>
-                        @Html.ActionLink("Sor","SelectUserToAskQuestion","Question",new {id = question.Id},null)
-                    </td>
-                </tr>
-            }
-        </table>
+@foreach (var question in Model)
+{
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            <span>Bu soru kimlere sormak istersiniz? </span>
+            <span>
+                @Html.ActionLink("Seç", "SelectUserToAskQuestion", "Question", new {id = question.Id}, null)
+            </span>
+        </div>
+        <div class="panel-body">
+            @question.QuestionText
+        </div>
     </div>
-</div>
+}

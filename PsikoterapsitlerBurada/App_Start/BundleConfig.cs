@@ -19,14 +19,19 @@ namespace PsikoterapsitlerBurada
                         "~/Scripts/modernizr-*"));
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
-                      "~/Scripts/bootstrap.js",
-                      "~/Scripts/respond.js",
-                      "~/Scripts/bootbox.min.js"));
+                        "~/Scripts/datatables/jquery.dataTables.js",
+                        "~/Scripts/datatables/dataTables.bootstrap.js",
+                        "~/Scripts/bootstrap.js",
+                        "~/Scripts/respond.js",
+                        "~/Scripts/bootbox.min.js"
+                    ));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap.css",
-                      "~/Content/site.css",
-                      "~/Content/animate.css"));
+                        "~/Content/jquery.dataTables.css",
+                        "~/Content/bootstrap.css",
+                        "~/Content/site.css",
+                        "~/Content/animate.css"
+                      ));
         }
     }
 }
