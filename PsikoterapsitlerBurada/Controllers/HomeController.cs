@@ -1,5 +1,5 @@
-﻿using System.Data.Entity;
-using PsikoterapsitlerBurada.Models;
+﻿using PsikoterapsitlerBurada.Models;
+using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -23,7 +23,7 @@ namespace PsikoterapsitlerBurada.Controllers
                 .Include(q => q.Votes)
                 .Include(q => q.Answers)
                 .Include(q => q.AskedToWhom)
-                .ToList(); 
+                .ToList().OrderByDescending(q => q.DateTime); 
 
             return View(questions);
         }

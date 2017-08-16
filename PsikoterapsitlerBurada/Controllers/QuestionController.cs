@@ -17,10 +17,10 @@ namespace PsikoterapsitlerBurada.Controllers
         }
 
         // GET: Question
-        [System.Web.Mvc.Authorize]
+        [Authorize]
         public ActionResult Create()
         {
-            QuestionViewModel viewModel = new QuestionViewModel()
+            var viewModel = new QuestionViewModel()
             {
                 Categories = _context.Categories.ToList(),
                 AskedToWhom = _context.Users.ToList() //There is a problem that get all users properties, only get username and Id

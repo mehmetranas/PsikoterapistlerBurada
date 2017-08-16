@@ -22,6 +22,7 @@ namespace PsikoterapsitlerBurada.Controllers
             var answers = _context.Answers.Where(a => a.Question.Id == id)
                 .Include(a => a.Question)
                 .Include(a => a.User)
+                .Include(a => a.Likes)
                 .Select(Mapper.Map<AnswerViewModel>)
                 .ToList();
            
