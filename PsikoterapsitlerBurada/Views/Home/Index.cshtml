@@ -17,6 +17,8 @@
                                 <div class="text-center">
                                     <span class="glyphicon glyphicon-chevron-up js-vote"
                                           data-vote-action="1"
+                                          data-toggle ="tooltip"
+                                          title="Giriş yapmalısınız"
                                           data-questionId=@question.Id></span>
                                 </div>
                                 <div class="text-center">
@@ -25,6 +27,8 @@
                                 <div class="text-center">
                                     <span class="glyphicon glyphicon-chevron-down js-vote"
                                           data-vote-action="-1"
+                                          data-toggle ="tooltip"
+                                          title="Giriş yapmalısınız"
                                           data-questionId=@question.Id></span>
                                 </div>
                             </div>
@@ -63,42 +67,44 @@
     <script>
 
         $(document).ready(function() {
+            var auth = @User.Identity.IsAuthenticated.ToString().ToLower();
+            if (!auth) {
+                $('[data-toggle = "tooltip"]').tooltip();
+                return;
+            } else {
+                $('[data-toggle = "tooltip"]').tooltip("destroy");
 
-            $(".js-vote").click(function (e) {
-                var auth = @User.Identity.IsAuthenticated.ToString().ToLower();
-                if (!auth) {
-                    console.log("Oy kullanmak için giriş yapmalısın.");
-                    return;
-                }
+                $(".js-vote").click(function (e) {
+                  
+                    var element = e.target;
+                    var voteCounter = $(element).closest(".vote").find(".vote-counter")[0];
+                    var voteDto = {
+                        voteAction: parseInt(element.getAttribute("data-vote-action")),
+                        questionId: $(element).attr("data-questionId")
+                    };
 
-                var element = e.target;
-                var voteCounter = $(element).closest(".vote").find(".vote-counter")[0];
-                var voteDto = {
-                    voteAction: parseInt(element.getAttribute("data-vote-action")),
-                    questionId: $(element).attr("data-questionId")
-            };
+                    $.post("/api/vote", voteDto)
+                        .success(function(data, status, xhr) {
+                            if (xhr.responseJSON && xhr.responseJSON.isVoteUp) {
+                                alert("Daha önce bu soru için oy hakkınızı kullandınız.");
+                                return;
+                            }
 
-                $.post("/api/vote", voteDto)
-                    .success(function(data, status, xhr) {
-                        if (xhr.responseJSON && xhr.responseJSON.isVoteUp) {
-                            alert("Daha önce bu soru için oy hakkınızı kullandınız.");
-                            return;
-                        }
+                            if (xhr.responseJSON && xhr.responseJSON.isRollBack) {
+                                var elements = $(element).closest(".vote").find(".js-vote");
+                                elements[0].style.color = "black";
+                                elements[1].style.color = "black";
+                            } else {
+                                element.style.color = "goldenrod";
+                            }
 
-                        if (xhr.responseJSON && xhr.responseJSON.isRollBack) {
-                            var elements = $(element).closest(".vote").find(".js-vote");
-                            elements[0].style.color = "black";
-                            elements[1].style.color = "black";
-                        } else {
-                            element.style.color = "goldenrod";
-                        }
-
-                        voteCounter.innerText = parseInt(voteCounter.innerText) + parseInt(voteDto.voteAction);
-                    })
-                    .fail(function(xhr, status) {
-                        console.log("Fail");
-                    });
-            });
-            });
-    </script>
+                            voteCounter.innerText = parseInt(voteCounter.innerText) + parseInt(voteDto.voteAction);
+                        })
+                        .fail(function(xhr, status) {
+                            console.log("Fail");
+                        });
+                });
+            }
+         });
+</script>
 }

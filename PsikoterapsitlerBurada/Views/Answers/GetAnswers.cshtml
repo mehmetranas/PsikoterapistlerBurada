@@ -55,6 +55,8 @@
             if (!isAuth) {
                 $('[data-toggle = "tooltip"]').tooltip();
                 return;
+            } else {
+                $('[data-toggle = "tooltip"]').tooltip("destroy");
             }
             $.ajax({
                 url: "/api/like/" + @Model.QuestionViewModel.Id,
