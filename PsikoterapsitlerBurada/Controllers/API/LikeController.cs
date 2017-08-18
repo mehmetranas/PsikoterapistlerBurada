@@ -36,12 +36,8 @@ namespace PsikoterapsitlerBurada.Controllers.API
             var userId = User.Identity.GetUserId();
             var user = _contex.Users.SingleOrDefault(u => u.Id == userId);
             var answer = _contex.Answers.SingleOrDefault(a => a.Id == id);
-            if (answer == null || user == null || !(user.LikesAnswers.Any(a => a.Id == answer.Id))) return Json(new
-            {
-                user = user,
-                answer = answer
-                
-            });
+            if (answer == null || user == null || !(user.LikesAnswers.Any(a => a.Id == answer.Id)))
+                return BadRequest("Zaten like");
 
             user.LikesAnswers.Remove(answer);
             _contex.SaveChanges();

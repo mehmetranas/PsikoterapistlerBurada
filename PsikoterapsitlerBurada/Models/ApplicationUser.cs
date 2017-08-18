@@ -23,8 +23,7 @@ namespace PsikoterapsitlerBurada.Models
         public virtual ICollection<Question> QuestionsAsked { get; set; }
         public virtual ICollection<Answer> LikesAnswers { get; set; }
         public virtual ICollection<Answer> Answers { get; set; }
-
-
+        public virtual ICollection<Question> FavoriteQuestions { get; set; }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {
