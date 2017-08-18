@@ -15,10 +15,7 @@ namespace PsikoterapsitlerBurada.Models
         {
         }
 
-        public static ApplicationDbContext Create()
-        {
-            return new ApplicationDbContext();
-        }
+        public static ApplicationDbContext Create() => new ApplicationDbContext();
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -26,6 +23,11 @@ namespace PsikoterapsitlerBurada.Models
                 .HasRequired(u => u.WhoAsked)
                 .WithMany(q => q.AskedQuestions)
                 .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Question>()
+                .HasMany(q => q.UsersTrack)
+                .WithMany(u => u.FavoriteQuestions)
+                .Map(m => m.ToTable("FavoriteQuestions"));
 
             modelBuilder.Entity<Question>()
                 .HasMany(u => u.AskedToWhom)

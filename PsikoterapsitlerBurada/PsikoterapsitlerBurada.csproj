@@ -206,6 +206,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AnswersController.cs" />
     <Compile Include="Controllers\API\AnswerController.cs" />
+    <Compile Include="Controllers\API\FavoriteController.cs" />
     <Compile Include="Controllers\API\LikeController.cs" />
     <Compile Include="DTOs\AnswerDto.cs" />
     <Compile Include="Controllers\API\RemoveSelectedUsersController.cs" />
@@ -251,6 +252,10 @@
     <Compile Include="Migrations\201708150752446_RenameForeignKeyBetweenAnswerAndAppUser.cs" />
     <Compile Include="Migrations\201708150752446_RenameForeignKeyBetweenAnswerAndAppUser.Designer.cs">
       <DependentUpon>201708150752446_RenameForeignKeyBetweenAnswerAndAppUser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201708181140151_AddedFavoriteQuestionToQuestionClass.cs" />
+    <Compile Include="Migrations\201708181140151_AddedFavoriteQuestionToQuestionClass.Designer.cs">
+      <DependentUpon>201708181140151_AddedFavoriteQuestionToQuestionClass.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -411,6 +416,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201708150752446_RenameForeignKeyBetweenAnswerAndAppUser.resx">
       <DependentUpon>201708150752446_RenameForeignKeyBetweenAnswerAndAppUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708181140151_AddedFavoriteQuestionToQuestionClass.resx">
+      <DependentUpon>201708181140151_AddedFavoriteQuestionToQuestionClass.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
