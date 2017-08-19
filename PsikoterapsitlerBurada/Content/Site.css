@@ -52,7 +52,8 @@ textarea {
 }
 
 a {
-    color: #A48E05
+    color: #A48E05;
+    cursor: pointer;
 }
 
     /*Set home page question text*/

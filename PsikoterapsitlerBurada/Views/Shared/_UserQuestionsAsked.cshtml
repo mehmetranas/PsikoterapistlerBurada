@@ -1,0 +1,16 @@
+﻿@model IEnumerable<PsikoterapsitlerBurada.Models.ViewModels.QuestionViewModel>
+
+
+@foreach (var question in Model)
+{
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            <p>Bu soruyu soran: <span class="tag">@question.WhoAsked.UserName</span> </p>
+                
+        </div>
+        <div class="panel-body">
+            @question.QuestionText
+        </div>
+    </div>
+}
+

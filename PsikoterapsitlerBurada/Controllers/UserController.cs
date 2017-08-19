@@ -1,14 +1,14 @@
-﻿using Microsoft.AspNet.Identity;
+﻿using AutoMapper;
+using Microsoft.AspNet.Identity;
 using PsikoterapsitlerBurada.Models;
 using PsikoterapsitlerBurada.Models.ViewModels;
 using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
-using AutoMapper;
 
 namespace PsikoterapsitlerBurada.Controllers
 {
-    [Authorize]
+    [System.Web.Mvc.Authorize]
     public class UserController : Controller
     {
         private ApplicationDbContext _context;
@@ -60,6 +60,29 @@ namespace PsikoterapsitlerBurada.Controllers
             };
 
             return View(viewModel);
+        }
+
+        public ActionResult Profile(string id)
+        {
+            var user = _context.Users.Find(id);
+
+            return View(user);
+        }
+
+        public ActionResult GetUserQuestions(string id)
+        {
+            var userQuestions = _context.Questions.Where(q => q.WhoAsked.Id == id).Include("WhoAsked")
+                .Include("AskedToWhom").Select(Mapper.Map<QuestionViewModel>);
+
+            return PartialView("_UserAskedQuestions", userQuestions);
+        }
+
+        public ActionResult GetUserAnswers(string id)
+        {
+            var userQuestions = _context.Questions.Include(q => q.WhoAsked).Where(q => q.AskedToWhom.Any(u => u.Id == id))
+                .Select(Mapper.Map<QuestionViewModel>);
+
+            return PartialView("_UserQuestionsAsked", userQuestions);
         }
     }
 }
