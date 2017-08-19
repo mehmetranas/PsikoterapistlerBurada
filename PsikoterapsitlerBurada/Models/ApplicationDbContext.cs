@@ -9,6 +9,7 @@ namespace PsikoterapsitlerBurada.Models
         public DbSet<Category> Categories { get; set; }
         public DbSet<Vote> Votes { get; set; }
         public DbSet<Answer> Answers { get; set; }
+        public DbSet<Following> Followings { get; set; }
 
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
@@ -38,6 +39,16 @@ namespace PsikoterapsitlerBurada.Models
                 .HasMany(a => a.Likes)
                 .WithMany(u => u.LikesAnswers)
                 .Map(m => m.ToTable("Likes"));
+
+            modelBuilder.Entity<ApplicationUser>()
+                .HasMany(u => u.Followees)
+                .WithRequired(f => f.Follower)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<ApplicationUser>()
+                .HasMany(u => u.Followers)
+                .WithRequired(u => u.Followee)
+                .WillCascadeOnDelete(false);
 
             base.OnModelCreating(modelBuilder);
         }
