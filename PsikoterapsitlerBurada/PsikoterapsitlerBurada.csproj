@@ -207,6 +207,7 @@
     <Compile Include="Controllers\AnswersController.cs" />
     <Compile Include="Controllers\API\AnswerController.cs" />
     <Compile Include="Controllers\API\FavoriteController.cs" />
+    <Compile Include="Controllers\API\FollwingController.cs" />
     <Compile Include="Controllers\API\LikeController.cs" />
     <Compile Include="DTOs\AnswerDto.cs" />
     <Compile Include="Controllers\API\RemoveSelectedUsersController.cs" />

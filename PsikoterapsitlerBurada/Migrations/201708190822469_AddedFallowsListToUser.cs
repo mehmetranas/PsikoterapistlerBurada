@@ -1,8 +1,7 @@
 namespace PsikoterapsitlerBurada.Migrations
 {
-    using System;
     using System.Data.Entity.Migrations;
-    
+
     public partial class AddedFallowsListToUser : DbMigration
     {
         public override void Up()
@@ -19,7 +18,6 @@ namespace PsikoterapsitlerBurada.Migrations
                 .ForeignKey("dbo.AspNetUsers", t => t.FolloweeId)
                 .Index(t => t.FollowerId)
                 .Index(t => t.FolloweeId);
-            
         }
         
         public override void Down()
