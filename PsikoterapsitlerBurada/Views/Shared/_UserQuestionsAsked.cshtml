@@ -1,12 +1,27 @@
-﻿@model IEnumerable<PsikoterapsitlerBurada.Models.ViewModels.QuestionViewModel>
+﻿@using System.Web.UI.WebControls
+@model IEnumerable<PsikoterapsitlerBurada.Models.ViewModels.QuestionViewModel>
 
 
 @foreach (var question in Model)
 {
     <div class="panel panel-success">
         <div class="panel-heading">
-            <p>Bu soruyu soran: <span class="tag">@question.WhoAsked.UserName</span> </p>
-                
+            <div class="row">
+                <div class="col-md-8">
+                    <p>Bu soruyu soran: <span class="tag">@question.WhoAsked.UserName</span>
+                    </p> 
+                </div>
+                <div class="col-md-4">
+                    @if (question.Answers.Count > 0)
+                    {
+                        @Html.ActionLink("Cevabı Gör", "GetAnswers", "Answers", new {id = question.Id}, new {@class = "btn btn-link btn-sm"})
+                    }
+                    else
+                    {
+                        <span>Henüz Cevaplanmadı</span>
+                    }
+                </div>
+            </div>
         </div>
         <div class="panel-body">
             @question.QuestionText

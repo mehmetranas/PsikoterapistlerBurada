@@ -1,0 +1,80 @@
+﻿ @using Microsoft.AspNet.Identity 
+@model PsikoterapsitlerBurada.Models.ViewModels.ProfileViewModel
+
+@{
+    ViewBag.Title = "Profile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Profile</h2>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4 profile">
+            <div class="thumbnail">
+                <img src="http://lorempixel.com/242/200/people" alt="...">
+                <div class="caption js-follow-action">
+                    <h4>@Model.User.UserName</h4>
+                    <p>
+                        <input 
+                            type="button"
+                            class="btn btn-primary btn-sm"
+                            value ="@Model.FollowState">
+                    </p>
+                </div>
+                <hr />
+                <div class="info form-group">
+                    <a class ="js-user-questions">
+                        Sorduğu sorular - (@Model.User.AskedQuestions.Count)
+                    </a>
+                    <br />
+                    <a class="js-user-questions-asked">
+                        Cevaplar - (@Model.User.Answers.Count)
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8 action">
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $(document).ready(function() {
+
+            $(".js-user-questions").click(function() {
+                var url = '@Url.Action("GetUserQuestions","User", 
+                          new {id = Model.User.Id})';
+                $("div.action").load(url);
+            });
+            $(".js-user-questions-asked").click(function() {
+                var url = '@Url.Action("GetUserQuestionsAsked","User", 
+                          new { id = Model.User.Id })';
+                $("div.action").load(url);
+            });
+            $(".js-follow-action input").click(function(e) {
+                var userId = "@Model.User.Id";
+                var input = $(e.target);
+                var followText = input.val();
+                if (followText === "@Model.Follow") {
+                    $.ajax({
+                        url: "/api/following/" + userId,
+                        method: "DELETE",
+                        success: function() {
+                            input.val("@Model.UnFollow");
+                        }
+                    });
+                } else {
+                    $.ajax({
+                        url: "/api/following/" + userId,
+                        method: "POST",
+                        success: function() {
+                            input.val("@Model.Follow");
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+}

@@ -8,7 +8,7 @@ using System.Web.Mvc;
 
 namespace PsikoterapsitlerBurada.Controllers
 {
-    [System.Web.Mvc.Authorize]
+    [Authorize]
     public class UserController : Controller
     {
         private ApplicationDbContext _context;
@@ -62,11 +62,19 @@ namespace PsikoterapsitlerBurada.Controllers
             return View(viewModel);
         }
 
-        public ActionResult Profile(string id)
+        public ActionResult UserProfile(string id)
         {
             var user = _context.Users.Find(id);
+            var authUserId = User.Identity.GetUserId();
+            var isFollow = _context.Followings.Any(f => f.FollowerId == authUserId && f.FolloweeId == id);
 
-            return View(user);
+            var viewModel = new ProfileViewModel()
+            {
+                User = user,
+                IsFollow = isFollow
+            };
+
+            return View(viewModel);
         }
 
         public ActionResult GetUserQuestions(string id)
@@ -77,9 +85,11 @@ namespace PsikoterapsitlerBurada.Controllers
             return PartialView("_UserAskedQuestions", userQuestions);
         }
 
-        public ActionResult GetUserAnswers(string id)
+        public ActionResult GetUserQuestionsAsked(string id)
         {
-            var userQuestions = _context.Questions.Include(q => q.WhoAsked).Where(q => q.AskedToWhom.Any(u => u.Id == id))
+            var userQuestions = _context.Questions.Include(q => q.WhoAsked)
+                .Include(q => q.Answers)
+                .Where(q => q.AskedToWhom.Any(u => u.Id == id))
                 .Select(Mapper.Map<QuestionViewModel>);
 
             return PartialView("_UserQuestionsAsked", userQuestions);

@@ -8,7 +8,9 @@
             <span>Bu soru şunlara soruldu: </span>
             @foreach (var user in question.AskedToWhom)
             {
-                <span class="tag">@user.UserName</span>
+                <a href=@Url.Action("UserProfile", "User", new {id = user.Id})>
+                    <span class="tag">@user.UserName</span>
+                </a>
             }
         </div>
         <div class="panel-body">

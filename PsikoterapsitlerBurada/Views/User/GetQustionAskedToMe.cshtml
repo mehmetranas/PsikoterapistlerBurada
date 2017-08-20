@@ -16,9 +16,13 @@
                         @question.QuestionText
                     </div>
                     @if (question.WhoAsked != null)
-                    {<small class="who-asked pull-right">
-                         @question.WhoAsked.UserName
-                     </small>
+                    {
+                        <a href=@Url.Action("UserProfile","User",new {id = question.WhoAsked.Id})> 
+                            <small class="who-asked pull-right">
+                                @question.WhoAsked.UserName
+                            </small>
+                     </a>
+                        
                     }
                 </td>
             </tr>

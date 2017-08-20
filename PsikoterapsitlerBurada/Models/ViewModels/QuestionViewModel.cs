@@ -17,6 +17,7 @@ namespace PsikoterapsitlerBurada.Models.ViewModels
         public Category Category { get; set; }
         public IEnumerable<Category> Categories { get; set; }
         public IEnumerable<Vote> Votes { get; set; }
+        public ICollection<Answer> Answers { get; set; }
 
         public int? TotalVotes
         {
