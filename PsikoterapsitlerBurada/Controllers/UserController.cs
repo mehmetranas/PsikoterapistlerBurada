@@ -68,6 +68,8 @@ namespace PsikoterapsitlerBurada.Controllers
             var user = _context.Users
                 .Include(u => u.Followees)
                 .Include(u => u.Followers)
+                .Include(u => u.FavoriteQuestions)
+                .Include(u => u.LikesAnswers)
                 .SingleOrDefault(u => u.Id == id);
             var authUserId = User.Identity.GetUserId();
 
@@ -140,6 +142,22 @@ namespace PsikoterapsitlerBurada.Controllers
             }
 
             return PartialView("_Following", viewModel);
+        }
+
+        public ActionResult GetUserFavoriteQuestions(string id)
+        {
+            var user = _context.Users
+                .Include(u => u.FavoriteQuestions)
+                .SingleOrDefault(u => u.Id == id);
+
+            if (user == null) return new HttpNotFoundResult();
+
+            var favoriteQuestions = _context.Questions
+                .Include(q => q.Answers)
+                .Include(q => q.AskedToWhom)
+                .Include(q => q.WhoAsked)
+                .Where(q => q.UsersTrack.Any(u => u.Id == id)).Select(Mapper.Map<QuestionViewModel>);
+            return PartialView("_UserAskedQuestions", favoriteQuestions);
         }
     }
 }

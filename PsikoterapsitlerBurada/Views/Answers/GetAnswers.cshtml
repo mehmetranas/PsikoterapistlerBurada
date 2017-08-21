@@ -19,6 +19,9 @@
     <div class="panel-body">
         @Model.QuestionViewModel.QuestionText
     </div>
+    <a href="@Url.Action("UserProfile", "User", new {id = Model.QuestionViewModel.WhoAsked.Id})">
+        <span class="pull-right text-warning">@Model.QuestionViewModel.WhoAsked.UserName</span>
+    </a>
 </div>
 
 <br />

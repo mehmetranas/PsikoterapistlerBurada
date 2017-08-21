@@ -54,6 +54,11 @@
                     <a class="js-user-questions-asked">
                         Sorulan Sorular - (@Model.User.Answers.Count)
                     </a>
+                    <br />
+                    <hr />
+                    <a class="js-user-favorite-questions">
+                        Favori Sorular - (@Model.User.FavoriteQuestions.Count)
+                    </a>
                 </div>
             </div>
         </div>
@@ -78,7 +83,13 @@
                 $("div.action").load(url);
             });
 
-            $(".js-user-questions").click(function() {
+            $(".js-user-favorite-questions").click(function () {
+                var url = '@Url.Action("GetUserFavoriteQuestions","User",
+                               new {id = Model.User.Id})';
+                $("div.action").load(url);
+            });
+
+          $(".js-user-questions").click(function() {
                 var url = '@Url.Action("GetUserQuestions","User",
                           new {id = Model.User.Id})';
                 $("div.action").load(url);

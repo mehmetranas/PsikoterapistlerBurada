@@ -27,5 +27,9 @@
         <div class="panel-body">
             @question.QuestionText
         </div>
+        <a href="@Url.Action("UserProfile", "User", new {id = question.WhoAsked.Id})">
+            <span class="pull-right text-warning">@question.WhoAsked.UserName</span>
+        </a>
     </div>
+    <hr/>
 }
