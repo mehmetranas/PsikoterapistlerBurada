@@ -43,7 +43,6 @@
                             </tr>
                         </table>
                     </div>
-                   
                 </div>
                 <hr />
                 <div class="info form-group">
@@ -92,8 +91,10 @@
 
             $(document).on("click", ".js-follow-action",
                 function() {
-                    console.log("clicked");
                     var input = $(this);
+                    var activeDiv = this.closest("div");
+                    var followeesCountEl = $(activeDiv).find(".js-followees");
+                    var followees = parseInt(followeesCountEl.text());
                     var userId = input.attr("data-user-id");
                     var followState = input.attr("data-follow");
                     var followText = input.val();
@@ -103,6 +104,8 @@
                             method: "DELETE",
                             success: function() {
                                 input.val("@Model.UnFollow");
+                                followees--;
+                                followeesCountEl.text(followees);
                             }
                         });
                     } else {
@@ -111,6 +114,8 @@
                             method: "POST",
                             success: function() {
                                 input.val("@Model.Follow");
+                                followees++;
+                                followeesCountEl.text(followees);
                             }
                         });
                     }
