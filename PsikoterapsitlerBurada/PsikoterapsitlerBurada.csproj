@@ -207,9 +207,9 @@
     <Compile Include="Controllers\AnswersController.cs" />
     <Compile Include="Controllers\API\AnswerController.cs" />
     <Compile Include="Controllers\API\FavoriteController.cs" />
+    <Compile Include="Controllers\API\FollwingController.cs" />
     <Compile Include="Controllers\API\LikeController.cs" />
     <Compile Include="DTOs\AnswerDto.cs" />
-    <Compile Include="Controllers\API\RemoveSelectedUsersController.cs" />
     <Compile Include="Controllers\API\SelectedUsersController.cs" />
     <Compile Include="Controllers\API\VoteController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -257,17 +257,23 @@
     <Compile Include="Migrations\201708181140151_AddedFavoriteQuestionToQuestionClass.Designer.cs">
       <DependentUpon>201708181140151_AddedFavoriteQuestionToQuestionClass.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201708190822469_AddedFallowsListToUser.cs" />
+    <Compile Include="Migrations\201708190822469_AddedFallowsListToUser.Designer.cs">
+      <DependentUpon>201708190822469_AddedFallowsListToUser.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Answer.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
     <Compile Include="Models\Category.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
+    <Compile Include="Models\Following.cs" />
     <Compile Include="Models\ViewModels\AnswersViewModelWillDelete.cs" />
     <Compile Include="Models\ViewModels\AnswerViewModel.cs" />
     <Compile Include="Models\ViewModels\GetAnswerViewModel.cs" />
     <Compile Include="Models\ViewModels\ManageViewModels.cs" />
     <Compile Include="Models\Question.cs" />
+    <Compile Include="Models\ViewModels\ProfileViewModel.cs" />
     <Compile Include="Models\ViewModels\QuestionViewModel.cs" />
     <Compile Include="Models\ViewModels\SelectUserToAskQuestionViewModel.cs" />
     <Compile Include="Models\Vote.cs" />
@@ -381,6 +387,10 @@
     <Content Include="Views\User\GetQustionAskedToMe.cshtml" />
     <Content Include="Views\Answers\GetAnswers.cshtml" />
     <Content Include="Views\User\WriteAnswer.cshtml" />
+    <Content Include="Views\User\UserProfile.cshtml" />
+    <Content Include="Views\Shared\_UserAskedQuestions.cshtml" />
+    <Content Include="Views\Shared\_UserQuestionsAsked.cshtml" />
+    <Content Include="Views\Shared\_Following.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -419,6 +429,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201708181140151_AddedFavoriteQuestionToQuestionClass.resx">
       <DependentUpon>201708181140151_AddedFavoriteQuestionToQuestionClass.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708190822469_AddedFallowsListToUser.resx">
+      <DependentUpon>201708190822469_AddedFallowsListToUser.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

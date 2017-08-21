@@ -33,23 +33,25 @@
             </div>
             <div class="media-body">
                 <h4 class="media-heading">@answer.User.UserName</h4>
-                <p> @answer.AnswerText
+                <p>
+                    @answer.AnswerText
                 </p>
             </div>
         </div>
         <div class="like pull-right">
-                <span class="like">@answer.TotalLike</span>
-            <i class="glyphicon glyphicon-heart like" 
-               data-toggle = "tooltip" 
-               title = "Giriş yapmalısınız"
-               id = @answer.Id onclick="onClick(id)"></i>
+            <span class="like">@answer.TotalLike</span>
+            <i class="glyphicon glyphicon-heart like"
+               data-toggle="tooltip"
+               title="Giriş yapmalısınız"
+               id=@answer.Id onclick="onClick(id)"></i>
         </div>
     </div>
 }
 
+
 @section scripts{
     <script>
-        
+
         var isAuth = @User.Identity.IsAuthenticated.ToString().ToLower();
 
         $(document).ready(function () {
@@ -103,4 +105,3 @@
         }
     </script>
 }
-

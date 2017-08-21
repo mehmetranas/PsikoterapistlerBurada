@@ -1,0 +1,146 @@
+﻿ @using Microsoft.AspNet.Identity 
+@model PsikoterapsitlerBurada.Models.ViewModels.ProfileViewModel
+
+@{
+    ViewBag.Title = "Profile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Profile</h2>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4 profile">
+            <div class="thumbnail">
+                <img src="http://lorempixel.com/242/200/people" alt="...">
+                <div class="caption">
+                    <h4>@Model.User.UserName</h4>
+                    @if (!Model.IsAuthUser)
+                    {
+                        <p>
+                            <input 
+                                type="button"
+                                class="btn btn-primary btn-sm js-follow-action"
+                                value ="@Model.FollowState"
+                                data-follow ="@Model.Follow"
+                                data-user-id = "@Model.User.Id">
+                        </p>
+                    }
+                    <hr />
+                    <div class="social-profile">
+                        <table class="table table-responsive">
+                            <tr>
+                                <th>Takip Edilen</th>
+                                <th>Takipçi</th>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <b><a class="js-followers">@Model.User.Followers.Count</a></b>
+                                </td>
+                                <td>
+                                    <b><a class="js-followees">@Model.User.Followees.Count</a></b>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                   
+                </div>
+                <hr />
+                <div class="info form-group">
+                    <a class ="js-user-questions">
+                        Sorduğu sorular - (@Model.User.AskedQuestions.Count)
+                    </a>
+                    <br />
+                    <a class="js-user-questions-asked">
+                        Sorulan Sorular - (@Model.User.Answers.Count)
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8 action">
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+
+            $(".js-followers").click(function () {
+                var url = '@Url.Action("GetUserFollowers","User",
+                               new {id = Model.User.Id})';
+                $("div.action").load(url);
+            });
+
+            $(".js-followees").click(function () {
+                var url = '@Url.Action("GetUserFollowees","User",
+                               new {id = Model.User.Id})';
+                $("div.action").load(url);
+            });
+
+            $(".js-user-questions").click(function() {
+                var url = '@Url.Action("GetUserQuestions","User",
+                          new {id = Model.User.Id})';
+                $("div.action").load(url);
+            });
+
+            $(".js-user-questions-asked").click(function() {
+                var url = '@Url.Action("GetUserQuestionsAsked","User",
+                          new { id = Model.User.Id })';
+                $("div.action").load(url);
+            });
+
+            $(document).on("click", ".js-follow-action",
+                function() {
+                    console.log("clicked");
+                    var input = $(this);
+                    var userId = input.attr("data-user-id");
+                    var followState = input.attr("data-follow");
+                    var followText = input.val();
+                    if (followText === followState) {
+                        $.ajax({
+                            url: "/api/following/" + userId,
+                            method: "DELETE",
+                            success: function() {
+                                input.val("@Model.UnFollow");
+                            }
+                        });
+                    } else {
+                        $.ajax({
+                            url: "/api/following/" + userId,
+                            method: "POST",
+                            success: function() {
+                                input.val("@Model.Follow");
+                            }
+                        });
+                    }
+
+                });
+        });
+
+        function follow() {
+            var userId = "@Model.User.Id";
+            var input = $(this);
+            var followState = input.attr("data-follow-state");
+            var followText = input.val();
+            if (followText === followState) {
+                $.ajax({
+                    url: "/api/following/" + userId,
+                    method: "DELETE",
+                    success: function() {
+                        input.val("@Model.UnFollow");
+                    }
+                });
+            } else {
+                $.ajax({
+                    url: "/api/following/" + userId,
+                    method: "POST",
+                    success: function() {
+                        input.val("@Model.Follow");
+                    }
+                });
+            }
+
+        }
+    </script>
+}

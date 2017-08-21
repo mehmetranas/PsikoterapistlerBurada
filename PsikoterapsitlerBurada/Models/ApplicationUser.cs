@@ -17,6 +17,8 @@ namespace PsikoterapsitlerBurada.Models
             QuestionsAsked = new HashSet<Question>();
             LikesAnswers = new HashSet<Answer>();
             Answers = new HashSet<Answer>();
+            Followees = new HashSet<Following>();
+            Followers = new HashSet<Following>();
         }
 
         public virtual ICollection<Question> AskedQuestions { get; set; }
@@ -24,6 +26,8 @@ namespace PsikoterapsitlerBurada.Models
         public virtual ICollection<Answer> LikesAnswers { get; set; }
         public virtual ICollection<Answer> Answers { get; set; }
         public virtual ICollection<Question> FavoriteQuestions { get; set; }
+        public virtual ICollection<Following> Followers { get; set; }
+        public virtual ICollection<Following> Followees { get; set; }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {

@@ -23,11 +23,68 @@ textarea {
     max-width: 280px;
 }*/
 
-/*Set home page question text*/
+/*Override bootstrap behavior where site color consept is define*/
 
-a.question-text {
-    margin: auto
+.navbar-inverse {
+    background-color: #B5F536;
+    border-color: #91D900;
 }
+
+    .navbar-inverse .navbar-brand {
+        color: #1B2506;
+    }
+
+    .navbar-inverse .navbar-nav > li > a {
+        color: #2B3712;
+    }
+        .navbar-inverse .navbar-nav > li > a:hover {
+            color: #7E8C61;
+        }
+
+    .navbar-inverse .navbar-brand:hover {
+        color: #7E8C61;
+    }
+
+.panel-success > .panel-heading {
+    color: #fff;
+    background-color: #260D3A;
+    border-color: #d6e9c6;
+}
+
+a {
+    color: #A48E05;
+    cursor: pointer;
+    text-decoration: none !important
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #A38BD7;
+    border-color: #A38BD7;
+}
+
+    .btn-primary:hover {
+        color: #fff;
+        background-color: #5A4092;
+        border-color: #5A4092;
+    }
+
+.btn-info {
+    color: #fff;
+    background-color: #B7A2E4;
+    border-color: #B7A2E4;
+}
+
+    .btn-info:hover {
+        color: #fff;
+        background-color: #69509F;
+        border-color: #69509F;
+    }
+
+    /*Set home page question text*/
+    a.question-text {
+        margin: auto
+    }
 
 a.question-text:hover {
     cursor: pointer;
@@ -36,7 +93,7 @@ a.question-text:hover {
 }
 
 .who-asked {
-    color: grey;
+    color: #56540F;
     margin-bottom: 5px;
 }
 
@@ -74,7 +131,7 @@ p.rating {
 }
 
 .tag {
-    background-color: darkgray;
+    background-color: #67497D;
     padding: 5px;
     -ms-border-radius: 3px;
     border-radius: 3px;
@@ -91,5 +148,13 @@ div.like {
 }
 
 
-/*Selected User Page*/
+/*Profile Page*/
+div.social-profile table td,th {
+    text-align: center
+}
 
+div.social-profile table td a {
+    color: #67497D;
+    font-size: 15px;
+   
+}

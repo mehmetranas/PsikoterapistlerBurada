@@ -39,7 +39,9 @@
                 <td class="question-text">
                     <div class="question">
                         <div class="who-asked">
-                            <small>@question.WhoAsked.UserName</small>
+                            <a href=@Url.Action("UserProfile", "User", new {id = question.WhoAsked.Id})>
+                                <small>@question.WhoAsked.UserName</small>
+                            </a>
                         </div>
                         <div class="question-text">
                             <a href=@Url.Action("GetAnswers", "Answers", new {id = question.Id}) class="question-text">
@@ -59,7 +61,9 @@
                 <td>
                     @foreach (var user in question.AskedToWhom)
                     {
-                        <span class="tag">@user.UserName</span>
+                        <a href=@Url.Action("UserProfile","User", new {id = user.Id})>
+                            <span class="tag">@user.UserName</span>
+                        </a>
                     }
                 </td>
             </tr>

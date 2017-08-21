@@ -1,0 +1,20 @@
+﻿@model IEnumerable<PsikoterapsitlerBurada.Models.ViewModels.QuestionViewModel>
+
+<h2>Sorulan Sorular</h2>
+@foreach (var question in Model)
+{
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            <span>Bu soru şunlara soruldu: </span>
+            @foreach (var user in question.AskedToWhom)
+            {
+                <a href=@Url.Action("UserProfile", "User", new {id = user.Id})>
+                    <span class="tag">@user.UserName</span>
+                </a>
+            }
+        </div>
+        <div class="panel-body">
+            @question.QuestionText
+        </div>
+    </div>
+}

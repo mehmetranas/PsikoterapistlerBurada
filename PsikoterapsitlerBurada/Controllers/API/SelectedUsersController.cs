@@ -29,5 +29,21 @@ namespace PsikoterapsitlerBurada.Controllers.API
             _context.SaveChanges();
             return Ok();
         }
+
+        [HttpDelete]
+        public IHttpActionResult RemoveSelectedUserFromTheQuestion(SelectedUserDto selectedUserDto)
+        {
+            var selectedUser = _context.Users.SingleOrDefault(u => u.Id == selectedUserDto.SelectedUserId);
+            var question = _context.Questions.SingleOrDefault(q => q.Id == selectedUserDto.QuestionId);
+
+            if (question == null || selectedUser == null)
+            {
+                return BadRequest("Hata oluştu, lütfen tekrar deneyin.");
+            }
+
+            selectedUser.QuestionsAsked.Remove(question);
+            _context.SaveChanges();
+            return Ok();
+        }
     }
 }

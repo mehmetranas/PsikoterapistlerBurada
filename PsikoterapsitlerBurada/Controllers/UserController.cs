@@ -1,10 +1,11 @@
-﻿using Microsoft.AspNet.Identity;
+﻿using System.Collections.Generic;
+using AutoMapper;
+using Microsoft.AspNet.Identity;
 using PsikoterapsitlerBurada.Models;
 using PsikoterapsitlerBurada.Models.ViewModels;
 using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
-using AutoMapper;
 
 namespace PsikoterapsitlerBurada.Controllers
 {
@@ -60,6 +61,81 @@ namespace PsikoterapsitlerBurada.Controllers
             };
 
             return View(viewModel);
+        }
+
+        public ActionResult UserProfile(string id)
+        {
+            var user = _context.Users
+                .Include(u => u.Followees)
+                .Include(u => u.Followers)
+                .SingleOrDefault(u => u.Id == id);
+            var authUserId = User.Identity.GetUserId();
+
+            var viewModel = new ProfileViewModel(authUserId, user);
+           
+            return View(viewModel);
+        }
+
+        public ActionResult GetUserQuestions(string id)
+        {
+            var userQuestions = _context.Questions.Where(q => q.WhoAsked.Id == id).Include("WhoAsked")
+                .Include("AskedToWhom").Select(Mapper.Map<QuestionViewModel>);
+
+            return PartialView("_UserAskedQuestions", userQuestions);
+        }
+
+        public ActionResult GetUserQuestionsAsked(string id)
+        {
+            var userQuestions = _context.Questions.Include(q => q.WhoAsked)
+                .Include(q => q.Answers)
+                .Where(q => q.AskedToWhom.Any(u => u.Id == id))
+                .Select(Mapper.Map<QuestionViewModel>);
+
+            return PartialView("_UserQuestionsAsked", userQuestions);
+        }
+
+        public ActionResult GetUserFollowers(string id)
+        {
+
+            var followers = _context.Followings
+                .Include(f => f.Followee)
+                .Include(f => f.Follower)
+                .Where(f => f.FollowerId == id);
+
+            var authUserId = User.Identity.GetUserId();
+
+            var viewModel = new List<ProfileViewModel>();
+
+            foreach (var follower in followers)
+            {
+                var profileViewModel = new ProfileViewModel(authUserId,follower.Followee);
+               
+                viewModel.Add(profileViewModel);
+            }
+
+            return PartialView("_Following", viewModel);
+        }
+
+        public ActionResult GetUserFollowees(string id)
+        {
+
+            var followees = _context.Followings
+                .Include(f => f.Followee)
+                .Include(f => f.Follower)
+                .Where(f => f.FolloweeId == id);
+
+            var authUserId = User.Identity.GetUserId();
+
+            var viewModel = new List<ProfileViewModel>();
+
+            foreach (var followee in followees)
+            {
+                var profileViewModel = new ProfileViewModel(authUserId, followee.Follower);
+
+                viewModel.Add(profileViewModel);
+            }
+
+            return PartialView("_Following", viewModel);
         }
     }
 }

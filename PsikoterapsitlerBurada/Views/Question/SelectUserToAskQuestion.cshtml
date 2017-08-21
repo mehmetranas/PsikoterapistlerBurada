@@ -16,6 +16,7 @@
     </div>
 </div>
 
+<hr />
 
 <table cellspacing="0" class="table table-striped" id="js-users" width="100%">
     <thead>
@@ -29,7 +30,11 @@
         @foreach (var user in Model.Users)
         {
             <tr>
-                <td>@user.UserName</td>
+                <td>
+                    <a href=@Url.Action("UserProfile", "User", new {id = user.Id})>
+                        @user.UserName
+                    </a>
+                </td>
                 <td>Kategori</td>
                 <td>
                     <button class="btn btn-link js-username" id="@user.Id" data-username="@user.UserName">Seç</button>
@@ -55,7 +60,33 @@
         $(document).ready(function () {
             //Datatable
             $(document).ready(function() {
-                $("#js-users").DataTable();
+                $("#js-users").DataTable(
+                    {
+                        "language":{
+                        "sDecimal": ",",
+                        "sEmptyTable": "Tabloda herhangi bir veri mevcut değil",
+                        "sInfo": "_TOTAL_ kayıttan _START_ - _END_ arasındaki kayıtlar gösteriliyor",
+                        "sInfoEmpty": "Kayıt yok",
+                        "sInfoFiltered": "(_MAX_ kayıt içerisinden bulunan)",
+                        "sInfoPostFix": "",
+                        "sInfoThousands": ".",
+                        "sLengthMenu": "Sayfada _MENU_ kayıt göster",
+                        "sLoadingRecords": "Yükleniyor...",
+                        "sProcessing": "İşleniyor...",
+                        "sSearch": "Ara:",
+                        "sZeroRecords": "Eşleşen kayıt bulunamadı",
+                        "oPaginate": {
+                            "sFirst": "İlk",
+                            "sLast": "Son",
+                            "sNext": "Sonraki",
+                            "sPrevious": "Önceki"
+                        },
+                        "oAria": {
+                            "sSortAscending": ": artan sütun sıralamasını aktifleştir",
+                            "sSortDescending": ": azalan sütun sıralamasını aktifleştir"
+                        }
+                    }
+            });
             });
 
             var questionId = @Model.Question.Id;
@@ -92,12 +123,18 @@
                         var removeButton = $(this);
                         var userButton = document.getElementById(removeUserId);
 
-                        $.post("/api/RemoveSelectedUsers", { selectedUserId: removeUserId, questionId: questionId })
-                            .done(function () {
+                        $.ajax({
+                            url: "/api/selectedusers",
+                            data: { selectedUserId: removeUserId, questionId: questionId },
+                            method: "DELETE",
+                            success: function() {
                                 userRemove();
-                            })
-                            .fail(function () { console.log("Failed") });
-
+                            },
+                            error: function() {
+                                console.log("Failed")
+                            }
+                        });
+                           
                         function userRemove() {
                             var row = removeButton.closest("tr");
                             userButton.innerText = "Seç";
@@ -107,7 +144,6 @@
                                     function() {
                                         $(this).remove();
                                     });
-                            //$('#yourElement').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', removeButton.closest("tr").remove());
                         }
                     });
                 }

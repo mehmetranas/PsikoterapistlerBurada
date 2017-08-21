@@ -6,6 +6,7 @@ using System.Web.Http;
 
 namespace PsikoterapsitlerBurada.Controllers.API
 {
+    [Authorize]
     public class FavoriteController : ApiController
     {
         private ApplicationDbContext _context;
