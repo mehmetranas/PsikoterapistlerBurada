@@ -9,7 +9,11 @@
             <div class="thumbnail">
                 <img src="http://lorempixel.com/242/200/people" alt="@viewModel.User.UserName">
                 <div class="caption">
-                    <h5><strong>@viewModel.User.UserName</strong></h5>
+                    <a href="@Url.Action("UserProfile","User",new {id = viewModel.User.Id})">
+                        <h5>
+                            <strong>@viewModel.User.UserName</strong>
+                        </h5>
+                    </a>
                     <p>Kategori</p>
                     @if (!viewModel.IsAuthUser)
                     {

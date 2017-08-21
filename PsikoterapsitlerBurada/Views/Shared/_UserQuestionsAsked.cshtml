@@ -8,7 +8,11 @@
         <div class="panel-heading">
             <div class="row">
                 <div class="col-md-8">
-                    <p>Bu soruyu soran: <span class="tag">@question.WhoAsked.UserName</span>
+                    <p>Bu soruyu soran: 
+                        <a href="@Url.Action("UserProfile", "User",
+                                     new {id = question.WhoAsked.Id})">
+                            <span class="tag">@question.WhoAsked.UserName</span>
+                        </a>
                     </p> 
                 </div>
                 <div class="col-md-4">

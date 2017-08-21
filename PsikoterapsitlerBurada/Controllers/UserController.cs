@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNet.Identity;
 using PsikoterapsitlerBurada.Models;
 using PsikoterapsitlerBurada.Models.ViewModels;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
@@ -78,8 +78,12 @@ namespace PsikoterapsitlerBurada.Controllers
 
         public ActionResult GetUserQuestions(string id)
         {
-            var userQuestions = _context.Questions.Where(q => q.WhoAsked.Id == id).Include("WhoAsked")
-                .Include("AskedToWhom").Select(Mapper.Map<QuestionViewModel>);
+            var userQuestions = _context.Questions
+                .Where(q => q.WhoAsked.Id == id)
+                .Include(q => q.WhoAsked)
+                .Include(q => q.AskedToWhom)
+                .Include(q => q.Answers)
+                .Select(Mapper.Map<QuestionViewModel>);
 
             return PartialView("_UserAskedQuestions", userQuestions);
         }
