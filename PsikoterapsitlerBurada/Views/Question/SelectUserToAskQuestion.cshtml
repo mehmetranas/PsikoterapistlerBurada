@@ -123,12 +123,18 @@
                         var removeButton = $(this);
                         var userButton = document.getElementById(removeUserId);
 
-                        $.post("/api/RemoveSelectedUsers", { selectedUserId: removeUserId, questionId: questionId })
-                            .done(function () {
+                        $.ajax({
+                            url: "/api/selectedusers",
+                            data: { selectedUserId: removeUserId, questionId: questionId },
+                            method: "DELETE",
+                            success: function() {
                                 userRemove();
-                            })
-                            .fail(function () { console.log("Failed") });
-
+                            },
+                            error: function() {
+                                console.log("Failed")
+                            }
+                        });
+                           
                         function userRemove() {
                             var row = removeButton.closest("tr");
                             userButton.innerText = "Seç";
@@ -138,7 +144,6 @@
                                     function() {
                                         $(this).remove();
                                     });
-                            //$('#yourElement').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', removeButton.closest("tr").remove());
                         }
                     });
                 }

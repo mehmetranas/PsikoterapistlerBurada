@@ -210,7 +210,6 @@
     <Compile Include="Controllers\API\FollwingController.cs" />
     <Compile Include="Controllers\API\LikeController.cs" />
     <Compile Include="DTOs\AnswerDto.cs" />
-    <Compile Include="Controllers\API\RemoveSelectedUsersController.cs" />
     <Compile Include="Controllers\API\SelectedUsersController.cs" />
     <Compile Include="Controllers\API\VoteController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -391,6 +390,7 @@
     <Content Include="Views\User\UserProfile.cshtml" />
     <Content Include="Views\Shared\_UserAskedQuestions.cshtml" />
     <Content Include="Views\Shared\_UserQuestionsAsked.cshtml" />
+    <Content Include="Views\Shared\_Following.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

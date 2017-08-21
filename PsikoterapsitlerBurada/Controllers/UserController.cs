@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Collections.Generic;
+using AutoMapper;
 using Microsoft.AspNet.Identity;
 using PsikoterapsitlerBurada.Models;
 using PsikoterapsitlerBurada.Models.ViewModels;
@@ -64,16 +65,14 @@ namespace PsikoterapsitlerBurada.Controllers
 
         public ActionResult UserProfile(string id)
         {
-            var user = _context.Users.Find(id);
+            var user = _context.Users
+                .Include(u => u.Followees)
+                .Include(u => u.Followers)
+                .SingleOrDefault(u => u.Id == id);
             var authUserId = User.Identity.GetUserId();
-            var isFollow = _context.Followings.Any(f => f.FollowerId == authUserId && f.FolloweeId == id);
 
-            var viewModel = new ProfileViewModel()
-            {
-                User = user,
-                IsFollow = isFollow
-            };
-
+            var viewModel = new ProfileViewModel(authUserId, user);
+           
             return View(viewModel);
         }
 
@@ -93,6 +92,50 @@ namespace PsikoterapsitlerBurada.Controllers
                 .Select(Mapper.Map<QuestionViewModel>);
 
             return PartialView("_UserQuestionsAsked", userQuestions);
+        }
+
+        public ActionResult GetUserFollowers(string id)
+        {
+
+            var followers = _context.Followings
+                .Include(f => f.Followee)
+                .Include(f => f.Follower)
+                .Where(f => f.FollowerId == id);
+
+            var authUserId = User.Identity.GetUserId();
+
+            var viewModel = new List<ProfileViewModel>();
+
+            foreach (var follower in followers)
+            {
+                var profileViewModel = new ProfileViewModel(authUserId,follower.Followee);
+               
+                viewModel.Add(profileViewModel);
+            }
+
+            return PartialView("_Following", viewModel);
+        }
+
+        public ActionResult GetUserFollowees(string id)
+        {
+
+            var followees = _context.Followings
+                .Include(f => f.Followee)
+                .Include(f => f.Follower)
+                .Where(f => f.FolloweeId == id);
+
+            var authUserId = User.Identity.GetUserId();
+
+            var viewModel = new List<ProfileViewModel>();
+
+            foreach (var followee in followees)
+            {
+                var profileViewModel = new ProfileViewModel(authUserId, followee.Follower);
+
+                viewModel.Add(profileViewModel);
+            }
+
+            return PartialView("_Following", viewModel);
         }
     }
 }

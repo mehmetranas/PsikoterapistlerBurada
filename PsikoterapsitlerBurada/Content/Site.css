@@ -54,7 +54,32 @@ textarea {
 a {
     color: #A48E05;
     cursor: pointer;
+    text-decoration: none !important
 }
+
+.btn-primary {
+    color: #fff;
+    background-color: #A38BD7;
+    border-color: #A38BD7;
+}
+
+    .btn-primary:hover {
+        color: #fff;
+        background-color: #5A4092;
+        border-color: #5A4092;
+    }
+
+.btn-info {
+    color: #fff;
+    background-color: #B7A2E4;
+    border-color: #B7A2E4;
+}
+
+    .btn-info:hover {
+        color: #fff;
+        background-color: #69509F;
+        border-color: #69509F;
+    }
 
     /*Set home page question text*/
     a.question-text {
@@ -124,6 +149,12 @@ div.like {
 
 
 /*Profile Page*/
+div.social-profile table td,th {
+    text-align: center
+}
 
-
-
+div.social-profile table td a {
+    color: #67497D;
+    font-size: 15px;
+   
+}

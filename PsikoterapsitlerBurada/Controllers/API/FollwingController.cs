@@ -5,7 +5,7 @@ using System.Web.Http;
 
 namespace PsikoterapsitlerBurada.Controllers.API
 {
-    [Authorize]
+    [System.Web.Http.Authorize]
     public class FollowingController : ApiController
     {
         private ApplicationDbContext _context;
@@ -15,7 +15,7 @@ namespace PsikoterapsitlerBurada.Controllers.API
             _context = new ApplicationDbContext();        
         }
 
-        [HttpPost]
+        [System.Web.Http.HttpPost]
         public IHttpActionResult Follow(string id)
         {
             var userId = User.Identity.GetUserId();
@@ -33,7 +33,7 @@ namespace PsikoterapsitlerBurada.Controllers.API
             return Ok();
         }
 
-        [HttpDelete]
+        [System.Web.Http.HttpDelete]
         public IHttpActionResult UnFollow(string id)
         {
             var userId = User.Identity.GetUserId();
@@ -44,7 +44,6 @@ namespace PsikoterapsitlerBurada.Controllers.API
             _context.SaveChanges();
 
             return Ok();
-
         }
     }
 }
