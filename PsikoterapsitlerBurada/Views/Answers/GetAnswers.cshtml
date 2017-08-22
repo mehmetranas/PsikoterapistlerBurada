@@ -11,12 +11,17 @@
         <span>Bu soru şunlara soruldu: </span>
         @foreach (var user in Model.QuestionViewModel.AskedToWhom)
         {
-            <span class="tag">@user.UserName</span>
+            <a href="@Url.Action("UserProfile", "User", new {id = user.Id})">
+                <span class="tag">@user.UserName</span>
+            </a>
         }
     </div>
     <div class="panel-body">
         @Model.QuestionViewModel.QuestionText
     </div>
+    <a href="@Url.Action("UserProfile", "User", new {id = Model.QuestionViewModel.WhoAsked.Id})">
+        <span class="pull-right text-warning">@Model.QuestionViewModel.WhoAsked.UserName</span>
+    </a>
 </div>
 
 <br />

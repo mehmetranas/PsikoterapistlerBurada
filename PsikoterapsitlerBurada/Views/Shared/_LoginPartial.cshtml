@@ -1,17 +1,17 @@
 ﻿@using Microsoft.AspNet.Identity
 @if (Request.IsAuthenticated)
 {
+   
     using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
     {
         @Html.AntiForgeryToken()
-
-        @*<ul class="nav navbar-nav navbar-right">
-            <li>
-                @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
-            </li>
-            <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
-        </ul>*@
+       
         <ul class="nav navbar-nav navbar-right">
+            <li>
+                <a href="#">
+                    <i class="glyphicon glyphicon-globe"></i>
+                </a>
+            </li>
             <li role="presentation" class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                     @User.Identity.GetUserName() <span class="caret"></span>
@@ -22,12 +22,12 @@
                     </li>
                     <li>
                         @Html.ActionLink("Sorulmayan Sorular", "GetUnAskedQuestions", "User")
-                    </li> 
+                    </li>
                     <li>
                         @Html.ActionLink("Bana Sorulanlar", "GetQustionAskedToMe", "User")
                     </li>
                     <li>
-                        @Html.ActionLink("Hesabım", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
+                        @Html.ActionLink("Hesabım", "Index", "Manage", routeValues: null, htmlAttributes: new {title = "Manage"})
                     </li>
                     <li><a href="javascript:document.getElementById('logoutForm').submit()">Çıkış</a></li>
                 </ul>

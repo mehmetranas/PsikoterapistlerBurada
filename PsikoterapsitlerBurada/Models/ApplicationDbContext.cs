@@ -10,6 +10,8 @@ namespace PsikoterapsitlerBurada.Models
         public DbSet<Vote> Votes { get; set; }
         public DbSet<Answer> Answers { get; set; }
         public DbSet<Following> Followings { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
+        public DbSet<UserNotification> UserNotifications { get; set; }
 
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)

@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNet.Identity;
 using PsikoterapsitlerBurada.Models;
 using PsikoterapsitlerBurada.Models.ViewModels;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
@@ -68,6 +68,8 @@ namespace PsikoterapsitlerBurada.Controllers
             var user = _context.Users
                 .Include(u => u.Followees)
                 .Include(u => u.Followers)
+                .Include(u => u.FavoriteQuestions)
+                .Include(u => u.LikesAnswers)
                 .SingleOrDefault(u => u.Id == id);
             var authUserId = User.Identity.GetUserId();
 
@@ -78,8 +80,12 @@ namespace PsikoterapsitlerBurada.Controllers
 
         public ActionResult GetUserQuestions(string id)
         {
-            var userQuestions = _context.Questions.Where(q => q.WhoAsked.Id == id).Include("WhoAsked")
-                .Include("AskedToWhom").Select(Mapper.Map<QuestionViewModel>);
+            var userQuestions = _context.Questions
+                .Where(q => q.WhoAsked.Id == id)
+                .Include(q => q.WhoAsked)
+                .Include(q => q.AskedToWhom)
+                .Include(q => q.Answers)
+                .Select(Mapper.Map<QuestionViewModel>);
 
             return PartialView("_UserAskedQuestions", userQuestions);
         }
@@ -137,5 +143,16 @@ namespace PsikoterapsitlerBurada.Controllers
 
             return PartialView("_Following", viewModel);
         }
+
+        public ActionResult GetUserFavoriteQuestions(string id)
+        {
+            var favoriteQuestions = _context.Questions
+                .Include(q => q.Answers)
+                .Include(q => q.AskedToWhom)
+                .Include(q => q.WhoAsked)
+                .Where(q => q.UsersTrack.Any(u => u.Id == id)).Select(Mapper.Map<QuestionViewModel>);
+            return PartialView("_UserAskedQuestions", favoriteQuestions);
+        }
+
     }
 }

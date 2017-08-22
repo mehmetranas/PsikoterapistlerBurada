@@ -43,7 +43,6 @@
                             </tr>
                         </table>
                     </div>
-                   
                 </div>
                 <hr />
                 <div class="info form-group">
@@ -53,6 +52,11 @@
                     <br />
                     <a class="js-user-questions-asked">
                         Sorulan Sorular - (@Model.User.Answers.Count)
+                    </a>
+                    <br />
+                    <hr />
+                    <a class="js-user-favorite-questions">
+                        Favori Sorular - (@Model.User.FavoriteQuestions.Count)
                     </a>
                 </div>
             </div>
@@ -78,7 +82,13 @@
                 $("div.action").load(url);
             });
 
-            $(".js-user-questions").click(function() {
+            $(".js-user-favorite-questions").click(function () {
+                var url = '@Url.Action("GetUserFavoriteQuestions","User",
+                               new {id = Model.User.Id})';
+                $("div.action").load(url);
+            });
+
+          $(".js-user-questions").click(function() {
                 var url = '@Url.Action("GetUserQuestions","User",
                           new {id = Model.User.Id})';
                 $("div.action").load(url);
@@ -92,8 +102,10 @@
 
             $(document).on("click", ".js-follow-action",
                 function() {
-                    console.log("clicked");
                     var input = $(this);
+                    var activeDiv = this.closest("div");
+                    var followeesCountEl = $(activeDiv).find(".js-followees");
+                    var followees = parseInt(followeesCountEl.text());
                     var userId = input.attr("data-user-id");
                     var followState = input.attr("data-follow");
                     var followText = input.val();
@@ -103,6 +115,8 @@
                             method: "DELETE",
                             success: function() {
                                 input.val("@Model.UnFollow");
+                                followees--;
+                                followeesCountEl.text(followees);
                             }
                         });
                     } else {
@@ -111,6 +125,8 @@
                             method: "POST",
                             success: function() {
                                 input.val("@Model.Follow");
+                                followees++;
+                                followeesCountEl.text(followees);
                             }
                         });
                     }
