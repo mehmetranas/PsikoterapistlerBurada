@@ -146,12 +146,6 @@ namespace PsikoterapsitlerBurada.Controllers
 
         public ActionResult GetUserFavoriteQuestions(string id)
         {
-            var user = _context.Users
-                .Include(u => u.FavoriteQuestions)
-                .SingleOrDefault(u => u.Id == id);
-
-            if (user == null) return new HttpNotFoundResult();
-
             var favoriteQuestions = _context.Questions
                 .Include(q => q.Answers)
                 .Include(q => q.AskedToWhom)
@@ -159,5 +153,6 @@ namespace PsikoterapsitlerBurada.Controllers
                 .Where(q => q.UsersTrack.Any(u => u.Id == id)).Select(Mapper.Map<QuestionViewModel>);
             return PartialView("_UserAskedQuestions", favoriteQuestions);
         }
+
     }
 }
