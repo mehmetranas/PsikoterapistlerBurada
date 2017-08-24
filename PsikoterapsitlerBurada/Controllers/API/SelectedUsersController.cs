@@ -1,7 +1,7 @@
-﻿using System.Linq;
-using System.Web.Http;
-using PsikoterapsitlerBurada.DTOs;
+﻿using PsikoterapsitlerBurada.DTOs;
 using PsikoterapsitlerBurada.Models;
+using System.Linq;
+using System.Web.Http;
 
 namespace PsikoterapsitlerBurada.Controllers.API
 {
@@ -15,35 +15,19 @@ namespace PsikoterapsitlerBurada.Controllers.API
         }
 
         [HttpPost]
-        public IHttpActionResult AddUsersToTheQuestion(SelectedUserDto selectedUserDto)
+        public IHttpActionResult AddUsersToTheQuestion(SelectedUserDto[] UserDto)
         {
-            var selectedUser = _context.Users.SingleOrDefault(u => u.Id == selectedUserDto.SelectedUserId);
-            var question = _context.Questions.SingleOrDefault(q => q.Id == selectedUserDto.QuestionId);
-
-            if (question == null || selectedUser == null)
+            foreach (var userDto in UserDto)
             {
-                return BadRequest("Hata oluştu, lütfen tekrar deneyin.");
-            }
+                var selectedUser = _context.Users.SingleOrDefault(u => u.Id == userDto.SelectedUserId);
+                var question = _context.Questions.SingleOrDefault(q => q.Id == userDto.QuestionId);
 
-            question.AskedToWhom.Add(selectedUser);
+                question.AskedToWhom.Add(selectedUser);
+            }
+            
             _context.SaveChanges();
             return Ok();
         }
 
-        [HttpDelete]
-        public IHttpActionResult RemoveSelectedUserFromTheQuestion(SelectedUserDto selectedUserDto)
-        {
-            var selectedUser = _context.Users.SingleOrDefault(u => u.Id == selectedUserDto.SelectedUserId);
-            var question = _context.Questions.SingleOrDefault(q => q.Id == selectedUserDto.QuestionId);
-
-            if (question == null || selectedUser == null)
-            {
-                return BadRequest("Hata oluştu, lütfen tekrar deneyin.");
-            }
-
-            selectedUser.QuestionsAsked.Remove(question);
-            _context.SaveChanges();
-            return Ok();
-        }
     }
 }

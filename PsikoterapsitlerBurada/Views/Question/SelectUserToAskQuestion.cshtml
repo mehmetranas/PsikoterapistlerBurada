@@ -23,7 +23,9 @@
         <tr>
             <th>İsim</th>
             <th>Kategori</th>
-            <th></th>
+            <th>
+                <button type="button" class="btn btn-default btn-sm js-submit">Tamam</button>
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -57,12 +59,12 @@
 @section scripts
 {
     <script>
+       
         $(document).ready(function () {
             //Datatable
-            $(document).ready(function() {
-                $("#js-users").DataTable(
-                    {
-                        "language":{
+            $("#js-users").DataTable(
+                {
+                    "language":{
                         "sDecimal": ",",
                         "sEmptyTable": "Tabloda herhangi bir veri mevcut değil",
                         "sInfo": "_TOTAL_ kayıttan _START_ - _END_ arasındaki kayıtlar gösteriliyor",
@@ -86,71 +88,71 @@
                             "sSortDescending": ": azalan sütun sıralamasını aktifleştir"
                         }
                     }
-            });
-            });
+                });
 
+            var selectedUsers = [];
             var questionId = @Model.Question.Id;
 
-            $(".js-username").click(function(select) {
+            $(".js-username").click(function (select) {
+
                 var selectedUserId = $(select.target).attr('id');
                 var selectButton = document.getElementById(selectedUserId);
-
-                $.post("/api/selectedusers", { selectedUserId: selectedUserId, questionId: questionId })
-                    .done(function () {
-                        userAdded();
-                    })
-                    .fail(function () { console.log("Failed") });
-
-                function userAdded() {
-                    selectButton.innerText = "Eklendi";
-                    selectButton.disabled = true;
-                    var username = $(select.target).attr("data-username");
-                    var table = document.getElementById("js-selected");
-                    var row = table.insertRow(table.rows.length);
-                    var userCell = row.insertCell(0);
-                    var actionCell = row.insertCell(1);
-                    var removeUser = document.createElement("button");
-                    removeUser.innerText = "Çıkar";
-                    removeUser.setAttribute("user-id", selectedUserId);
-                    removeUser.className = "btn btn-link js-remove-user";
-                    userCell.innerHTML = username;
-                    actionCell.appendChild(removeUser);
-                    $(row).addClass("animated pulse");
-
-                    $(".js-remove-user").click(function (remove) {
-
-                        var removeUserId = $(remove.target).attr("user-id");
-                        var removeButton = $(this);
-                        var userButton = document.getElementById(removeUserId);
-
-                        $.ajax({
-                            url: "/api/selectedusers",
-                            data: { selectedUserId: removeUserId, questionId: questionId },
-                            method: "DELETE",
-                            success: function() {
-                                userRemove();
-                            },
-                            error: function() {
-                                console.log("Failed")
-                            }
-                        });
-                           
-                        function userRemove() {
-                            var row = removeButton.closest("tr");
-                            userButton.innerText = "Seç";
-                            userButton.disabled = false;
-                            $(row).addClass("animated fadeOut")
-                                .one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend',
-                                    function() {
-                                        $(this).remove();
-                                    });
-                        }
-                    });
-                }
+                selectButton.innerText = "Eklendi";
+                selectButton.disabled = true;
+                var username = $(select.target).attr("data-username");
+                var table = document.getElementById("js-selected");
+                var row = table.insertRow(table.rows.length);
+                var userCell = row.insertCell(0);
+                var actionCell = row.insertCell(1);
+                var removeUser = document.createElement("button");
+                removeUser.innerText = "Çıkar";
+                removeUser.setAttribute("user-id", selectedUserId);
+                removeUser.className = "btn btn-link js-remove-user";
+                userCell.innerHTML = username;
+                actionCell.appendChild(removeUser);
+                $(row).addClass("animated pulse");
+                selectedUsers.push(selectedUserId);
             });
-
             
+            $(document).on("click",
+                ".js-remove-user",
+                function (remove) {
+                    var removeUserId = $(remove.target).attr("user-id");
+                    var removeButton = $(this);
+                    var userButton = document.getElementById(removeUserId);
+                    var row = removeButton.closest("tr");
+                    userButton.innerText = "Seç";
+                    userButton.disabled = false;
+                    $(row).addClass("animated fadeOut")
+                        .one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend',
+                            function() {
+                                $(this).remove();
+                            });
+                    selectedUsers.splice(selectedUsers.indexOf(removeUserId), 1);
+                });
+
+            $(".js-submit").click(function () {
+                var userDto = [];
+                selectedUsers.forEach(function(user) {
+                    userDto.push({
+                        selectedUserId: user,
+                        questionId: questionId
+                    });
+                });
+                $.ajax({
+                    url: "/api/selectedusers",
+                    type: "post",
+                    contentType: "application/json",
+                    data: JSON.stringify(userDto),
+                    success: function() {
+                        bootbox.alert("Tebrikler sorunuz yola çıktı.",
+                            function() {
+                                window.location.href = "/User/GetMyQuestions";
+                            });
+                    }
+                });
+            });
         });
 
-</script>
+    </script>
 }
