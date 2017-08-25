@@ -93,7 +93,7 @@ a {
         border-color: #69509F;
     }
 
-    /*Set home page question text*/
+ /*Set home page question text*/
     a.question-text {
         margin: auto
     }
@@ -168,5 +168,24 @@ div.social-profile table td,th {
 div.social-profile table td a {
     color: #67497D;
     font-size: 15px;
-   
+}
+
+/*Popover template*/
+
+ul.notification {
+    list-style: none;
+    padding-left: 0;
+}
+
+ul>li {
+    padding: 10px 0;
+    border-bottom: #a38bd7 solid 1px
+}
+
+ul>li:last-child {
+    border-bottom: none
+}
+
+ul .highlight {
+    font-weight: bold
 }

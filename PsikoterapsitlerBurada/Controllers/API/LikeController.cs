@@ -22,14 +22,17 @@ namespace PsikoterapsitlerBurada.Controllers.API
         {
             var userId = User.Identity.GetUserId();
             var user = _contex.Users.SingleOrDefault(u => u.Id == userId);
-            var answer = _contex.Answers.Include(a => a.User).SingleOrDefault(a => a.Id == id);
+            var answer = _contex.Answers
+                .Include(a => a.User)
+                .SingleOrDefault(a => a.Id == id);
             if (answer == null || user == null || answer.User.Id == userId) return BadRequest();
 
             answer.Likes.Add(user);
             var notification = new Notification()
             {
                 NotificationType = NotificationType.Like,
-                UserLike = user
+                UserLike = user,
+                Answer = answer
             };
 
             answer.User.Notify(notification);
