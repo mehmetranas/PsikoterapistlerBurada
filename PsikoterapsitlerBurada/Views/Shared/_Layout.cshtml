@@ -55,6 +55,10 @@
         %>
         <li><%= notification.answer.user.userName%> sorunu yanıtladı</li>
         <%
+        } else if (notification.notificationType == 4) {
+        %>
+        <li><%= notification.userLike.userName%> yanıtını beğendi</li>
+        <%
         }
        });%>
     </ul>

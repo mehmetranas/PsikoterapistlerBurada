@@ -274,6 +274,10 @@
     <Compile Include="Migrations\201708241351354_AddedIsReadPropToUserNotification.Designer.cs">
       <DependentUpon>201708241351354_AddedIsReadPropToUserNotification.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201708250852010_AddedUserLikePropToNotificationTable.cs" />
+    <Compile Include="Migrations\201708250852010_AddedUserLikePropToNotificationTable.Designer.cs">
+      <DependentUpon>201708250852010_AddedUserLikePropToNotificationTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Answer.cs" />
@@ -455,6 +459,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201708241351354_AddedIsReadPropToUserNotification.resx">
       <DependentUpon>201708241351354_AddedIsReadPropToUserNotification.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708250852010_AddedUserLikePropToNotificationTable.resx">
+      <DependentUpon>201708250852010_AddedUserLikePropToNotificationTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

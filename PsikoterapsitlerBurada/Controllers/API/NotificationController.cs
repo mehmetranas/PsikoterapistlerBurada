@@ -28,6 +28,7 @@ namespace PsikoterapsitlerBurada.Controllers.API
                 .Select(un => un.Notification)
                 .Include(un => un.Answer)
                 .Include(un => un.Answer.User)
+                .Include(un => un.UserLike)
                 .Include(un => un.Question.WhoAsked)
                 .Include(un => un.Following)
                 .Include(f => f.Following.Follower)

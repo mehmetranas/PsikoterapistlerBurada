@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNet.Identity;
 using PsikoterapsitlerBurada.Models;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web.Http;
 
@@ -21,10 +22,21 @@ namespace PsikoterapsitlerBurada.Controllers.API
         {
             var userId = User.Identity.GetUserId();
             var user = _contex.Users.SingleOrDefault(u => u.Id == userId);
-            var answer = _contex.Answers.SingleOrDefault(a => a.Id == id);
+            var answer = _contex.Answers.Include(a => a.User).SingleOrDefault(a => a.Id == id);
             if (answer == null || user == null) return BadRequest();
 
             answer.Likes.Add(user);
+
+            var userForNotify = answer.User;
+
+            var notification = new Notification()
+            {
+                NotificationType = NotificationType.Like,
+                UserLike = user
+            };
+
+            userForNotify.Notify(notification);
+
             _contex.SaveChanges();
 
             return Ok();

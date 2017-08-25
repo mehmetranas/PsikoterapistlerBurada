@@ -9,6 +9,7 @@ namespace PsikoterapsitlerBurada.Models
     {
         Follow = 1,
         Question = 2,
-        Answer = 3
+        Answer = 3,
+        Like = 4
     }
 }
