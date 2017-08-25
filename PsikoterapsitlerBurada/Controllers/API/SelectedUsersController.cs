@@ -15,15 +15,25 @@ namespace PsikoterapsitlerBurada.Controllers.API
         }
 
         [HttpPost]
-        public IHttpActionResult AddUsersToTheQuestion(SelectedUserDto[] UserDto)
+        public IHttpActionResult AddUsersToTheQuestion(SelectedUserDto UserDto)
         {
-            foreach (var userDto in UserDto)
+            var question = _context.Questions.SingleOrDefault(q => q.Id == UserDto.QuestionId);
+            var notification = new Notification()
             {
-                var selectedUser = _context.Users.SingleOrDefault(u => u.Id == userDto.SelectedUserId);
-                var question = _context.Questions.SingleOrDefault(q => q.Id == userDto.QuestionId);
+                Question = question,
+                NotificationType = NotificationType.Question
+            };
+
+            foreach (var userId in UserDto.SelectedUsersId)
+            {
+                var selectedUser = _context.Users.SingleOrDefault(u => u.Id == userId);
 
                 question.AskedToWhom.Add(selectedUser);
+
+                selectedUser.Notify(notification);
             }
+
+            
             
             _context.SaveChanges();
             return Ok();

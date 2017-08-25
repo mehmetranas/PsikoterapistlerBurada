@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNet.Identity
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -38,5 +39,49 @@
 @Scripts.Render("~/bundles/jquery")
 @Scripts.Render("~/bundles/bootstrap")
 @RenderSection("scripts", required: false)
+ 
+<script type="text/x-temlate" id="notification-template">
+    <ul>
+        <% _.each(notifications, function(notification) { 
+                if(notification.notificationType == 1){
+        %>
+        <li><%= notification.following.followee.userName %> seni takip etti</li>
+        <%
+        } else if (notification.notificationType == 2){
+        %>
+        <li><%= notification.question.whoAsked.userName %> sana bir soru sordu</li>
+        <%
+        } else if (notification.notificationType == 3) {
+        %>
+        <li><%= notification.answer.user.userName%> sorunu yanıtladı</li>
+        <%
+        }
+       });%>
+    </ul>
+    
+
+</script>
+<script>
+    $(document).ready(function() {
+        $.getJSON("/api/notification",
+            function(notifications) {
+                console.log(notifications);
+                $(".js-notification-count").text(notifications.length)
+                    .removeClass("hide")
+                    .addClass("animated bounce");
+                $(".notification").popover({
+                    html: true,
+                    placement: "bottom",
+                    title: "Son Bildirimler",
+                    content: function () {
+                        var template = $("#notification-template").html();
+                        var content = _.template(template);
+                        return content({notifications: notifications});
+                    }
+                });
+            });
+       
+    });
+</script>
 </body>
 </html>

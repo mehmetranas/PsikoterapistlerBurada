@@ -23,7 +23,7 @@ namespace PsikoterapsitlerBurada.Controllers
         {
             var userId = User.Identity.GetUserId();
             var myQuestions = _context.Questions.Where(q => q.WhoAsked.Id == userId).Include("WhoAsked")
-                .Include("AskedToWhom").Select(Mapper.Map<QuestionViewModel>);
+                .Include("AskedToWhom").OrderByDescending(q => q.DateTime).Select(Mapper.Map<QuestionViewModel>);
 
             return View(myQuestions);
         }

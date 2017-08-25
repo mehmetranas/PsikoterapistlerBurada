@@ -132,18 +132,11 @@
                 });
 
             $(".js-submit").click(function () {
-                var userDto = [];
-                selectedUsers.forEach(function(user) {
-                    userDto.push({
-                        selectedUserId: user,
-                        questionId: questionId
-                    });
-                });
                 $.ajax({
                     url: "/api/selectedusers",
                     type: "post",
                     contentType: "application/json",
-                    data: JSON.stringify(userDto),
+                    data: JSON.stringify({selectedUsersId:selectedUsers, questionId:questionId}),
                     success: function() {
                         bootbox.alert("Tebrikler sorunuz yola çıktı.",
                             function() {

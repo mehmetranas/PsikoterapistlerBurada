@@ -34,10 +34,21 @@ textarea {
         color: #1B2506;
     }
 
-    .navbar-inverse .navbar-nav > li > a {
+    .navbar-inverse .navbar-nav > li.notification {
+        position: relative
+    }
+
+    .navbar-inverse .navbar-nav > li.notification .badge {
+        position: absolute;
+        top: 8px;
+        right: 2px;
+    }
+
+    .navbar-inverse .navbar-nav > li.notification > a {
         color: #2B3712;
     }
-        .navbar-inverse .navbar-nav > li > a:hover {
+        
+        .navbar-inverse .navbar-nav > li.notification > a:hover {
             color: #7E8C61;
         }
 
@@ -45,6 +56,7 @@ textarea {
         color: #7E8C61;
     }
 
+   
 .panel-success > .panel-heading {
     color: #fff;
     background-color: #260D3A;
