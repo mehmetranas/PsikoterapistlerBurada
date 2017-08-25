@@ -35,7 +35,9 @@ namespace PsikoterapsitlerBurada.Controllers.API
 
             _context.Followings.Add(following);
 
-            user.Notify(notification);
+            var followee = _context.Users.SingleOrDefault(u => u.Id == id);
+
+            followee?.Notify(notification);
 
             _context.SaveChanges();
 

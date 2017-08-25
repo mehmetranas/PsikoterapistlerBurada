@@ -45,7 +45,7 @@
         <% _.each(notifications, function(notification) { 
                 if(notification.notificationType == 1){
         %>
-        <li><%= notification.following.followee.userName %> seni takip etti</li>
+        <li><%= notification.following.follower.userName %> seni takip etti</li>
         <%
         } else if (notification.notificationType == 2){
         %>
