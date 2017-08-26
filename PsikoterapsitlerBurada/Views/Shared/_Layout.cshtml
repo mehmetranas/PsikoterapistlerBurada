@@ -45,19 +45,61 @@
         <% _.each(notifications, function(notification) { 
                 if(notification.notificationType == 1){
         %>
-        <li><span class="highlight"><a href="/user/userprofile/<%=notification.following.follower.id%>"><%= notification.following.follower.userName %></a></span> seni takip etti</li>
+        <li>
+            <span class="highlight">
+                <a data-notification="<%=notification.id%>"
+                   class="js-notification-close" href="/user/userprofile/<%=notification.following.follower.id%>">
+                    <%= notification.following.follower.userName %>
+                </a>
+            </span> seni takip etti
+            <i class="glyphicon glyphicon-remove pull-right notification-close js-notification-close" data-notification="<%=notification.id%>">
+            </i>
+        </li>
         <%
         } else if (notification.notificationType == 2){
         %>
-        <li><span class="highlight"><%= notification.question.whoAsked.userName %></span> <a href="/User/GetMyQuestions">sana bir soru sordu</a></li>
+        <li>
+            <span class="highlight">
+                <%= notification.question.whoAsked.userName %>
+            </span>
+            <a data-notification="<%=notification.id%>"
+               class="js-notification-close"
+               href="/User/WriteAnswer/<%=notification.question.id%>" >sana bir soru sordu</a>
+            <i class="glyphicon glyphicon-remove pull-right notification-close js-notification-close"
+               data-notification="<%=notification.id%>"></i>
+        </li>
         <%
         } else if (notification.notificationType == 3) {
         %>
-        <li><span class="highlight"><%= notification.answer.user.userName%></span> <a href="/Answers/GetAnswers/<%= notification.answer.questionId%>">sorunu yanıtladı</a></li>
+        <li>
+            <span class="highlight">
+                <%= notification.answer.user.userName%>
+            </span>
+            <a data-notification="<%=notification.id%>"
+               class="js-notification-close"
+               href="/Answers/GetAnswers/<%= notification.answer.questionId%>">
+                sorunu yanıtladı
+            </a>
+            <i class="glyphicon glyphicon-remove pull-right notification-close js-notification-close"
+               data-notification="<%=notification.id%>">
+            </i>
+        </li>
         <%
         } else if (notification.notificationType == 4) {
         %>
-        <li><span class="highlight"><%= notification.userLike.userName%></span> <a href="/Answers/GetAnswers/<%= notification.answer.questionId%>">yanıtını beğendi</a></li>
+        <li>
+            <span class="highlight">
+                <%= notification.userLike.userName%>
+            </span>
+            <a data-notification="<%=notification.id%>"
+               class="js-notification-close"
+               href="/Answers/GetAnswers/<%= notification.answer.questionId%>">
+                yanıtını beğendi
+            </a>
+            <i class="glyphicon glyphicon-remove pull-right notification-close js-notification-close"
+               data-notification="<%=notification.id%>">
+            </i>
+        </li>
         <%
         }
        });%>
@@ -70,20 +112,53 @@
         $.getJSON("/api/notification",
             function(notifications) {
                 console.log(notifications);
-                $(".js-notification-count").text(notifications.length)
-                    .removeClass("hide")
-                    .addClass("animated bounce");
-                $(".notification").popover({
-                    html: true,
-                    placement: "bottom",
-                    content: function () {
-                        var template = $("#notification-template").html();
-                        var content = _.template(template);
-                        return content({notifications: notifications});
-                    }
-                });
+               if (notifications.length > 0) {
+                   $(".js-notification-count").text(notifications.length)
+                       .removeClass("hide")
+                       .addClass("animated bounce");
+                   $(".notification").popover({
+                       html: true,
+                       placement: "bottom",
+                       content: function () {
+                           var template = $("#notification-template").html();
+                           var content = _.template(template);
+                           return content({notifications: notifications});
+                       }
+                   });
+               }
             });
-       
+
+        $(document).on("click",
+            "i.js-notification-close",
+            function (e) {
+                var notificationId = $(e.target).attr("data-notification");
+                var element = $(e.target);
+                $.post("/api/readnotification/" + notificationId)
+                    .success(function () {
+                        element.closest("li").addClass("animated fadeOut")
+                            .one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend',
+                            function () {
+                                var count = parseInt($(".js-notification-count").text());
+                                count--;
+                                if (count === 0) {
+                                    $(".js-notification-count").text("").addClass("hide");
+                                    $(".notification").popover("destroy");
+                                    return;
+                                }
+                                element.closest("li").remove();
+                                $(".js-notification-count").text(count);
+                            });
+                    });
+
+            });
+
+        $(document).on("click",
+            "a.js-notification-close",
+            function(e) {
+                var notificationId = $(e.target).attr("data-notification");
+                $.post("/api/readnotification/" + notificationId);
+            });
+
     });
 </script>
 </body>

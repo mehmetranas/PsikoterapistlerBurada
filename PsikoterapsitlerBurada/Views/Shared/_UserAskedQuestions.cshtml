@@ -16,7 +16,7 @@
             @if (question.Answers.Count > 0)
             {
                 <a href="@Url.Action("GetAnswers","Answers", new { id = question.Id})">
-                    <span class="pull-right">Cevaplar - (@question.Answers.Count)</span>
+                    <span class="pull-right">Cevaplar</span>
                 </a>
             }
             else
@@ -25,11 +25,40 @@
             }
         </div>
         <div class="panel-body">
-            @question.QuestionText
+            <table class="questions">
+                <tr>
+                    <td>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="vote">
+                                    <div class="text-center">
+                                        <span class="label label-default">Oy</span>
+                                    </div>
+                                    <div class="text-center">
+                                        <p class="vote-counter">@question.TotalVotes</p>
+                                    </div>
+                                    <div class="text-center">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td> 
+                    <td class="question-text" rowspan="2">
+                        <div class="question-text">
+                            @question.QuestionText
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="text-center">
+                            <p>@question.Answers.Count</p>
+                            <span class="label label-default">Cevap</span>
+                        </div>
+                    </td>
+                </tr>
+            </table> 
         </div>
-        <a href="@Url.Action("UserProfile", "User", new {id = question.WhoAsked.Id})">
-            <span class="pull-right text-warning">@question.WhoAsked.UserName</span>
-        </a>
     </div>
     <hr/>
 }

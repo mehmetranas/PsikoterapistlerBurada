@@ -156,6 +156,7 @@ namespace PsikoterapsitlerBurada.Controllers
                 .Include(q => q.Answers)
                 .Include(q => q.AskedToWhom)
                 .Include(q => q.WhoAsked)
+                .OrderByDescending(q => q.DateTime)
                 .Where(q => q.UsersTrack.Any(u => u.Id == id)).Select(Mapper.Map<QuestionViewModel>);
             return PartialView("_UserAskedQuestions", favoriteQuestions);
         }

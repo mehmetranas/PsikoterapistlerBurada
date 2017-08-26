@@ -95,6 +95,19 @@
 
             $(".js-username").click(function (select) {
 
+                if (selectedUsers.length === 3) {
+                    bootbox.alert({
+                        title: "Oops!",
+                        message: "Üzgünüz 3 kişiden fazlasını seçemezsiniz",
+                        buttons: {
+                            ok: {
+                                label: "Tamam"
+                            }
+                        }
+                    });
+                    return;
+                }
+
                 var selectedUserId = $(select.target).attr('id');
                 var selectButton = document.getElementById(selectedUserId);
                 selectButton.innerText = "Eklendi";
@@ -138,10 +151,21 @@
                     contentType: "application/json",
                     data: JSON.stringify({selectedUsersId:selectedUsers, questionId:questionId}),
                     success: function() {
-                        bootbox.alert("Tebrikler sorunuz yola çıktı.",
-                            function() {
+                        bootbox.alert({
+                            title: "Tebrikler",
+                            message: "Sorunuz yola çıktı bile",
+                            buttons: {
+                                ok: {
+                                    label: "Tamam"
+                                }
+                            },
+                            callback: function() {
                                 window.location.href = "/User/GetMyQuestions";
-                            });
+                            }
+                        });
+                    },
+                    error: function (data) {
+                        console.log(data.responseJSON.message);
                     }
                 });
             });

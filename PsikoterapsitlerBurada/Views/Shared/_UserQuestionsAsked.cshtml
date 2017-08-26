@@ -1,4 +1,4 @@
-﻿@using System.Web.UI.WebControls
+﻿@using Microsoft.AspNet.Identity
 @model IEnumerable<PsikoterapsitlerBurada.Models.ViewModels.QuestionViewModel>
 
 
@@ -16,19 +16,51 @@
                     </p> 
                 </div>
                 <div class="col-md-4">
-                    @if (question.Answers.Count > 0)
+                    @if (question.Answers.Any(a => a.UserId == User.Identity.GetUserId()))
                     {
                         @Html.ActionLink("Cevabı Gör", "GetAnswers", "Answers", new {id = question.Id}, new {@class = "btn btn-link btn-sm"})
                     }
                     else
                     {
-                        <span>Henüz Cevaplanmadı</span>
+                        @Html.ActionLink("Henüz Cevaplanmadı", "WriteAnswer","User", new { id = question.Id}, new {@class = "btn btn-link btn-sm"})
                     }
                 </div>
             </div>
         </div>
         <div class="panel-body">
-            @question.QuestionText
+                <table class="questions">
+                    <tr>
+                        <td>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="vote">
+                                        <div class="text-center">
+                                            <span class="label label-default">Oy</span>
+                                        </div>
+                                        <div class="text-center">
+                                            <p class="vote-counter">@question.TotalVotes</p>
+                                        </div>
+                                        <div class="text-center">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td> 
+                        <td class="question-text" rowspan="2">
+                            <div class="question-text">
+                                @question.QuestionText
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="text-center">
+                                <p>@question.Answers.Count</p>
+                                <span class="label label-default">Cevap</span>
+                            </div>
+                        </td>
+                    </tr>
+                </table> 
         </div>
     </div>
 }

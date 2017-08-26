@@ -12,7 +12,7 @@ namespace PsikoterapsitlerBurada.Controllers.API
     [Authorize]
     public class NotificationController : ApiController
     {
-        private ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
 
         public NotificationController()
         {
@@ -24,7 +24,7 @@ namespace PsikoterapsitlerBurada.Controllers.API
         {
             var id = User.Identity.GetUserId();
             var notifications = _context.UserNotifications
-                .Where(un => un.UserId == id && un.isRead == false)
+                .Where(un => un.UserId == id && un.IsRead == false)
                 .Select(un => un.Notification)
                 .Include(un => un.Answer)
                 .Include(un => un.Answer.User)

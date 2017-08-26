@@ -207,6 +207,7 @@
     <Compile Include="Controllers\AnswersController.cs" />
     <Compile Include="Controllers\API\AnswerController.cs" />
     <Compile Include="Controllers\API\FavoriteController.cs" />
+    <Compile Include="Controllers\API\ReadNotificationController.cs" />
     <Compile Include="DTOs\FollowingDto.cs" />
     <Compile Include="Controllers\API\FollowingController.cs" />
     <Compile Include="Controllers\API\NotificationController.cs" />
