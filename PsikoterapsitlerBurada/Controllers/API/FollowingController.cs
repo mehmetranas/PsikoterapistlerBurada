@@ -1,6 +1,6 @@
-﻿using System.Linq;
-using Microsoft.AspNet.Identity;
+﻿using Microsoft.AspNet.Identity;
 using PsikoterapsitlerBurada.Models;
+using System.Linq;
 using System.Web.Http;
 
 namespace PsikoterapsitlerBurada.Controllers.API
@@ -19,6 +19,7 @@ namespace PsikoterapsitlerBurada.Controllers.API
         public IHttpActionResult Follow(string id)
         {
             var userId = User.Identity.GetUserId();
+            var user = _context.Users.SingleOrDefault(u => u.Id == userId);
 
             var following = new Following()
             {
@@ -26,7 +27,17 @@ namespace PsikoterapsitlerBurada.Controllers.API
                 FollowerId = userId
             };
 
+            var notification = new Notification()
+            {
+                Following = following,
+                NotificationType = NotificationType.Follow
+            };
+
             _context.Followings.Add(following);
+
+            var followee = _context.Users.SingleOrDefault(u => u.Id == id);
+
+            followee?.Notify(notification);
 
             _context.SaveChanges();
 
@@ -37,10 +48,17 @@ namespace PsikoterapsitlerBurada.Controllers.API
         public IHttpActionResult UnFollow(string id)
         {
             var userId = User.Identity.GetUserId();
+
             var following = _context.Followings.SingleOrDefault(f => f.FollowerId == userId && f.FolloweeId == id);
+
             if (following == null) return BadRequest();
 
+            var notification = _context.Notifications.SingleOrDefault(n => n.FollowingId == following.Id);
+
+            if (notification != null) _context.Notifications.Remove(notification);
+
             _context.Followings.Remove(following);
+
             _context.SaveChanges();
 
             return Ok();

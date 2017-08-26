@@ -19,6 +19,7 @@ namespace PsikoterapsitlerBurada.Models
             Answers = new HashSet<Answer>();
             Followees = new HashSet<Following>();
             Followers = new HashSet<Following>();
+            UserNotifications = new HashSet<UserNotification>();
         }
 
         public virtual ICollection<Question> AskedQuestions { get; set; }
@@ -28,6 +29,7 @@ namespace PsikoterapsitlerBurada.Models
         public virtual ICollection<Question> FavoriteQuestions { get; set; }
         public virtual ICollection<Following> Followers { get; set; }
         public virtual ICollection<Following> Followees { get; set; }
+        public virtual ICollection<UserNotification> UserNotifications { get; private set; }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {
@@ -35,6 +37,17 @@ namespace PsikoterapsitlerBurada.Models
             var userIdentity = await manager.CreateIdentityAsync(this, DefaultAuthenticationTypes.ApplicationCookie);
             // Add custom user claims here
             return userIdentity;
+        }
+
+        public void Notify(Notification notification)
+        {
+            var userNotification = new UserNotification()
+            {
+                UserId = Id,
+                Notification = notification
+            };
+
+            UserNotifications.Add(userNotification);
         }
     }
 }

@@ -2,7 +2,7 @@
 {
     public class SelectedUserDto
     {
-        public string SelectedUserId { get; set; }
+        public string[] SelectedUsersId { get; set; }
         public int QuestionId { get; set; }
     }
 }

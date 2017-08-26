@@ -124,7 +124,15 @@
                     $.post("/api/vote", voteDto)
                         .success(function (data, status, xhr) {
                             if (xhr.responseJSON && xhr.responseJSON.isVoteUp) {
-                                alert("Daha önce bu soru için oy hakkınızı kullandınız.");
+                                bootbox.alert({
+                                    title: "Opps!",
+                                    message: "Daha önce bu soru için oy hakkınızı kullandınız",
+                                    buttons: {
+                                        ok: {
+                                            label: "Tamam"
+                                        }
+                                    }
+                                });
                                 return;
                             }
 

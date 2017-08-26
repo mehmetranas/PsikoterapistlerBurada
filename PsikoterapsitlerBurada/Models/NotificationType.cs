@@ -7,9 +7,9 @@ namespace PsikoterapsitlerBurada.Models
 {
     public enum NotificationType
     {
-        Like = 1,
-        Follow = 2,
-        Question = 3,
-        Answer = 4
+        Follow = 1,
+        Question = 2,
+        Answer = 3,
+        Like = 4
     }
 }

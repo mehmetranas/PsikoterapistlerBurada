@@ -22,8 +22,13 @@ namespace PsikoterapsitlerBurada.Controllers
         public ActionResult GetMyQuestions()
         {
             var userId = User.Identity.GetUserId();
-            var myQuestions = _context.Questions.Where(q => q.WhoAsked.Id == userId).Include("WhoAsked")
-                .Include("AskedToWhom").Select(Mapper.Map<QuestionViewModel>);
+            var myQuestions = _context.Questions
+                .Where(q => q.WhoAsked.Id == userId)
+                .Include(q => q.WhoAsked)
+                .Include(q => q.AskedToWhom)
+                .Include(q => q.Votes)
+                .Include(q => q.Answers)
+                .OrderByDescending(q => q.DateTime).Select(Mapper.Map<QuestionViewModel>);
 
             return View(myQuestions);
         }
@@ -150,6 +155,7 @@ namespace PsikoterapsitlerBurada.Controllers
                 .Include(q => q.Answers)
                 .Include(q => q.AskedToWhom)
                 .Include(q => q.WhoAsked)
+                .OrderByDescending(q => q.DateTime)
                 .Where(q => q.UsersTrack.Any(u => u.Id == id)).Select(Mapper.Map<QuestionViewModel>);
             return PartialView("_UserAskedQuestions", favoriteQuestions);
         }
