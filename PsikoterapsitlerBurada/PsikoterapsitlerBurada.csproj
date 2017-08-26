@@ -207,8 +207,13 @@
     <Compile Include="Controllers\AnswersController.cs" />
     <Compile Include="Controllers\API\AnswerController.cs" />
     <Compile Include="Controllers\API\FavoriteController.cs" />
-    <Compile Include="Controllers\API\FollwingController.cs" />
+    <Compile Include="Controllers\API\ReadNotificationController.cs" />
+    <Compile Include="DTOs\FollowingDto.cs" />
+    <Compile Include="Controllers\API\FollowingController.cs" />
+    <Compile Include="Controllers\API\NotificationController.cs" />
     <Compile Include="Controllers\API\LikeController.cs" />
+    <Compile Include="DTOs\NotificationDto.cs" />
+    <Compile Include="DTOs\QuestionDto.cs" />
     <Compile Include="DTOs\AnswerDto.cs" />
     <Compile Include="Controllers\API\SelectedUsersController.cs" />
     <Compile Include="Controllers\API\VoteController.cs" />
@@ -217,6 +222,7 @@
     <Compile Include="Controllers\QuestionController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="DTOs\SelectedUserDto.cs" />
+    <Compile Include="DTOs\UserDto.cs" />
     <Compile Include="DTOs\VoteDto.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -261,9 +267,17 @@
     <Compile Include="Migrations\201708190822469_AddedFallowsListToUser.Designer.cs">
       <DependentUpon>201708190822469_AddedFallowsListToUser.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201708221313401_AddedNotificationAndUserNotificateTables.cs" />
-    <Compile Include="Migrations\201708221313401_AddedNotificationAndUserNotificateTables.Designer.cs">
-      <DependentUpon>201708221313401_AddedNotificationAndUserNotificateTables.cs</DependentUpon>
+    <Compile Include="Migrations\201708240909100_AddedNotificationAndUserNotificationTable.cs" />
+    <Compile Include="Migrations\201708240909100_AddedNotificationAndUserNotificationTable.Designer.cs">
+      <DependentUpon>201708240909100_AddedNotificationAndUserNotificationTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201708241351354_AddedIsReadPropToUserNotification.cs" />
+    <Compile Include="Migrations\201708241351354_AddedIsReadPropToUserNotification.Designer.cs">
+      <DependentUpon>201708241351354_AddedIsReadPropToUserNotification.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201708250852010_AddedUserLikePropToNotificationTable.cs" />
+    <Compile Include="Migrations\201708250852010_AddedUserLikePropToNotificationTable.Designer.cs">
+      <DependentUpon>201708250852010_AddedUserLikePropToNotificationTable.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -353,6 +367,7 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\typeahead.js" />
+    <Content Include="Scripts\underscore-min.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -440,8 +455,14 @@
     <EmbeddedResource Include="Migrations\201708190822469_AddedFallowsListToUser.resx">
       <DependentUpon>201708190822469_AddedFallowsListToUser.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201708221313401_AddedNotificationAndUserNotificateTables.resx">
-      <DependentUpon>201708221313401_AddedNotificationAndUserNotificateTables.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201708240909100_AddedNotificationAndUserNotificationTable.resx">
+      <DependentUpon>201708240909100_AddedNotificationAndUserNotificationTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708241351354_AddedIsReadPropToUserNotification.resx">
+      <DependentUpon>201708241351354_AddedIsReadPropToUserNotification.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708250852010_AddedUserLikePropToNotificationTable.resx">
+      <DependentUpon>201708250852010_AddedUserLikePropToNotificationTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

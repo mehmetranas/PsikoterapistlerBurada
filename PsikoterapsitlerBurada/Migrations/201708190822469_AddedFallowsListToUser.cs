@@ -11,10 +11,11 @@ namespace PsikoterapsitlerBurada.Migrations
                 "dbo.Followings",
                 c => new
                     {
+                        Id = c.Int(nullable: false, identity: true),
                         FollowerId = c.String(nullable: false, maxLength: 128),
                         FolloweeId = c.String(nullable: false, maxLength: 128),
                     })
-                .PrimaryKey(t => new { t.FollowerId, t.FolloweeId })
+                .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.AspNetUsers", t => t.FolloweeId)
                 .ForeignKey("dbo.AspNetUsers", t => t.FollowerId)
                 .Index(t => t.FollowerId)

@@ -46,6 +46,7 @@ namespace PsikoterapsitlerBurada.Controllers
             };
 
             _context.Questions.Add(question);
+
             _context.SaveChanges();
             var questionId = _context.Questions.Max(q => q.Id);
             return RedirectToAction("SelectUserToAskQuestion", new {id = questionId});

@@ -1,13 +1,14 @@
-﻿using Microsoft.Build.Framework;
+﻿using System.Collections.Generic;
+using Microsoft.Build.Framework;
 
 namespace PsikoterapsitlerBurada.DTOs
 {
     public class AnswerDto
     {
         public int Id { get; set; }
-        [Required]
         public string AnswerText { get; set; }
-        [Required]
         public int QuestionId { get; set; }
+        public ICollection<UserDto> Likes { get; set; }
+        public UserDto User { get; set; }
     }
 }

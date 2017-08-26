@@ -1,7 +1,7 @@
-﻿using System.Linq;
-using System.Web.Http;
-using PsikoterapsitlerBurada.DTOs;
+﻿using PsikoterapsitlerBurada.DTOs;
 using PsikoterapsitlerBurada.Models;
+using System.Linq;
+using System.Web.Http;
 
 namespace PsikoterapsitlerBurada.Controllers.API
 {
@@ -15,35 +15,32 @@ namespace PsikoterapsitlerBurada.Controllers.API
         }
 
         [HttpPost]
-        public IHttpActionResult AddUsersToTheQuestion(SelectedUserDto selectedUserDto)
+        public IHttpActionResult AddUsersToTheQuestion(SelectedUserDto userDto)
         {
-            var selectedUser = _context.Users.SingleOrDefault(u => u.Id == selectedUserDto.SelectedUserId);
-            var question = _context.Questions.SingleOrDefault(q => q.Id == selectedUserDto.QuestionId);
+            if (userDto.SelectedUsersId.Length > 3)
+                return BadRequest("3 kişiden fazla seçim yapılamaz");
 
-            if (question == null || selectedUser == null)
+            var question = _context.Questions.SingleOrDefault(q => q.Id == userDto.QuestionId);
+            var notification = new Notification()
             {
-                return BadRequest("Hata oluştu, lütfen tekrar deneyin.");
+                Question = question,
+                NotificationType = NotificationType.Question
+            };
+
+            foreach (var userId in userDto.SelectedUsersId)
+            {
+                var selectedUser = _context.Users.SingleOrDefault(u => u.Id == userId);
+
+                question?.AskedToWhom.Add(selectedUser);
+
+                selectedUser?.Notify(notification);
             }
 
-            question.AskedToWhom.Add(selectedUser);
+            
+            
             _context.SaveChanges();
             return Ok();
         }
 
-        [HttpDelete]
-        public IHttpActionResult RemoveSelectedUserFromTheQuestion(SelectedUserDto selectedUserDto)
-        {
-            var selectedUser = _context.Users.SingleOrDefault(u => u.Id == selectedUserDto.SelectedUserId);
-            var question = _context.Questions.SingleOrDefault(q => q.Id == selectedUserDto.QuestionId);
-
-            if (question == null || selectedUser == null)
-            {
-                return BadRequest("Hata oluştu, lütfen tekrar deneyin.");
-            }
-
-            selectedUser.QuestionsAsked.Remove(question);
-            _context.SaveChanges();
-            return Ok();
-        }
     }
 }

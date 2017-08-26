@@ -2,6 +2,7 @@
 using PsikoterapsitlerBurada.DTOs;
 using PsikoterapsitlerBurada.Models;
 using System;
+using System.Linq;
 using System.Web.Http;
 
 namespace PsikoterapsitlerBurada.Controllers.API
@@ -28,6 +29,17 @@ namespace PsikoterapsitlerBurada.Controllers.API
             };
 
             _context.Answers.Add(currentAnswer);
+
+            var notification = new Notification()
+            {
+                Answer = currentAnswer,
+                NotificationType = NotificationType.Answer
+            };
+
+            var whoAsked = _context.Questions.Include("whoAsked").SingleOrDefault(q => q.Id == currentAnswer.QuestionId).WhoAsked;
+
+            whoAsked.Notify(notification);
+
             _context.SaveChanges();
             return Ok();
         }

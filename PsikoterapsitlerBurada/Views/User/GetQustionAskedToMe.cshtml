@@ -9,21 +9,45 @@
 @foreach (var question in Model)
 {
     <div class="jumbotron">
-        <table class="table-condensed questions">
+        <table class="questions">
             <tr>
-                <td class="question-text">
+                <td>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="vote">
+                                <div class="text-center">
+                                    <span class="label label-default">Oy</span>
+                                </div>
+                                <div class="text-center">
+                                    <p class="vote-counter">@question.TotalVotes</p>
+                                </div>
+                                <div class="text-center">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td> 
+                <td class="question-text" rowspan="2">
                     <div class="question-text">
                         @question.QuestionText
                     </div>
                     @if (question.WhoAsked != null)
                     {
-                        <a href=@Url.Action("UserProfile","User",new {id = question.WhoAsked.Id})> 
+                        <a href=@Url.Action("UserProfile", "User", new {id = question.WhoAsked.Id})>
                             <small class="who-asked pull-right">
                                 @question.WhoAsked.UserName
                             </small>
-                     </a>
-                        
+                        </a>
+
                     }
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="text-center">
+                        <p>@question.Answers.Count</p>
+                        <span class="label label-default">Cevap</span>
+                    </div>
                 </td>
             </tr>
         </table> 

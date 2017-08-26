@@ -62,6 +62,7 @@
             </div>
         </div>
         <div class="col-md-8 action">
+            <div class="js-loader loader hide"></div>
         </div>
     </div>
 </div>
@@ -73,32 +74,40 @@
             $(".js-followers").click(function () {
                 var url = '@Url.Action("GetUserFollowers","User",
                                new {id = Model.User.Id})';
-                $("div.action").load(url);
+                load(url);
             });
 
             $(".js-followees").click(function () {
                 var url = '@Url.Action("GetUserFollowees","User",
                                new {id = Model.User.Id})';
-                $("div.action").load(url);
+                load(url);
             });
 
             $(".js-user-favorite-questions").click(function () {
                 var url = '@Url.Action("GetUserFavoriteQuestions","User",
                                new {id = Model.User.Id})';
-                $("div.action").load(url);
+                load(url);
             });
 
-          $(".js-user-questions").click(function() {
+            $(".js-user-questions").click(function () {
                 var url = '@Url.Action("GetUserQuestions","User",
-                          new {id = Model.User.Id})';
-                $("div.action").load(url);
+                          new { id = Model.User.Id })';
+                load(url);
             });
 
             $(".js-user-questions-asked").click(function() {
                 var url = '@Url.Action("GetUserQuestionsAsked","User",
                           new { id = Model.User.Id })';
-                $("div.action").load(url);
+                load(url);
             });
+
+            function load(url) {
+                $(".js-loader").removeClass("hide");
+                $("div.action").load(url,
+                    function() {
+                        $(".js-loader").addClass("hide");
+                    });
+            }
 
             $(document).on("click", ".js-follow-action",
                 function() {
