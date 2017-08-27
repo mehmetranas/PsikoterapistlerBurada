@@ -207,6 +207,7 @@
     <Compile Include="Controllers\AnswersController.cs" />
     <Compile Include="Controllers\API\AnswerController.cs" />
     <Compile Include="Controllers\API\FavoriteController.cs" />
+    <Compile Include="Controllers\API\GetUsersController.cs" />
     <Compile Include="Controllers\API\ReadNotificationController.cs" />
     <Compile Include="DTOs\FollowingDto.cs" />
     <Compile Include="Controllers\API\FollowingController.cs" />
@@ -413,6 +414,7 @@
     <Content Include="Views\Shared\_UserAskedQuestions.cshtml" />
     <Content Include="Views\Shared\_UserQuestionsAsked.cshtml" />
     <Content Include="Views\Shared\_Following.cshtml" />
+    <Content Include="Views\Home\Search.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
