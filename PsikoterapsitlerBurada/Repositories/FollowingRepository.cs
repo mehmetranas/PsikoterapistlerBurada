@@ -16,7 +16,7 @@ namespace PsikoterapsitlerBurada.Repositories
             _context = context;
         }
 
-        public IQueryable<Following> GetFollowersByFolloweeId(string id)
+        public IQueryable<Following> GetFollowingsByFollower(string id)
         {
             return _context.Followings
                 .Include(f => f.Followee)
@@ -24,7 +24,7 @@ namespace PsikoterapsitlerBurada.Repositories
                 .Where(f => f.FollowerId == id);
         }
 
-        public IQueryable<Following> GetFolloweesByFolloweeId(string id)
+        public IQueryable<Following> GetFollowingsByFollowee(string id)
         {
             return _context.Followings
                 .Include(f => f.Followee)

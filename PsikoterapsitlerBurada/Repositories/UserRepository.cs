@@ -27,7 +27,7 @@ namespace PsikoterapsitlerBurada.Repositories
             return _context.Users.SingleOrDefault(u => u.Id == userId);
         }
 
-        public ApplicationUser GetUserForUserProfile(string id)
+        public ApplicationUser GetUsers(string id)
         {
             return _context.Users
                 .Include(u => u.Followees)
@@ -35,6 +35,17 @@ namespace PsikoterapsitlerBurada.Repositories
                 .Include(u => u.FavoriteQuestions)
                 .Include(u => u.LikesAnswers)
                 .SingleOrDefault(u => u.Id == id);
+        }
+
+        public List<ApplicationUser> GetUsersByQuery(string query)
+        {
+            return _context.Users
+                .Where(u => u.UserName.StartsWith(query)).ToList();
+        }
+
+        public IEnumerable<ApplicationUser> GetAllUsersWithOutAuthUser(string userId)
+        {
+            return _context.Users.ToList().Where(u => u.Id != userId);
         }
     }
 }

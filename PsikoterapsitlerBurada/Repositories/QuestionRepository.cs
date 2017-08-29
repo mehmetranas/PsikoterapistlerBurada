@@ -35,7 +35,7 @@ namespace PsikoterapsitlerBurada.Repositories
                 .ToList().OrderByDescending(q => q.DateTime);
         }
 
-        public IOrderedQueryable<Question> GetQuestionsByWhoAsked(string userId)
+        public IOrderedQueryable<Question> GetUserQuestions(string userId)
         {
             return _context.Questions
                 .Include(q => q.WhoAsked)
@@ -60,7 +60,7 @@ namespace PsikoterapsitlerBurada.Repositories
                 .Where(q => q.AskedToWhom.Any(u => u.Id == userId));
         }
 
-        public IQueryable<Question> GetUseQuestionsByUserId(string id)
+        public IQueryable<Question> GetUserQuestionsWithWhoAskAskToWhomAns(string id)
         {
             return _context.Questions
                 .Include(q => q.WhoAsked)
@@ -69,20 +69,32 @@ namespace PsikoterapsitlerBurada.Repositories
                 .Where(q => q.WhoAsked.Id == id);
         }
 
-        public IQueryable<Question> GetUsersQuestionsAskedByUserId(string id)
+        public IQueryable<Question> GetUsersQuestionsAskedWithAns(string id)
         {
             return _context.Questions.Include(q => q.WhoAsked)
                 .Include(q => q.Answers)
                 .Where(q => q.AskedToWhom.Any(u => u.Id == id));
         }
 
-        public IQueryable<Question> GetUserFavoriteQuestionsByUserId(string id)
+        public IQueryable<Question> GetUserFavoriteQuestionsWithAnsAskToWhomWhoAsk(string id)
         {
             return _context.Questions
                 .Include(q => q.Answers)
                 .Include(q => q.AskedToWhom)
                 .Include(q => q.WhoAsked)
                 .Where(q => q.UsersTrack.Any(u => u.Id == id));
+        }
+
+        public IEnumerable<Question> GetAllAnsweredQuestionsWithCtgWhoAskVtsAnsAskToWhom()
+        {
+            return _context.Questions
+                .Include(q => q.Category)
+                .Include(q => q.WhoAsked)
+                .Include(q => q.Votes)
+                .Include(q => q.Answers)
+                .Include(q => q.AskedToWhom)
+                .ToList().OrderByDescending(q => q.DateTime)
+                .Where(q => q.AskedToWhom.Count != 0);
         }
     }
 }

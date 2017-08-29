@@ -2,12 +2,10 @@
 using Microsoft.AspNet.Identity;
 using PsikoterapsitlerBurada.Models;
 using PsikoterapsitlerBurada.Models.ViewModels;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Web.Mvc;
 using PsikoterapsitlerBurada.Repositories;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web.Mvc;
 
 namespace PsikoterapsitlerBurada.Controllers
 {
@@ -30,7 +28,8 @@ namespace PsikoterapsitlerBurada.Controllers
         public ActionResult GetMyQuestions()
         {
             var userId = User.Identity.GetUserId();
-            var myQuestions = _questionRepository.GetQuestionsByWhoAsked(userId)
+            var myQuestions = _questionRepository
+                .GetUserQuestions(userId)
                 .Select(Mapper.Map<QuestionViewModel>);
 
             return View(myQuestions);
@@ -39,7 +38,8 @@ namespace PsikoterapsitlerBurada.Controllers
         public ActionResult GetUnAskedQuestions()
         {
             var userId = User.Identity.GetUserId();
-            var questions = _questionRepository.GetUserUnAskedQuestions(userId)
+            var questions = _questionRepository
+                .GetUserUnAskedQuestions(userId)
                 .Select(Mapper.Map<QuestionViewModel>);
 
             return View(questions);
@@ -52,19 +52,21 @@ namespace PsikoterapsitlerBurada.Controllers
             var userId = User.Identity.GetUserId();
             var user = _userRepository.GetUserById(userId);
 
-            var questions = _questionRepository.GetQuestionsAskedToUser(userId).OrderBy(d => d.DateTime);
+            var questions = _questionRepository
+                .GetQuestionsAskedToUser(userId)
+                .OrderBy(d => d.DateTime);
 
             if (user == null) return HttpNotFound();
 
             return View(questions);
         }
 
-      
-
-        [Authorize]
+      [Authorize]
         public ActionResult WriteAnswer(int id)
         {
-            var question = _questionRepository.GetQuestionByQuestionId(id);
+            var question = _questionRepository
+                .GetQuestionByQuestionId(id);
+
             var viewModel = new AnswerViewModel()
             {
                 Question = question
@@ -76,7 +78,8 @@ namespace PsikoterapsitlerBurada.Controllers
         public ActionResult UserProfile(string id)
         {
             var authUserId = User.Identity.GetUserId();
-            var user = _userRepository.GetUserForUserProfile(id);
+            var user = _userRepository
+                .GetUsers(id);
 
             var viewModel = new ProfileViewModel(authUserId, user);
            
@@ -87,7 +90,8 @@ namespace PsikoterapsitlerBurada.Controllers
 
         public ActionResult GetUserQuestions(string id)
         {
-            var userQuestions = _questionRepository.GetUseQuestionsByUserId(id)
+            var userQuestions = _questionRepository
+                .GetUserQuestionsWithWhoAskAskToWhomAns(id)
                 .Select(Mapper.Map<QuestionViewModel>);
 
             return PartialView("_UserAskedQuestions", userQuestions);
@@ -95,7 +99,8 @@ namespace PsikoterapsitlerBurada.Controllers
 
         public ActionResult GetUserQuestionsAsked(string id)
         {
-            var userQuestions = _questionRepository.GetUsersQuestionsAskedByUserId(id)
+            var userQuestions = _questionRepository
+                .GetUsersQuestionsAskedWithAns(id)
                 .Select(Mapper.Map<QuestionViewModel>);
 
             return PartialView("_UserQuestionsAsked", userQuestions);
@@ -103,8 +108,8 @@ namespace PsikoterapsitlerBurada.Controllers
 
         public ActionResult GetUserFollowers(string id)
         {
-
-            var followers = _followingRepository.GetFollowersByFolloweeId(id);
+            var followers = _followingRepository
+                .GetFollowingsByFollower(id);
 
             var authUserId = User.Identity.GetUserId();
 
@@ -120,12 +125,11 @@ namespace PsikoterapsitlerBurada.Controllers
             return PartialView("_UserProfiles", viewModel);
         }
 
-        
-
         public ActionResult GetUserFollowees(string id)
         {
 
-            var followees = _followingRepository.GetFolloweesByFolloweeId(id);
+            var followees = _followingRepository
+                .GetFollowingsByFollowee(id);
 
             var authUserId = User.Identity.GetUserId();
 
@@ -145,7 +149,8 @@ namespace PsikoterapsitlerBurada.Controllers
 
         public ActionResult GetUserFavoriteQuestions(string id)
         {
-            var favoriteQuestions = _questionRepository.GetUserFavoriteQuestionsByUserId(id)
+            var favoriteQuestions = _questionRepository
+                .GetUserFavoriteQuestionsWithAnsAskToWhomWhoAsk(id)
                 .OrderByDescending(q => q.DateTime)
                 .Select(Mapper.Map<QuestionViewModel>);
 

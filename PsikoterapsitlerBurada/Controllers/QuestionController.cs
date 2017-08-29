@@ -75,7 +75,7 @@ namespace PsikoterapsitlerBurada.Controllers
             var question = _questionRepository.GetQuestionByQuestionId(id);
             var questionViewModel = Mapper.Map<QuestionViewModel>(question);
             var userId = User.Identity.GetUserId();
-            var users = _userRepository.GetAllUsers().Where(u => u.Id != userId); //There is a problem that get all users properties, only get username, ctg. and rating
+            var users = _userRepository.GetAllUsersWithOutAuthUser(userId); //There is a problem that get all users properties, only get username, ctg. and rating
             var viewModel = new SelectUserToAskQuestionViewModel()
             {
                 Users = users,
@@ -84,4 +84,4 @@ namespace PsikoterapsitlerBurada.Controllers
             return View(viewModel);
         }
     }
-}
+ }

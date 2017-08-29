@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNet.Identity;
+﻿using System.Collections.Generic;
+using Microsoft.AspNet.Identity;
 using PsikoterapsitlerBurada.Models;
 using PsikoterapsitlerBurada.Models.ViewModels;
 using System.Data.Entity;
@@ -12,16 +13,18 @@ namespace PsikoterapsitlerBurada.Controllers
     {
         private ApplicationDbContext _context;
         private QuestionRepository _questionRepository;
+        private UserRepository _userRepository;
 
         public HomeController()
         {
             _context = new ApplicationDbContext();
             _questionRepository = new QuestionRepository(_context);
+            _userRepository = new UserRepository(_context);
         }
         
         public ActionResult Index()
         {
-            var questions =  _questionRepository.GetAllQuestions().Where(q => q.AskedToWhom.Count != 0);
+            var questions =  _questionRepository.GetAllAnsweredQuestionsWithCtgWhoAskVtsAnsAskToWhom();
                 
             return View(questions);
         }
@@ -47,8 +50,7 @@ namespace PsikoterapsitlerBurada.Controllers
 
         public ActionResult GetSearchList(string query)
         {
-            var users = _context.Users
-                .Where(u => u.UserName.StartsWith(query)).ToList();
+            var users =_userRepository.GetUsersByQuery(query);
 
             var authUserId = User.Identity.GetUserId();
 
@@ -56,5 +58,7 @@ namespace PsikoterapsitlerBurada.Controllers
 
             return PartialView("_UserProfiles", viewModel);
         }
+
+       
     }
 }

@@ -36,4 +36,4 @@ namespace PsikoterapsitlerBurada.Controllers
             return View(viewModel);
         }
     }
-}
+    }
