@@ -1,20 +1,27 @@
-﻿using Microsoft.AspNet.Identity;
+﻿using AutoMapper;
+using Microsoft.AspNet.Identity;
 using PsikoterapsitlerBurada.Models;
+using PsikoterapsitlerBurada.Models.ViewModels;
+using PsikoterapsitlerBurada.Repositories;
 using System;
 using System.Linq;
 using System.Web.Mvc;
-using AutoMapper;
-using PsikoterapsitlerBurada.Models.ViewModels;
 
 namespace PsikoterapsitlerBurada.Controllers
 {
     public class QuestionController : Controller
     {
         private ApplicationDbContext _context;
+        private CategoryRepository _categoryRepository;
+        private UserRepository _userRepository;
+        private QuestionRepository _questionRepository;
 
         public QuestionController()
         {
             _context = new ApplicationDbContext();
+            _categoryRepository = new CategoryRepository(_context);
+            _userRepository = new UserRepository(_context);
+            _questionRepository = new QuestionRepository(_context);
         }
 
         // GET: Question
@@ -23,8 +30,8 @@ namespace PsikoterapsitlerBurada.Controllers
         {
             var viewModel = new QuestionViewModel()
             {
-                Categories = _context.Categories.ToList(),
-                AskedToWhom = _context.Users.ToList() //There is a problem that get all users properties, only get username and Id
+                Categories = _categoryRepository.GetCategories(),
+                AskedToWhom = _userRepository.GetAllUsers() //There is a problem that get all users properties, only get username and Id
             };
             return View(viewModel);
         }
@@ -34,8 +41,8 @@ namespace PsikoterapsitlerBurada.Controllers
         public ActionResult Create(QuestionViewModel model)
         {
             var userId = User.Identity.GetUserId();
-            var user = _context.Users.SingleOrDefault(u => u.Id == userId);
-            var category = _context.Categories.SingleOrDefault(c => c.Id == model.Category.Id);
+            var user = _userRepository.GetUserById(userId);
+            var category = _categoryRepository.GetCategoryByCategoryId(model.Category.Id);
 
             var question = new Question()
             {
@@ -48,24 +55,27 @@ namespace PsikoterapsitlerBurada.Controllers
             _context.Questions.Add(question);
 
             _context.SaveChanges();
-            var questionId = _context.Questions.Max(q => q.Id);
+
+            var questionId = _questionRepository.GetAllQuestions().Max(q => q.Id);
             return RedirectToAction("SelectUserToAskQuestion", new {id = questionId});
         }
+
+        
 
         [Authorize]
         public ActionResult SelectUserToAskQuestion(int id)
         {
-            var askedToWhom = _context.Questions.Include("AskedToWhom").SingleOrDefault(q => q.Id == id).AskedToWhom;
+            var askedToWhom = _questionRepository.GetQuestionByQuestionId(id).AskedToWhom;
 
             if (askedToWhom.Count != 0)
             {
                 return HttpNotFound();
             }
 
-            var question = _context.Questions.SingleOrDefault(q => q.Id == id);
+            var question = _questionRepository.GetQuestionByQuestionId(id);
             var questionViewModel = Mapper.Map<QuestionViewModel>(question);
             var userId = User.Identity.GetUserId();
-            var users = _context.Users.Where(u => u.Id != userId).ToList(); //There is a problem that get all users properties, only get username, ctg. and rating
+            var users = _userRepository.GetAllUsers().Where(u => u.Id != userId); //There is a problem that get all users properties, only get username, ctg. and rating
             var viewModel = new SelectUserToAskQuestionViewModel()
             {
                 Users = users,
@@ -73,7 +83,5 @@ namespace PsikoterapsitlerBurada.Controllers
             };
             return View(viewModel);
         }
-
-        
     }
 }

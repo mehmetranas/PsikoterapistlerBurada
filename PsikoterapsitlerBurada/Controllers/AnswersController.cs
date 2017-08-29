@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using PsikoterapsitlerBurada.Models;
 using PsikoterapsitlerBurada.Models.ViewModels;
-using System.Data.Entity;
+using PsikoterapsitlerBurada.Repositories;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -11,28 +11,21 @@ namespace PsikoterapsitlerBurada.Controllers
     public class AnswersController : Controller
     {
         private ApplicationDbContext _context;
+        private AnswerRepository _answerRepository;
+        private QuestionRepository _questionRepository;
 
         public AnswersController()
         {
             _context = new ApplicationDbContext();
+            _answerRepository = new AnswerRepository(_context);
+            _questionRepository = new QuestionRepository(_context);
         }
 
         public ActionResult GetAnswers(int id)
         {
-            var answers = _context.Answers.Where(a => a.Question.Id == id)
-                .Include(a => a.Question)
-                .Include(a => a.User)
-                .Include(a => a.Likes)
-                .Select(Mapper.Map<AnswerViewModel>)
-                .ToList();
-           
-            var question = _context.Questions
-                .Include(q => q.AskedToWhom)
-                .Include(q => q.WhoAsked)
-                .Select(Mapper.Map<QuestionViewModel>)
-                .SingleOrDefault(q => q.Id == id);
+            var answers = _answerRepository.GetAnswersByQuestion(id).Select(Mapper.Map<AnswerViewModel>);
 
-            
+            var question = Mapper.Map<QuestionViewModel>(_questionRepository.GetQuestionByQuestionId(id));
 
             var viewModel = new GetAnswerViewModel()
             {

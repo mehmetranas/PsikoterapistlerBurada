@@ -7,7 +7,7 @@ namespace PsikoterapsitlerBurada.Models.ViewModels
 {
     public class GetAnswerViewModel
     {
-        public ICollection<AnswerViewModel> AnswerViewModels { get; set; }
+        public IEnumerable<AnswerViewModel> AnswerViewModels { get; set; }
         public QuestionViewModel QuestionViewModel { get; set; }
     }
 }
