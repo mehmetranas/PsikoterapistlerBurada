@@ -124,7 +124,7 @@ namespace PsikoterapsitlerBurada.Controllers
                 viewModel.Add(profileViewModel);
             }
 
-            return PartialView("_Following", viewModel);
+            return PartialView("_UserProfiles", viewModel);
         }
 
         public ActionResult GetUserFollowees(string id)
@@ -146,7 +146,7 @@ namespace PsikoterapsitlerBurada.Controllers
                 viewModel.Add(profileViewModel);
             }
 
-            return PartialView("_Following", viewModel);
+            return PartialView("_UserProfiles", viewModel);
         }
 
         public ActionResult GetUserFavoriteQuestions(string id)

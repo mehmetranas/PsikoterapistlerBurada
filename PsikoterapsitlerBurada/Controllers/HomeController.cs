@@ -1,4 +1,6 @@
-﻿using PsikoterapsitlerBurada.Models;
+﻿using Microsoft.AspNet.Identity;
+using PsikoterapsitlerBurada.Models;
+using PsikoterapsitlerBurada.Models.ViewModels;
 using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
@@ -40,6 +42,23 @@ namespace PsikoterapsitlerBurada.Controllers
             ViewBag.Message = "Your contact page.";
 
             return View();
+        }
+
+        public ActionResult Search()
+        {
+            return View();
+        }
+
+        public ActionResult GetSearchList(string query)
+        {
+            var users = _context.Users
+                .Where(u => u.UserName.StartsWith(query)).ToList();
+
+            var authUserId = User.Identity.GetUserId();
+
+            var viewModel = users.Select(user => new ProfileViewModel(authUserId, user)).ToList();
+
+            return PartialView("_UserProfiles", viewModel);
         }
     }
 }
