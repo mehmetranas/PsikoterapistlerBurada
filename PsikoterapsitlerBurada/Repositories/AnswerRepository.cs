@@ -25,5 +25,22 @@ namespace PsikoterapsitlerBurada.Repositories
                 .ToList();
 
         }
+
+        public Answer GetAnswerById(int id)
+        {
+            return _context.Answers
+                .Include(a => a.User)
+                .SingleOrDefault(a => a.Id == id);
+        }
+
+        public void Add(Answer answer)
+        {
+            _context.Answers.Add(answer);
+        }
+
+        public void Remove(Answer answer)
+        {
+            _context.Answers.Remove(answer);
+        }
     }
 }

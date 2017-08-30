@@ -22,5 +22,15 @@ namespace PsikoterapsitlerBurada.Repositories
         {
             return _context.Categories.SingleOrDefault(c => c.Id ==categoryId);
         }
+
+        public void Add(Category category)
+        {
+            _context.Categories.Add(category);
+        }
+
+        public void Remove(Category category)
+        {
+            _context.Categories.Remove(category);
+        }
     }
 }

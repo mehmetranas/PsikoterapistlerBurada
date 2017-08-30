@@ -31,5 +31,15 @@ namespace PsikoterapsitlerBurada.Repositories
                 .Include(f => f.Follower)
                 .Where(f => f.FolloweeId == id);
         }
+
+        public void Add(Following following)
+        {
+            _context.Followings.Add(following);
+        }
+
+        public void Remove(Following following)
+        {
+            _context.Followings.Remove(following);
+        }
     }
 }

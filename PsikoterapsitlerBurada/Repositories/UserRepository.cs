@@ -47,5 +47,29 @@ namespace PsikoterapsitlerBurada.Repositories
         {
             return _context.Users.ToList().Where(u => u.Id != userId);
         }
+
+        public IEnumerable<int> GetUserLikeAnswersIdByQuestionId(ApplicationUser user, int questionId)
+        {
+            return user.LikesAnswers
+                .Where(a => a.QuestionId == questionId)
+                .Select(a => a.Id);
+        }
+
+        public ICollection<Question> GetUserFavoriteQuestions(string userId)
+        {
+            var user = _context.Users.SingleOrDefault(u => u.Id == userId);
+
+            return user?.FavoriteQuestions.ToList();
+        }
+
+        public void Add(ApplicationUser user)
+        {
+            _context.Users.Add(user);
+        }
+
+        public void Remove(ApplicationUser user)
+        {
+            _context.Users.Remove(user);
+        }
     }
 }

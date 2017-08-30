@@ -1,22 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web.Http;
-using Microsoft.AspNet.Identity;
+﻿using Microsoft.AspNet.Identity;
 using PsikoterapsitlerBurada.Models;
+using PsikoterapsitlerBurada.Repositories;
+using System.Web.Http;
 
 namespace PsikoterapsitlerBurada.Controllers.API
 {
     [Authorize]
     public class ReadNotificationController : ApiController
     {
-        private readonly ApplicationDbContext _context;
+        private readonly UserNotificationRepository _userNotificationRepository;
+        private readonly UnitOfWork _unitOfWork;
 
         public ReadNotificationController()
         {
-            _context = new ApplicationDbContext();
+            var context = new ApplicationDbContext();
+            _userNotificationRepository = new UserNotificationRepository(context);
+            _unitOfWork = new UnitOfWork(context);
         }
 
         //api/controler/notificationId
@@ -26,10 +25,10 @@ namespace PsikoterapsitlerBurada.Controllers.API
         {
             var userId = User.Identity.GetUserId();
             var usernotification =
-                _context.UserNotifications.SingleOrDefault(un => un.NotificationId == id && un.UserId == userId);
+                _userNotificationRepository.GetUserNotificationByUserAndNotificationt(id, userId);
 
             usernotification?.Read();
-            _context.SaveChanges();
+            _unitOfWork.Complate();
             return Ok();
         }
     }

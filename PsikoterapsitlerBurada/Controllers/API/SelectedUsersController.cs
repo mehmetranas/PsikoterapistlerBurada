@@ -1,17 +1,23 @@
 ﻿using PsikoterapsitlerBurada.DTOs;
 using PsikoterapsitlerBurada.Models;
-using System.Linq;
+using PsikoterapsitlerBurada.Repositories;
 using System.Web.Http;
 
 namespace PsikoterapsitlerBurada.Controllers.API
 {
     public class SelectedUsersController : ApiController
     {
-        private ApplicationDbContext _context;
+        private readonly QuestionRepository _questionRepository;
+        private readonly UserRepository _userRepository;
+        private readonly UnitOfWork _unitOfWork;
+       
 
         public SelectedUsersController()
         {
-            _context = new ApplicationDbContext();
+            var context = new ApplicationDbContext();
+            _questionRepository = new QuestionRepository(context);
+            _userRepository = new UserRepository(context);
+            _unitOfWork = new UnitOfWork(context);
         }
 
         [HttpPost]
@@ -20,7 +26,7 @@ namespace PsikoterapsitlerBurada.Controllers.API
             if (userDto.SelectedUsersId.Length > 3)
                 return BadRequest("3 kişiden fazla seçim yapılamaz");
 
-            var question = _context.Questions.SingleOrDefault(q => q.Id == userDto.QuestionId);
+            var question = _questionRepository.GetQuestionByQuestionId(userDto.QuestionId);
             var notification = new Notification()
             {
                 Question = question,
@@ -29,16 +35,14 @@ namespace PsikoterapsitlerBurada.Controllers.API
 
             foreach (var userId in userDto.SelectedUsersId)
             {
-                var selectedUser = _context.Users.SingleOrDefault(u => u.Id == userId);
+                var selectedUser = _userRepository.GetUserById(userId);
 
                 question?.AskedToWhom.Add(selectedUser);
 
                 selectedUser?.Notify(notification);
             }
-
             
-            
-            _context.SaveChanges();
+            _unitOfWork.Complate();
             return Ok();
         }
 

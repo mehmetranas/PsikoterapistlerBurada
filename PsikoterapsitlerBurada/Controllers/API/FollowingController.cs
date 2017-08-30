@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNet.Identity;
 using PsikoterapsitlerBurada.Models;
-using System.Linq;
+using PsikoterapsitlerBurada.Repositories;
 using System.Web.Http;
 
 namespace PsikoterapsitlerBurada.Controllers.API
@@ -8,23 +8,27 @@ namespace PsikoterapsitlerBurada.Controllers.API
     [System.Web.Http.Authorize]
     public class FollowingController : ApiController
     {
-        private ApplicationDbContext _context;
+        private readonly UserRepository _userRepositiory;
+        private readonly NotificationRepository _notificationRepository;
+        private readonly FollowingRepository _followingRepository;
+        private readonly UnitOfWork _unitOfWork ;
 
         public FollowingController()
         {
-            _context = new ApplicationDbContext();        
+            var context = new ApplicationDbContext();        
+            _userRepositiory = new UserRepository(context);        
+            _notificationRepository = new NotificationRepository(context);        
+            _followingRepository = new FollowingRepository(context);        
+            _unitOfWork = new UnitOfWork(context);        
         }
 
         [System.Web.Http.HttpPost]
         public IHttpActionResult Follow(string id)
         {
-            var userId = User.Identity.GetUserId();
-            var user = _context.Users.SingleOrDefault(u => u.Id == userId);
-
             var following = new Following()
             {
                 FolloweeId = id,
-                FollowerId = userId
+                FollowerId = User.Identity.GetUserId()
             };
 
             var notification = new Notification()
@@ -33,33 +37,31 @@ namespace PsikoterapsitlerBurada.Controllers.API
                 NotificationType = NotificationType.Follow
             };
 
-            _context.Followings.Add(following);
+            _followingRepository.Add(following);
 
-            var followee = _context.Users.SingleOrDefault(u => u.Id == id);
+            var followee = _userRepositiory.GetUserById(id);
 
             followee?.Notify(notification);
 
-            _context.SaveChanges();
-
+            _unitOfWork.Complate();
             return Ok();
         }
 
-        [System.Web.Http.HttpDelete]
+        [HttpDelete]
         public IHttpActionResult UnFollow(string id)
         {
             var userId = User.Identity.GetUserId();
 
-            var following = _context.Followings.SingleOrDefault(f => f.FollowerId == userId && f.FolloweeId == id);
+            var following = _notificationRepository.GetFollowingsByFollowerAndFollowee(id, userId);
 
             if (following == null) return BadRequest();
 
-            var notification = _context.Notifications.SingleOrDefault(n => n.FollowingId == following.Id);
+            var notification = _notificationRepository.GetNotificationByFollowing(following.Id);
 
-            if (notification != null) _context.Notifications.Remove(notification);
+            if (notification != null) _notificationRepository.Remove(notification);
 
-            _context.Followings.Remove(following);
-
-            _context.SaveChanges();
+            _followingRepository.Add(following);
+            _unitOfWork.Complate();
 
             return Ok();
         }

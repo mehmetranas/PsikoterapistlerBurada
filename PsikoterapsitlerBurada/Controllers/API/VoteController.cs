@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNet.Identity;
 using PsikoterapsitlerBurada.DTOs;
 using PsikoterapsitlerBurada.Models;
+using PsikoterapsitlerBurada.Repositories;
 using System;
 using System.Linq;
 using System.Web.Http;
@@ -10,20 +11,23 @@ namespace PsikoterapsitlerBurada.Controllers.API
     [Authorize]
     public class VoteController : ApiController
     {
-        private readonly ApplicationDbContext _context;
+        private readonly QuestionRepository _questionRepository;
+        private readonly VoteRepository _voteRepository;
+        private readonly UnitOfWork _unitOfWork;
 
         public VoteController( )
         {
-            _context = new ApplicationDbContext();
+            var context = new ApplicationDbContext();
+            _questionRepository = new QuestionRepository(context);
+            _voteRepository = new VoteRepository(context);
+            _unitOfWork = new UnitOfWork(context);
         }
 
         [HttpPost]
         public IHttpActionResult VoteAction(VoteDto voteDto)
         {
             var userId = User.Identity.GetUserId();
-            var question = _context.Questions
-                .Include("Votes")
-                .SingleOrDefault(q => q.Id == voteDto.QuestionId);
+            var question = _questionRepository.GetQuestionByQuestionId(voteDto.QuestionId);
 
 
             var isVote = question != null && question.Votes.Any(v => v.UserId == userId);
@@ -44,7 +48,7 @@ namespace PsikoterapsitlerBurada.Controllers.API
 
                 if (userVote == null) return Ok();
                 userVote.VoteState += voteDto.VoteAction;
-                _context.SaveChanges();
+                _unitOfWork.Complate();
                 if (userVote.VoteState == 0) return Json(new {isRollBack = true});
 
                 return Ok();
@@ -58,8 +62,8 @@ namespace PsikoterapsitlerBurada.Controllers.API
                 VoteState = voteDto.VoteAction
             };
 
-            _context.Votes.Add(vote);
-            _context.SaveChanges();
+            _voteRepository.Add(vote);
+            _unitOfWork.Complate();
 
             return Ok();
         }
@@ -67,8 +71,9 @@ namespace PsikoterapsitlerBurada.Controllers.API
         [System.Web.Http.HttpGet]
         public int GetVotes(int id)
         {
-            var votes = _context.Votes.Where(v => v.QuestionId == id).Sum(s => s.VoteState);
+            var votes = _voteRepository.GetVotesByQuestion(id);
             return votes;
         }
+
     }
 }

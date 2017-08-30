@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNet.Identity;
 using PsikoterapsitlerBurada.DTOs;
 using PsikoterapsitlerBurada.Models;
+using PsikoterapsitlerBurada.Repositories;
 using System;
-using System.Linq;
 using System.Web.Http;
 
 namespace PsikoterapsitlerBurada.Controllers.API
@@ -10,11 +10,16 @@ namespace PsikoterapsitlerBurada.Controllers.API
     [Authorize]
     public class AnswerController : ApiController
     {
-        private ApplicationDbContext _context;
+        private readonly QuestionRepository _questionRepository;
+        private readonly AnswerRepository _answerRepository;
+        private readonly UnitOfWork _unitOfWork;
 
         public AnswerController()
         {
-            _context = new ApplicationDbContext();
+            var context = new ApplicationDbContext();
+            _questionRepository = new QuestionRepository(context);
+            _answerRepository = new AnswerRepository(context);
+            _unitOfWork = new UnitOfWork(context);
         }
 
         [HttpPost]
@@ -28,7 +33,7 @@ namespace PsikoterapsitlerBurada.Controllers.API
                 UserId = User.Identity.GetUserId()
             };
 
-            _context.Answers.Add(currentAnswer);
+            _answerRepository.Add(currentAnswer);
 
             var notification = new Notification()
             {
@@ -36,11 +41,13 @@ namespace PsikoterapsitlerBurada.Controllers.API
                 NotificationType = NotificationType.Answer
             };
 
-            var whoAsked = _context.Questions.Include("whoAsked").SingleOrDefault(q => q.Id == currentAnswer.QuestionId).WhoAsked;
+            var whoAsked = _questionRepository
+                .GetQuestionByQuestionId(answerDto.QuestionId)
+                .WhoAsked;
 
             whoAsked.Notify(notification);
 
-            _context.SaveChanges();
+            _unitOfWork.Complate();
             return Ok();
         }
     }

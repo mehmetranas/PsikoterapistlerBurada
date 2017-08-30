@@ -11,15 +11,14 @@ namespace PsikoterapsitlerBurada.Controllers
 {
     public class HomeController : Controller
     {
-        private ApplicationDbContext _context;
-        private QuestionRepository _questionRepository;
-        private UserRepository _userRepository;
+        private readonly QuestionRepository _questionRepository;
+        private readonly UserRepository _userRepository;
 
         public HomeController()
         {
-            _context = new ApplicationDbContext();
-            _questionRepository = new QuestionRepository(_context);
-            _userRepository = new UserRepository(_context);
+            var context = new ApplicationDbContext();
+            _questionRepository = new QuestionRepository(context);
+            _userRepository = new UserRepository(context);
         }
         
         public ActionResult Index()

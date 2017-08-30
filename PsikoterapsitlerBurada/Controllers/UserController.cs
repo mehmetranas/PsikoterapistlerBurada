@@ -12,17 +12,16 @@ namespace PsikoterapsitlerBurada.Controllers
     [Authorize]
     public class UserController : Controller
     {
-        private ApplicationDbContext _context;
-        private QuestionRepository _questionRepository;
-        private UserRepository _userRepository;
-        private FollowingRepository _followingRepository;
+        private readonly QuestionRepository _questionRepository;
+        private readonly UserRepository _userRepository;
+        private readonly FollowingRepository _followingRepository;
 
         public UserController()
         {
-            _context = new ApplicationDbContext();
-            _questionRepository = new QuestionRepository(_context);
-            _userRepository = new UserRepository(_context);
-            _followingRepository = new FollowingRepository(_context);
+            var context = new ApplicationDbContext();
+            _questionRepository = new QuestionRepository(context);
+            _userRepository = new UserRepository(context);
+            _followingRepository = new FollowingRepository(context);
         }
 
         public ActionResult GetMyQuestions()

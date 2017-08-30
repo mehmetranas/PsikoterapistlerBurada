@@ -34,6 +34,10 @@ textarea {
         color: #1B2506;
     }
 
+    .navbar-inverse .navbar-nav > li > a {
+        color: black;
+    }
+
     .navbar-inverse .navbar-nav > li.notification {
         position: relative
     }

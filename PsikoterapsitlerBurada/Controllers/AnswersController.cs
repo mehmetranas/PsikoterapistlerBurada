@@ -10,15 +10,14 @@ namespace PsikoterapsitlerBurada.Controllers
 
     public class AnswersController : Controller
     {
-        private ApplicationDbContext _context;
-        private AnswerRepository _answerRepository;
-        private QuestionRepository _questionRepository;
+        private readonly AnswerRepository _answerRepository;
+        private readonly QuestionRepository _questionRepository;
 
         public AnswersController()
         {
-            _context = new ApplicationDbContext();
-            _answerRepository = new AnswerRepository(_context);
-            _questionRepository = new QuestionRepository(_context);
+            var context = new ApplicationDbContext();
+            _answerRepository = new AnswerRepository(context);
+            _questionRepository = new QuestionRepository(context);
         }
 
         public ActionResult GetAnswers(int id)

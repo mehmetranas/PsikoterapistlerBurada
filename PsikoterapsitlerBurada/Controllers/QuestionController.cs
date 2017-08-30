@@ -11,17 +11,18 @@ namespace PsikoterapsitlerBurada.Controllers
 {
     public class QuestionController : Controller
     {
-        private ApplicationDbContext _context;
-        private CategoryRepository _categoryRepository;
-        private UserRepository _userRepository;
-        private QuestionRepository _questionRepository;
+        private readonly CategoryRepository _categoryRepository;
+        private readonly UserRepository _userRepository;
+        private readonly QuestionRepository _questionRepository;
+        private readonly UnitOfWork _unitOfWork;
 
         public QuestionController()
         {
-            _context = new ApplicationDbContext();
-            _categoryRepository = new CategoryRepository(_context);
-            _userRepository = new UserRepository(_context);
-            _questionRepository = new QuestionRepository(_context);
+            var context = new ApplicationDbContext();
+            _categoryRepository = new CategoryRepository(context);
+            _userRepository = new UserRepository(context);
+            _questionRepository = new QuestionRepository(context);
+            _unitOfWork = new UnitOfWork(context);
         }
 
         // GET: Question
@@ -52,9 +53,9 @@ namespace PsikoterapsitlerBurada.Controllers
                 Category = category
             };
 
-            _context.Questions.Add(question);
+            _questionRepository.Add(question);
 
-            _context.SaveChanges();
+            _unitOfWork.Complate();
 
             var questionId = _questionRepository.GetAllQuestions().Max(q => q.Id);
             return RedirectToAction("SelectUserToAskQuestion", new {id = questionId});

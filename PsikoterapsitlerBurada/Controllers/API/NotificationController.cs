@@ -1,42 +1,34 @@
 ﻿using AutoMapper;
+using Microsoft.AspNet.Identity;
 using PsikoterapsitlerBurada.DTOs;
 using PsikoterapsitlerBurada.Models;
+using PsikoterapsitlerBurada.Repositories;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using System.Web.Http;
-using Microsoft.AspNet.Identity;
 
 namespace PsikoterapsitlerBurada.Controllers.API
 {
     [Authorize]
     public class NotificationController : ApiController
     {
-        private readonly ApplicationDbContext _context;
+        private readonly NotificationRepository _notificationRepository;
 
         public NotificationController()
         {
-            _context = new ApplicationDbContext();
+            var context = new ApplicationDbContext();
+            _notificationRepository = new NotificationRepository(context);
         }
 
         [HttpGet]
         public IEnumerable<NotificationDto> GetAllNotifications()
         {
             var id = User.Identity.GetUserId();
-            var notifications = _context.UserNotifications
-                .Where(un => un.UserId == id && un.IsRead == false)
-                .Select(un => un.Notification)
-                .Include(un => un.Answer)
-                .Include(un => un.Answer.User)
-                .Include(un => un.UserLike)
-                .Include(un => un.Question.WhoAsked)
-                .Include(un => un.Following)
-                .Include(f => f.Following.Follower)
-                .Include(f => f.Following.Followee)
+            var notifications = _notificationRepository.GetUserNotiicationwithNotificationByUserId(id)
                 .Select(Mapper.Map<NotificationDto>);
 
             return notifications;
         }
 
-    }
+      }
 }

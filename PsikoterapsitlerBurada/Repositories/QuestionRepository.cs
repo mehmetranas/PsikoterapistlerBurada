@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Web;
+using AutoMapper.QueryableExtensions.Impl;
 using PsikoterapsitlerBurada.Models;
 
 namespace PsikoterapsitlerBurada.Repositories
@@ -95,6 +96,16 @@ namespace PsikoterapsitlerBurada.Repositories
                 .Include(q => q.AskedToWhom)
                 .ToList().OrderByDescending(q => q.DateTime)
                 .Where(q => q.AskedToWhom.Count != 0);
+        }
+
+        public void Add(Question question)
+        {
+            _context.Questions.Add(question);
+        }
+
+        public void Remove(Question question)
+        {
+            _context.Questions.Remove(question);
         }
     }
 }
