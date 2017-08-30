@@ -11,15 +11,11 @@ namespace PsikoterapsitlerBurada.Controllers.API
     [Authorize]
     public class VoteController : ApiController
     {
-        private readonly QuestionRepository _questionRepository;
-        private readonly VoteRepository _voteRepository;
-        private readonly UnitOfWork _unitOfWork;
+        private readonly IUnitOfWork _unitOfWork;
 
         public VoteController( )
         {
             var context = new ApplicationDbContext();
-            _questionRepository = new QuestionRepository(context);
-            _voteRepository = new VoteRepository(context);
             _unitOfWork = new UnitOfWork(context);
         }
 
@@ -27,7 +23,7 @@ namespace PsikoterapsitlerBurada.Controllers.API
         public IHttpActionResult VoteAction(VoteDto voteDto)
         {
             var userId = User.Identity.GetUserId();
-            var question = _questionRepository.GetQuestionByQuestionId(voteDto.QuestionId);
+            var question = _unitOfWork.Questions.GetQuestionByQuestionId(voteDto.QuestionId);
 
 
             var isVote = question != null && question.Votes.Any(v => v.UserId == userId);
@@ -62,7 +58,7 @@ namespace PsikoterapsitlerBurada.Controllers.API
                 VoteState = voteDto.VoteAction
             };
 
-            _voteRepository.Add(vote);
+            _unitOfWork.Votes.Add(vote);
             _unitOfWork.Complate();
 
             return Ok();
@@ -71,7 +67,7 @@ namespace PsikoterapsitlerBurada.Controllers.API
         [System.Web.Http.HttpGet]
         public int GetVotes(int id)
         {
-            var votes = _voteRepository.GetVotesByQuestion(id);
+            var votes = _unitOfWork.Votes.GetVotesByQuestion(id);
             return votes;
         }
 

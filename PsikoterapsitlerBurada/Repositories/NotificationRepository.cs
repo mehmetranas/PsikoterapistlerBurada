@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using PsikoterapsitlerBurada.Models;
 using System.Data.Entity;
 using System.Linq;
-using System.Web;
-using PsikoterapsitlerBurada.Models;
 
 namespace PsikoterapsitlerBurada.Repositories
 {
-    public class NotificationRepository
+
+
+    public class NotificationRepository : INotificationRepository
     {
         private readonly ApplicationDbContext _context;
 

@@ -10,15 +10,11 @@ namespace PsikoterapsitlerBurada.Controllers.API
     [Authorize]
     public class FavoriteController : ApiController
     {
-        private readonly UserRepository _userRepository;
-        public readonly QuestionRepository _questionRepository;
-        public readonly UnitOfWork _unitOfWork;
+        public readonly IUnitOfWork _unitOfWork;
 
         public FavoriteController()
         {
             var context = new ApplicationDbContext();
-            _userRepository = new UserRepository(context);
-            _questionRepository = new QuestionRepository(context);
             _unitOfWork = new UnitOfWork(context);
         }
 
@@ -26,9 +22,9 @@ namespace PsikoterapsitlerBurada.Controllers.API
         public IHttpActionResult FavoriteState(int id)
         {
             var userId = User.Identity.GetUserId();
-            var user = _userRepository.GetUserById(userId);
-            var question = _questionRepository.GetQuestionByQuestionId(id);
-            var isFavorite = _userRepository.GetUserFavoriteQuestions(userId).Contains(question);
+            var user = _unitOfWork.Users.GetUserById(userId);
+            var question = _unitOfWork.Questions.GetQuestionByQuestionId(id);
+            var isFavorite = _unitOfWork.Users.GetUserFavoriteQuestions(userId).Contains(question);
 
             if (isFavorite)
             {
@@ -45,7 +41,7 @@ namespace PsikoterapsitlerBurada.Controllers.API
         [HttpGet]
         public IEnumerable<int> GetFavoriteQuestions()
         {
-            var questionsId = _userRepository
+            var questionsId = _unitOfWork.Users
                 .GetUserFavoriteQuestions(User.Identity.GetUserId())
                 .Select(q => q.Id);
 

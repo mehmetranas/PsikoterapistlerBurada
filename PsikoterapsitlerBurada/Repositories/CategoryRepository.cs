@@ -4,7 +4,8 @@ using System.Linq;
 
 namespace PsikoterapsitlerBurada.Repositories
 {
-    public class CategoryRepository
+
+    public class CategoryRepository : ICategoryRepository
     {
         private readonly ApplicationDbContext _context;
 

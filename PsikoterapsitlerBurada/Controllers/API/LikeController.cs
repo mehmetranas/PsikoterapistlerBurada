@@ -10,17 +10,11 @@ namespace PsikoterapsitlerBurada.Controllers.API
     [Authorize]
     public class LikeController : ApiController
     {
-        private readonly UserRepository _userRepository;
-        private readonly AnswerRepository _answerRepository;
-        private readonly NotificationRepository _notificationRepository;
-        private readonly UnitOfWork _unitOfWork;
+        private readonly IUnitOfWork _unitOfWork;
 
         public LikeController()
         {
             var context = new ApplicationDbContext();
-            _userRepository = new UserRepository(context);
-            _answerRepository = new AnswerRepository(context);
-            _notificationRepository = new NotificationRepository(context);
             _unitOfWork = new UnitOfWork(context);
         }
 
@@ -28,8 +22,8 @@ namespace PsikoterapsitlerBurada.Controllers.API
         public IHttpActionResult Create(int id)
         {
             var userId = User.Identity.GetUserId();
-            var user = _userRepository.GetUserById(userId);
-            var answer = _answerRepository.GetAnswerById(id);
+            var user = _unitOfWork.Users.GetUserById(userId);
+            var answer = _unitOfWork.Answers.GetAnswerById(id);
             if (answer == null || user == null || answer.User.Id == userId) return BadRequest();
 
             answer.Likes.Add(user);
@@ -52,15 +46,15 @@ namespace PsikoterapsitlerBurada.Controllers.API
         public IHttpActionResult Delete(int id)
         {
             var userId = User.Identity.GetUserId();
-            var user = _userRepository.GetUserById(userId);
-            var answer = _answerRepository.GetAnswerById(id);
+            var user = _unitOfWork.Users.GetUserById(userId);
+            var answer = _unitOfWork.Answers.GetAnswerById(id);
             if (answer == null || user == null || !(user.LikesAnswers.Any(a => a.Id == answer.Id)))
                 return BadRequest("Zaten like");
              
-            var notification = _notificationRepository
+            var notification = _unitOfWork.Notifications
                 .GetNotificationByUserLikeAndAnswer(userId, answer.Id);
 
-            if (notification != null) _notificationRepository.Remove(notification);
+            if (notification != null) _unitOfWork.Notifications.Remove(notification);
 
             user.LikesAnswers.Remove(answer);
             _unitOfWork.Complate();
@@ -72,11 +66,11 @@ namespace PsikoterapsitlerBurada.Controllers.API
         public IEnumerable<int> GetUserLikesAnswersId(int id)
         {
             var userId = User.Identity.GetUserId();
-            var user = _userRepository.GetUserById(userId);
+            var user = _unitOfWork.Users.GetUserById(userId);
 
             if (user == null) return null;
 
-            var likesAnswersId = _userRepository
+            var likesAnswersId = _unitOfWork.Users
                 .GetUserLikeAnswersIdByQuestionId(user, id);
             return likesAnswersId;
         }

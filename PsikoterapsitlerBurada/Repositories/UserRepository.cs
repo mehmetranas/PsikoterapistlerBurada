@@ -1,14 +1,11 @@
-﻿using System;
+﻿using PsikoterapsitlerBurada.Models;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Web;
-using Microsoft.VisualBasic.ApplicationServices;
-using PsikoterapsitlerBurada.Models;
 
 namespace PsikoterapsitlerBurada.Repositories
 {
-    public class UserRepository
+    public class UserRepository : IUserRepository
     {
         private readonly ApplicationDbContext _context;
 

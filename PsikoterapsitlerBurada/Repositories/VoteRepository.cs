@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace PsikoterapsitlerBurada.Repositories
 {
-    public class VoteRepository
+    public class VoteRepository : IVoteRepository
     {
         private readonly ApplicationDbContext _context;
 

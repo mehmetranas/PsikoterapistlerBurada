@@ -7,7 +7,7 @@ using PsikoterapsitlerBurada.Models;
 
 namespace PsikoterapsitlerBurada.Repositories
 {
-    public class AnswerRepository
+    public class AnswerRepository : IAnswerRepository
     {
         private readonly ApplicationDbContext _context;
 

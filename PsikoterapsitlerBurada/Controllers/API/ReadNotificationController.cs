@@ -8,13 +8,11 @@ namespace PsikoterapsitlerBurada.Controllers.API
     [Authorize]
     public class ReadNotificationController : ApiController
     {
-        private readonly UserNotificationRepository _userNotificationRepository;
-        private readonly UnitOfWork _unitOfWork;
+        private readonly IUnitOfWork _unitOfWork;
 
         public ReadNotificationController()
         {
             var context = new ApplicationDbContext();
-            _userNotificationRepository = new UserNotificationRepository(context);
             _unitOfWork = new UnitOfWork(context);
         }
 
@@ -25,7 +23,7 @@ namespace PsikoterapsitlerBurada.Controllers.API
         {
             var userId = User.Identity.GetUserId();
             var usernotification =
-                _userNotificationRepository.GetUserNotificationByUserAndNotificationt(id, userId);
+                _unitOfWork.UserNotifications.GetUserNotificationByUserAndNotificationt(id, userId);
 
             usernotification?.Read();
             _unitOfWork.Complate();

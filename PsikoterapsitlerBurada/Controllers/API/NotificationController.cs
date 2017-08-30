@@ -12,19 +12,19 @@ namespace PsikoterapsitlerBurada.Controllers.API
     [Authorize]
     public class NotificationController : ApiController
     {
-        private readonly NotificationRepository _notificationRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
         public NotificationController()
         {
             var context = new ApplicationDbContext();
-            _notificationRepository = new NotificationRepository(context);
+            _unitOfWork = new UnitOfWork(context);
         }
 
         [HttpGet]
         public IEnumerable<NotificationDto> GetAllNotifications()
         {
             var id = User.Identity.GetUserId();
-            var notifications = _notificationRepository.GetUserNotiicationwithNotificationByUserId(id)
+            var notifications = _unitOfWork.Notifications.GetUserNotiicationwithNotificationByUserId(id)
                 .Select(Mapper.Map<NotificationDto>);
 
             return notifications;

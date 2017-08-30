@@ -1,14 +1,11 @@
-﻿using System;
+﻿using PsikoterapsitlerBurada.Models;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Web;
-using AutoMapper.QueryableExtensions.Impl;
-using PsikoterapsitlerBurada.Models;
 
 namespace PsikoterapsitlerBurada.Repositories
 {
-    public class QuestionRepository
+    public class QuestionRepository : IQuestionRepository
     {
         private readonly ApplicationDbContext _context;
 

@@ -12,22 +12,18 @@ namespace PsikoterapsitlerBurada.Controllers
     [Authorize]
     public class UserController : Controller
     {
-        private readonly QuestionRepository _questionRepository;
-        private readonly UserRepository _userRepository;
-        private readonly FollowingRepository _followingRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
         public UserController()
         {
             var context = new ApplicationDbContext();
-            _questionRepository = new QuestionRepository(context);
-            _userRepository = new UserRepository(context);
-            _followingRepository = new FollowingRepository(context);
+            _unitOfWork = new UnitOfWork(context);
         }
 
         public ActionResult GetMyQuestions()
         {
             var userId = User.Identity.GetUserId();
-            var myQuestions = _questionRepository
+            var myQuestions = _unitOfWork.Questions
                 .GetUserQuestions(userId)
                 .Select(Mapper.Map<QuestionViewModel>);
 
@@ -37,7 +33,7 @@ namespace PsikoterapsitlerBurada.Controllers
         public ActionResult GetUnAskedQuestions()
         {
             var userId = User.Identity.GetUserId();
-            var questions = _questionRepository
+            var questions = _unitOfWork.Questions
                 .GetUserUnAskedQuestions(userId)
                 .Select(Mapper.Map<QuestionViewModel>);
 
@@ -49,9 +45,9 @@ namespace PsikoterapsitlerBurada.Controllers
         public ActionResult GetQustionAskedToMe()
         {
             var userId = User.Identity.GetUserId();
-            var user = _userRepository.GetUserById(userId);
+            var user = _unitOfWork.Users.GetUserById(userId);
 
-            var questions = _questionRepository
+            var questions = _unitOfWork.Questions
                 .GetQuestionsAskedToUser(userId)
                 .OrderBy(d => d.DateTime);
 
@@ -63,7 +59,7 @@ namespace PsikoterapsitlerBurada.Controllers
       [Authorize]
         public ActionResult WriteAnswer(int id)
         {
-            var question = _questionRepository
+            var question = _unitOfWork.Questions
                 .GetQuestionByQuestionId(id);
 
             var viewModel = new AnswerViewModel()
@@ -77,7 +73,7 @@ namespace PsikoterapsitlerBurada.Controllers
         public ActionResult UserProfile(string id)
         {
             var authUserId = User.Identity.GetUserId();
-            var user = _userRepository
+            var user = _unitOfWork.Users
                 .GetUsers(id);
 
             var viewModel = new ProfileViewModel(authUserId, user);
@@ -89,7 +85,7 @@ namespace PsikoterapsitlerBurada.Controllers
 
         public ActionResult GetUserQuestions(string id)
         {
-            var userQuestions = _questionRepository
+            var userQuestions = _unitOfWork.Questions
                 .GetUserQuestionsWithWhoAskAskToWhomAns(id)
                 .Select(Mapper.Map<QuestionViewModel>);
 
@@ -98,7 +94,7 @@ namespace PsikoterapsitlerBurada.Controllers
 
         public ActionResult GetUserQuestionsAsked(string id)
         {
-            var userQuestions = _questionRepository
+            var userQuestions = _unitOfWork.Questions
                 .GetUsersQuestionsAskedWithAns(id)
                 .Select(Mapper.Map<QuestionViewModel>);
 
@@ -107,7 +103,7 @@ namespace PsikoterapsitlerBurada.Controllers
 
         public ActionResult GetUserFollowers(string id)
         {
-            var followers = _followingRepository
+            var followers = _unitOfWork.Followings
                 .GetFollowingsByFollower(id);
 
             var authUserId = User.Identity.GetUserId();
@@ -127,7 +123,7 @@ namespace PsikoterapsitlerBurada.Controllers
         public ActionResult GetUserFollowees(string id)
         {
 
-            var followees = _followingRepository
+            var followees = _unitOfWork.Followings
                 .GetFollowingsByFollowee(id);
 
             var authUserId = User.Identity.GetUserId();
@@ -148,7 +144,7 @@ namespace PsikoterapsitlerBurada.Controllers
 
         public ActionResult GetUserFavoriteQuestions(string id)
         {
-            var favoriteQuestions = _questionRepository
+            var favoriteQuestions = _unitOfWork.Questions
                 .GetUserFavoriteQuestionsWithAnsAskToWhomWhoAsk(id)
                 .OrderByDescending(q => q.DateTime)
                 .Select(Mapper.Map<QuestionViewModel>);

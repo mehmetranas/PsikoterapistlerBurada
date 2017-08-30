@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using PsikoterapsitlerBurada.Models;
 using System.Data.Entity;
 using System.Linq;
-using System.Web;
-using PsikoterapsitlerBurada.Models;
 
 namespace PsikoterapsitlerBurada.Repositories
 {
-    public class FollowingRepository
+
+    public class FollowingRepository : IFollowingRepository
     {
         private readonly ApplicationDbContext _context;
 

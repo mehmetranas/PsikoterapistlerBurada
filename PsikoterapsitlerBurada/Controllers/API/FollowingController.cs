@@ -8,17 +8,11 @@ namespace PsikoterapsitlerBurada.Controllers.API
     [System.Web.Http.Authorize]
     public class FollowingController : ApiController
     {
-        private readonly UserRepository _userRepositiory;
-        private readonly NotificationRepository _notificationRepository;
-        private readonly FollowingRepository _followingRepository;
-        private readonly UnitOfWork _unitOfWork ;
+        private readonly IUnitOfWork _unitOfWork ;
 
         public FollowingController()
         {
             var context = new ApplicationDbContext();        
-            _userRepositiory = new UserRepository(context);        
-            _notificationRepository = new NotificationRepository(context);        
-            _followingRepository = new FollowingRepository(context);        
             _unitOfWork = new UnitOfWork(context);        
         }
 
@@ -37,9 +31,9 @@ namespace PsikoterapsitlerBurada.Controllers.API
                 NotificationType = NotificationType.Follow
             };
 
-            _followingRepository.Add(following);
+            _unitOfWork.Followings.Add(following);
 
-            var followee = _userRepositiory.GetUserById(id);
+            var followee = _unitOfWork.Users.GetUserById(id);
 
             followee?.Notify(notification);
 
@@ -52,15 +46,15 @@ namespace PsikoterapsitlerBurada.Controllers.API
         {
             var userId = User.Identity.GetUserId();
 
-            var following = _notificationRepository.GetFollowingsByFollowerAndFollowee(id, userId);
+            var following = _unitOfWork.Notifications.GetFollowingsByFollowerAndFollowee(id, userId);
 
             if (following == null) return BadRequest();
 
-            var notification = _notificationRepository.GetNotificationByFollowing(following.Id);
+            var notification = _unitOfWork.Notifications.GetNotificationByFollowing(following.Id);
 
-            if (notification != null) _notificationRepository.Remove(notification);
+            if (notification != null) _unitOfWork.Notifications.Remove(notification);
 
-            _followingRepository.Add(following);
+            _unitOfWork.Followings.Add(following);
             _unitOfWork.Complate();
 
             return Ok();

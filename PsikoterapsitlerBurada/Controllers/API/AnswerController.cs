@@ -10,15 +10,11 @@ namespace PsikoterapsitlerBurada.Controllers.API
     [Authorize]
     public class AnswerController : ApiController
     {
-        private readonly QuestionRepository _questionRepository;
-        private readonly AnswerRepository _answerRepository;
-        private readonly UnitOfWork _unitOfWork;
+        private readonly IUnitOfWork _unitOfWork;
 
         public AnswerController()
         {
             var context = new ApplicationDbContext();
-            _questionRepository = new QuestionRepository(context);
-            _answerRepository = new AnswerRepository(context);
             _unitOfWork = new UnitOfWork(context);
         }
 
@@ -33,7 +29,7 @@ namespace PsikoterapsitlerBurada.Controllers.API
                 UserId = User.Identity.GetUserId()
             };
 
-            _answerRepository.Add(currentAnswer);
+            _unitOfWork.Answers.Add(currentAnswer);
 
             var notification = new Notification()
             {
@@ -41,7 +37,7 @@ namespace PsikoterapsitlerBurada.Controllers.API
                 NotificationType = NotificationType.Answer
             };
 
-            var whoAsked = _questionRepository
+            var whoAsked = _unitOfWork.Questions
                 .GetQuestionByQuestionId(answerDto.QuestionId)
                 .WhoAsked;
 
