@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace PsikoterapsitlerBurada.Models.ViewModels
+namespace PsikoterapsitlerBurada.Models
 {
     public class ExternalLoginConfirmationViewModel
     {

@@ -5,7 +5,7 @@ using System.Web.Http;
 
 namespace PsikoterapsitlerBurada.Controllers.API
 {
-    [System.Web.Http.Authorize]
+    [Authorize]
     public class FollowingController : ApiController
     {
         private readonly IUnitOfWork _unitOfWork ;
@@ -16,7 +16,7 @@ namespace PsikoterapsitlerBurada.Controllers.API
             _unitOfWork = new UnitOfWork(context);        
         }
 
-        [System.Web.Http.HttpPost]
+        [HttpPost]
         public IHttpActionResult Follow(string id)
         {
             var following = new Following()
@@ -54,7 +54,7 @@ namespace PsikoterapsitlerBurada.Controllers.API
 
             if (notification != null) _unitOfWork.Notifications.Remove(notification);
 
-            _unitOfWork.Followings.Add(following);
+            _unitOfWork.Followings.Remove(following);
             _unitOfWork.Complate();
 
             return Ok();
