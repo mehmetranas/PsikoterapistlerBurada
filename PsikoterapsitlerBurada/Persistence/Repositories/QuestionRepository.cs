@@ -21,6 +21,7 @@ namespace PsikoterapsitlerBurada.Persistence.Repositories
             return _context.Questions
                 .Include(q => q.AskedToWhom)
                 .Include(q => q.WhoAsked)
+                .Include(q => q.Votes)
                 .SingleOrDefault(q => q.Id == id);
         }
 
