@@ -6,8 +6,8 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
-using PsikoterapsitlerBurada.Models;
-using PsikoterapsitlerBurada.Models.ViewModels;
+using PsikoterapsitlerBurada.Core.Models.ViewModels;
+using PsikoterapsitlerBurada.ViewModels;
 
 namespace PsikoterapsitlerBurada.Controllers
 {

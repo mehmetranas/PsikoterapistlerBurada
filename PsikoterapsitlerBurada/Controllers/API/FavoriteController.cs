@@ -1,21 +1,22 @@
 ﻿using Microsoft.AspNet.Identity;
-using PsikoterapsitlerBurada.Models;
-using PsikoterapsitlerBurada.Repositories;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
+using PsikoterapsitlerBurada.Core.Models;
+using PsikoterapsitlerBurada.Core.Repositories;
+using PsikoterapsitlerBurada.Persistence.Models;
+using PsikoterapsitlerBurada.Persistence.Repositories;
 
 namespace PsikoterapsitlerBurada.Controllers.API
 {
     [Authorize]
     public class FavoriteController : ApiController
     {
-        public readonly IUnitOfWork _unitOfWork;
+        private readonly IUnitOfWork _unitOfWork;
 
         public FavoriteController()
         {
-            var context = new ApplicationDbContext();
-            _unitOfWork = new UnitOfWork(context);
+            _unitOfWork = new UnitOfWork(new ApplicationDbContext());
         }
 
         [HttpPost]

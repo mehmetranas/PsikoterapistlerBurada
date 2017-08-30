@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using AutoMapper;
+using PsikoterapsitlerBurada.Core.Models;
+using PsikoterapsitlerBurada.Core.Models.ViewModels;
 using PsikoterapsitlerBurada.DTOs;
-using PsikoterapsitlerBurada.Models;
-using PsikoterapsitlerBurada.Models.ViewModels;
 
 namespace PsikoterapsitlerBurada.App_Start
 {

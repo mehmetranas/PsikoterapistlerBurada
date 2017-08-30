@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNet.Identity;
 using PsikoterapsitlerBurada.DTOs;
-using PsikoterapsitlerBurada.Models;
-using PsikoterapsitlerBurada.Repositories;
 using System;
 using System.Web.Http;
+using PsikoterapsitlerBurada.Core.Models;
+using PsikoterapsitlerBurada.Core.Repositories;
+using PsikoterapsitlerBurada.Persistence.Models;
+using PsikoterapsitlerBurada.Persistence.Repositories;
 
 namespace PsikoterapsitlerBurada.Controllers.API
 {
@@ -14,8 +16,7 @@ namespace PsikoterapsitlerBurada.Controllers.API
 
         public AnswerController()
         {
-            var context = new ApplicationDbContext();
-            _unitOfWork = new UnitOfWork(context);
+            _unitOfWork = new UnitOfWork(new ApplicationDbContext());
         }
 
         [HttpPost]

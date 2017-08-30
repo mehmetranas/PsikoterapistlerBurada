@@ -10,7 +10,8 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
-using PsikoterapsitlerBurada.Models;
+using PsikoterapsitlerBurada.Core.Models;
+using PsikoterapsitlerBurada.Persistence.Models;
 
 namespace PsikoterapsitlerBurada
 {

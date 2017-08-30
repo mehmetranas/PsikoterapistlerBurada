@@ -1,4 +1,4 @@
-﻿using PsikoterapsitlerBurada.Models;
+﻿using PsikoterapsitlerBurada.Core.Models;
 
 namespace PsikoterapsitlerBurada.DTOs
 {

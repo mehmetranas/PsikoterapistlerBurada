@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNet.Identity;
-using PsikoterapsitlerBurada.Models;
-using PsikoterapsitlerBurada.Repositories;
 using System.Web.Http;
+using PsikoterapsitlerBurada.Core.Models;
+using PsikoterapsitlerBurada.Core.Repositories;
+using PsikoterapsitlerBurada.Persistence.Models;
+using PsikoterapsitlerBurada.Persistence.Repositories;
 
 namespace PsikoterapsitlerBurada.Controllers.API
 {
@@ -12,8 +14,7 @@ namespace PsikoterapsitlerBurada.Controllers.API
 
         public ReadNotificationController()
         {
-            var context = new ApplicationDbContext();
-            _unitOfWork = new UnitOfWork(context);
+            _unitOfWork = new UnitOfWork(new ApplicationDbContext());
         }
 
         //api/controler/notificationId

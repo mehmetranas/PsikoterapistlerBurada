@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
-using PsikoterapsitlerBurada.Models;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-using PsikoterapsitlerBurada.Models.ViewModels;
+using PsikoterapsitlerBurada.Core.Models;
+using PsikoterapsitlerBurada.ViewModels;
 
 namespace PsikoterapsitlerBurada.Controllers
 {
