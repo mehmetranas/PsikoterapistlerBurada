@@ -1,6 +1,9 @@
 ﻿
 var isAuth;
 
+//Select users to ask question in selectedUsersToAskQuestionController
+var selectedUsers = [];
+
 var setAuthState = function (auth) {
     isAuth = auth;
 }
@@ -67,7 +70,7 @@ var GetAnswersController = function () {
 
 }();
 
-var indexController = function () {
+var IndexController = function () {
     
     var getFavoriteQuestions = function () {
         if (!isAuth) return;
@@ -138,6 +141,128 @@ var indexController = function () {
         tooltip: tooltip,
         voteAction: voteAction
     }
+}();
+
+var SelectUserToAskQuestionController = function () {
+
+    var usersTable = function (id) {
+        $(id).DataTable(
+            {
+                "language": {
+                    "sDecimal": ",",
+                    "sEmptyTable": "Tabloda herhangi bir veri mevcut değil",
+                    "sInfo": "_TOTAL_ kayıttan _START_ - _END_ arasındaki kayıtlar gösteriliyor",
+                    "sInfoEmpty": "Kayıt yok",
+                    "sInfoFiltered": "(_MAX_ kayıt içerisinden bulunan)",
+                    "sInfoPostFix": "",
+                    "sInfoThousands": ".",
+                    "sLengthMenu": "Sayfada _MENU_ kayıt göster",
+                    "sLoadingRecords": "Yükleniyor...",
+                    "sProcessing": "İşleniyor...",
+                    "sSearch": "Ara:",
+                    "sZeroRecords": "Eşleşen kayıt bulunamadı",
+                    "oPaginate": {
+                        "sFirst": "İlk",
+                        "sLast": "Son",
+                        "sNext": "Sonraki",
+                        "sPrevious": "Önceki"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": artan sütun sıralamasını aktifleştir",
+                        "sSortDescending": ": azalan sütun sıralamasını aktifleştir"
+                    }
+                }
+            });
+    }
+
+    var userSelect = function () {
+        $(".js-username").click(function (select) {
+
+            if (selectedUsers.length === 3) {
+                bootbox.alert({
+                    title: "Oops!",
+                    message: "Üzgünüz 3 kişiden fazlasını seçemezsiniz",
+                    buttons: {
+                        ok: {
+                            label: "Tamam"
+                        }
+                    }
+                });
+                return;
+            }
+            var selectButton = document.getElementById($(select.target).attr("id"));
+            selectButton.innerText = "Eklendi";
+            selectButton.disabled = true;
+            var username = $(select.target).attr("data-username");
+            var table = document.getElementById("js-selected");
+            var row = table.insertRow(table.rows.length);
+            var userCell = row.insertCell(0);
+            var actionCell = row.insertCell(1);
+            var removeUser = document.createElement("button");
+            removeUser.innerText = "Çıkar";
+            removeUser.setAttribute("user-id", $(select.target).attr("id"));
+            removeUser.className = "btn btn-link js-remove-user";
+            userCell.innerHTML = username;
+            actionCell.appendChild(removeUser);
+            $(row).addClass("animated pulse");
+            selectedUsers.push($(select.target).attr("id"));
+        });
+    }
+
+    var userRemove = function () {
+        $(document).on("click",
+            ".js-remove-user",
+            function (remove) {
+                var removeUserId = $(remove.target).attr("user-id");
+                var removeButton = $(this);
+                var userButton = document.getElementById(removeUserId);
+                var row = removeButton.closest("tr");
+                userButton.innerText = "Seç";
+                userButton.disabled = false;
+                $(row).addClass("animated fadeOut")
+                    .one("webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend",
+                    function () {
+                        $(this).remove();
+                    });
+                selectedUsers.splice(selectedUsers.indexOf(removeUserId), 1);
+            });
+    }
+
+    var sendQuestion = function (questionId) {
+        $(".js-submit").click(function () {
+            $.ajax({
+                url: "/api/selectedusers",
+                type: "post",
+                contentType: "application/json",
+                data: JSON.stringify({ selectedUsersId: selectedUsers, questionId: questionId }),
+                success: function () {
+                    bootbox.alert({
+                        title: "Tebrikler",
+                        message: "Sorunuz yola çıktı bile",
+                        buttons: {
+                            ok: {
+                                label: "Tamam"
+                            }
+                        },
+                        callback: function () {
+                            window.location.href = "/User/GetMyQuestions";
+                        }
+                    });
+                },
+                error: function (data) {
+                    console.log(data.responseJSON.message);
+                }
+            });
+        });
+
+    }
+
+    return {
+        usersTable: usersTable,
+        userSelect: userSelect,
+        userRemove: userRemove,
+        sendQuestion: sendQuestion
+}
 }();
 
 

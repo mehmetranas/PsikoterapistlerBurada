@@ -83,20 +83,20 @@
             var auth = @User.Identity.IsAuthenticated.ToString().ToLower();
 
             //Write common event over this code because of return command
-            indexController.authState(auth);
-            indexController.tooltip();
-            indexController.getFavoriteQuestions();
+            IndexController.authState(auth);
+            IndexController.tooltip();
+            IndexController.getFavoriteQuestions();
 
             //remove-add favorite questions
 
             $(".favorite span").click(function (e) {
                 if (!auth) return;
-                    indexController.favoriteQuestionAction(e);
+                    IndexController.favoriteQuestionAction(e);
                 });
 
             $(".js-vote").click(function (e) {
                 if (!auth) return;
-                    indexController.voteAction(e);
+                    IndexController.voteAction(e);
                 });
             });
 
