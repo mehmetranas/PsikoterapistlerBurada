@@ -82,91 +82,23 @@
         $(document).ready(function () {
             var auth = @User.Identity.IsAuthenticated.ToString().ToLower();
 
-            //Write comman event over this code because of return command
-            if (!auth) {
-                $('[data-toggle = "tooltip"]').each(function (index, element) {
-                    $(element).tooltip();
-                });
-                return;
-            } else {
-                $('[data-toggle = "tooltip"]').each(function (index, element) {
-                    $(element).tooltip("destroy");
-                    getFavoriteQuestions();
-                });
+            //Write common event over this code because of return command
+            indexController.authState(auth);
+            indexController.tooltip();
+            indexController.getFavoriteQuestions();
 
             //remove-add favorite questions
+
             $(".favorite span").click(function (e) {
-                var spanEl = e.target;
-                var id = $(spanEl).attr("data-questionId");
-
-                $.post("/api/favorite/" + id)
-                    .success(function (data) {
-                        if (data.action === "add") {
-                            $(spanEl).addClass(" animated rubberBand");
-                            spanEl.style.color = "goldenrod";   
-                        }
-                        else if (data.action === "delete") {
-                            $(spanEl).removeClass(" animated rubberBand");
-                            spanEl.style.color = "black";  
-                        }
-                    });
-            });
-
-                $(".js-vote").click(function (e) {
-
-                    var element = e.target;
-                    var voteCounter = $(element).closest(".vote").find(".vote-counter")[0];
-                    var voteDto = {
-                        voteAction: parseInt(element.getAttribute("data-vote-action")),
-                        questionId: $(element).attr("data-questionId")
-                    };
-
-                    $.post("/api/vote", voteDto)
-                        .success(function (data, status, xhr) {
-                            if (xhr.responseJSON && xhr.responseJSON.isVoteUp) {
-                                bootbox.alert({
-                                    title: "Opps!",
-                                    message: "Daha önce bu soru için oy hakkınızı kullandınız",
-                                    buttons: {
-                                        ok: {
-                                            label: "Tamam"
-                                        }
-                                    }
-                                });
-                                return;
-                            }
-
-                            if (xhr.responseJSON && xhr.responseJSON.isRollBack) {
-                                var elements = $(element).closest(".vote").find(".js-vote");
-                                elements.each(function(index,el) {
-                                    el.style.color = "black";
-                                });
-                            } else {
-                                element.style.color = "goldenrod";
-                            }
-
-                            voteCounter.innerText = parseInt(voteCounter.innerText) + parseInt(voteDto.voteAction);
-                        })
-                        .fail(function (xhr, status) {
-                            console.log(xhr.message);
-                        });
+                if (!auth) return;
+                    indexController.favoriteQuestionAction(e);
                 });
-            }
 
-        });
-
-        function getFavoriteQuestions() {
-            $.ajax({
-                method: "Get",
-                url: "/api/favorite/",
-                success: function (data) {
-                    data.forEach(function (id) {
-                        var favoriteQuestion = $(".favorite [data-questionId ='" + id + "']");
-                        favoriteQuestion[0].style.color = "goldenrod";
-                    });
-                }
+            $(".js-vote").click(function (e) {
+                if (!auth) return;
+                    indexController.voteAction(e);
+                });
             });
-        };
 
     </script>
 }

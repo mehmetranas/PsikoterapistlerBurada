@@ -16,9 +16,9 @@
                     </p> 
                 </div>
                 <div class="col-md-4">
-                    @if (question.Answers.Any(a => a.UserId == User.Identity.GetUserId()))
+                    @if (question.Answers.Count > 0)
                     {
-                        @Html.ActionLink("Cevabı Gör", "GetAnswers", "Answers", new {id = question.Id}, new {@class = "btn btn-link btn-sm"})
+                        @Html.ActionLink("Cevapları Gör", "GetAnswers", "Answers", new {id = question.Id}, new {@class = "btn btn-link btn-sm"})
                     }
                     else
                     {

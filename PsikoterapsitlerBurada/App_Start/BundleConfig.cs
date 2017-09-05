@@ -24,7 +24,8 @@ namespace PsikoterapsitlerBurada
                         "~/Scripts/datatables/dataTables.bootstrap.js",
                         "~/Scripts/bootstrap.js",
                         "~/Scripts/respond.js",
-                        "~/Scripts/bootbox.min.js"
+                        "~/Scripts/bootbox.min.js",
+                        "~/Scripts/app/app.js"
                     ));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(

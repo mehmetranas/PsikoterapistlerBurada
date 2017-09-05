@@ -9,7 +9,6 @@ using PsikoterapsitlerBurada.Persistence.Repositories;
 
 namespace PsikoterapsitlerBurada.Controllers.API
 {
-    [Authorize]
     public class LikeController : ApiController
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -19,6 +18,7 @@ namespace PsikoterapsitlerBurada.Controllers.API
             _unitOfWork = new UnitOfWork(new ApplicationDbContext());
         }
 
+        [Authorize]
         [HttpPost]
         public IHttpActionResult Create(int id)
         {
@@ -42,7 +42,8 @@ namespace PsikoterapsitlerBurada.Controllers.API
 
             return Ok();
         }
-        
+
+        [Authorize]
         [HttpDelete]
         public IHttpActionResult Delete(int id)
         {
@@ -73,6 +74,7 @@ namespace PsikoterapsitlerBurada.Controllers.API
 
             var likesAnswersId = _unitOfWork.Users
                 .GetUserLikeAnswersIdByQuestionId(user, id);
+
             return likesAnswersId;
         }
     }

@@ -48,7 +48,7 @@
             <i class="glyphicon glyphicon-heart like"
                data-toggle="tooltip"
                title="Giriş yapmalısınız"
-               id=@answer.Id onclick="onClick(id)"></i>
+               id=@answer.Id onclick="GetAnswersController.likeAction(id)"></i>
         </div>
     </div>
 }
@@ -60,53 +60,10 @@
         var isAuth = @User.Identity.IsAuthenticated.ToString().ToLower();
 
         $(document).ready(function () {
-            if (!isAuth) {
-                $('[data-toggle = "tooltip"]').tooltip();
-                return;
-            } else {
-                $('[data-toggle = "tooltip"]').tooltip("destroy");
-            }
-            $.ajax({
-                url: "/api/like/" + @Model.QuestionViewModel.Id,
-                method: "Get",
-                success: function(data) {
-                    data.forEach(function(id) {
-                        document.getElementById(id).style.color = "deeppink";
-                    });
-                }
-            });
-
+            GetAnswersController.authState(isAuth);
+            GetAnswersController.tooltip(isAuth);
+            GetAnswersController.getLikeAnswersId(@Model.QuestionViewModel.Id);
         });
 
-        function onClick(answerId) {
-            if (!isAuth) {
-                return;
-            }
-            var element = document.getElementById(answerId);
-            var likeCountElement = $(element).closest("div").find("span.like");
-            var likeCount = parseInt(likeCountElement.text());
-            var animatedClasses = " animated bounceIn";
-            if (element.style.color === "deeppink") {
-
-                $.ajax({
-                    method: "delete",
-                    url: "/api/like/" + answerId
-                }).success(function() {
-                    element.style.color = "black";
-                    $(element).removeClass(animatedClasses);
-                    likeCount--;
-                    likeCountElement.text(likeCount);
-                });
-                return;
-            }
-
-            $.post("/api/like/" + answerId).success(function() {
-                $(element).addClass(animatedClasses);
-                element.style.color = "deeppink";
-                likeCount++;
-                likeCountElement.text(likeCount);
-            });
-            return;
-        }
     </script>
 }

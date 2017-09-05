@@ -127,10 +127,15 @@ a.question-text:hover {
     margin-top: 5px;
 }
 
-.favorite > span {
-    cursor: pointer;
-    font-size: 20px;
-}
+    .favorite > span {
+        cursor: pointer;
+        font-size: 20px;
+    }
+
+    .favorite > span.isFavorite {
+        color: goldenrod;
+
+    }
 
 .favorite > span:hover {
     color: goldenrod;
@@ -173,6 +178,10 @@ p.rating {
 i.like:hover {
     cursor: pointer;
     color:deeppink
+}
+
+i.isLike {
+    color: deeppink;
 }
 
 div.like {

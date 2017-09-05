@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNet.Identity;
+using PsikoterapsitlerBurada.Core.Models;
+using PsikoterapsitlerBurada.Core.Repositories;
 using PsikoterapsitlerBurada.DTOs;
+using PsikoterapsitlerBurada.Persistence.Models;
+using PsikoterapsitlerBurada.Persistence.Repositories;
 using System;
 using System.Linq;
 using System.Web.Http;
-using PsikoterapsitlerBurada.Core.Models;
-using PsikoterapsitlerBurada.Core.Repositories;
-using PsikoterapsitlerBurada.Persistence.Models;
-using PsikoterapsitlerBurada.Persistence.Repositories;
 
 namespace PsikoterapsitlerBurada.Controllers.API
 {
@@ -65,7 +65,7 @@ namespace PsikoterapsitlerBurada.Controllers.API
             return Ok();
         }
 
-        [System.Web.Http.HttpGet]
+        [HttpGet]
         public int GetVotes(int id)
         {
             var votes = _unitOfWork.Votes.GetVotesByQuestion(id);
