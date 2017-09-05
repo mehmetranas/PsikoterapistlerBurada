@@ -265,4 +265,70 @@ var SelectUserToAskQuestionController = function () {
 }
 }();
 
+var NotificationController = function () {
+
+    var getNotifications = function () {
+        if (!isAuth) return; 
+        $.getJSON("/api/notification",
+            function (notifications) {
+                console.log(notifications);
+                if (notifications.length > 0) {
+                    $(".js-notification-count").text(notifications.length)
+                        .removeClass("hide")
+                        .addClass("animated bounce");
+                    $(".notification").popover({
+                        html: true,
+                        placement: "bottom",
+                        content: function () {
+                            var template = $("#notification-template").html();
+                            var content = _.template(template);
+                            return content({ notifications: notifications });
+                        }
+                    });
+                }
+            });
+    }
+    var notificationClose = function() {
+        $(document).on("click",
+            "i.js-notification-close",
+            function (e) {
+                var notificationId = $(e.target).attr("data-notification");
+                var element = $(e.target);
+                $.post("/api/readnotification/" + notificationId)
+                    .success(function () {
+                        element.closest("li").addClass("animated fadeOut")
+                            .one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend',
+                                function () {
+                                    var count = parseInt($(".js-notification-count").text());
+                                    count--;
+                                    if (count === 0) {
+                                        $(".js-notification-count").text("").addClass("hide");
+                                        $(".notification").popover("destroy");
+                                        return;
+                                    }
+                                    element.closest("li").remove();
+                                    $(".js-notification-count").text(count);
+                                });
+                    });
+
+            });
+
+    }
+    var notificationRead = function() {
+        $(document).on("click",
+            "a.js-notification-close",
+            function (e) {
+                var notificationId = $(e.target).attr("data-notification");
+                $.post("/api/readnotification/" + notificationId);
+            });
+    }
+
+    return {
+        getNotifications: getNotifications,
+        notificationClose: notificationClose,
+        notificationRead: notificationRead
+    }
+
+}();
+
 

@@ -109,58 +109,15 @@
 
 </script>
 <script>
-    $(document).ready(function() {
-        $.getJSON("/api/notification",
-            function(notifications) {
-                console.log(notifications);
-               if (notifications.length > 0) {
-                   $(".js-notification-count").text(notifications.length)
-                       .removeClass("hide")
-                       .addClass("animated bounce");
-                   $(".notification").popover({
-                       html: true,
-                       placement: "bottom",
-                       content: function () {
-                           var template = $("#notification-template").html();
-                           var content = _.template(template);
-                           return content({notifications: notifications});
-                       }
-                   });
-               }
-            });
+    $(document).ready(function () {
+        var isAuth = @User.Identity.IsAuthenticated.ToString().ToLower();
 
-        $(document).on("click",
-            "i.js-notification-close",
-            function (e) {
-                var notificationId = $(e.target).attr("data-notification");
-                var element = $(e.target);
-                $.post("/api/readnotification/" + notificationId)
-                    .success(function () {
-                        element.closest("li").addClass("animated fadeOut")
-                            .one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend',
-                            function () {
-                                var count = parseInt($(".js-notification-count").text());
-                                count--;
-                                if (count === 0) {
-                                    $(".js-notification-count").text("").addClass("hide");
-                                    $(".notification").popover("destroy");
-                                    return;
-                                }
-                                element.closest("li").remove();
-                                $(".js-notification-count").text(count);
-                            });
-                    });
+        setAuthState(isAuth);
 
-            });
-
-        $(document).on("click",
-            "a.js-notification-close",
-            function(e) {
-                var notificationId = $(e.target).attr("data-notification");
-                $.post("/api/readnotification/" + notificationId);
-            });
-
-    });
+        NotificationController.getNotifications();
+        NotificationController.notificationClose();
+        NotificationController.notificationRead();
+     });
 </script>
 </body>
 </html>
