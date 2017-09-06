@@ -64,8 +64,15 @@
 
             //Datatable
             SelectUserToAskQuestionController.usersTable("#js-users");
-            SelectUserToAskQuestionController.userSelect();
-            SelectUserToAskQuestionController.userRemove(questionId);
+            
+            $(".js-username").click(SelectUserToAskQuestionController.userSelect);
+              
+            $(document).on("click", ".js-remove-user", SelectUserToAskQuestionController.userRemove);
+
+            $(".js-submit").click(function() {
+                SelectUserToAskQuestionController.sendUsers(questionId);
+            });
+            
         });
 
     </script>

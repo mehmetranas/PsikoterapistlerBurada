@@ -79,26 +79,11 @@
 
 @section scripts{
     <script>
-        $(document).ready(function () {
-            var auth = @User.Identity.IsAuthenticated.ToString().ToLower();
-
-            //Write common event over this code because of return command
-            IndexController.authState(auth);
-            IndexController.tooltip();
+        $(document).ready(function() {
+            setAuthState(@User.Identity.IsAuthenticated.ToString().ToLower());
+            tooltip();
             IndexController.getFavoriteQuestions();
-
-            //remove-add favorite questions
-
-            $(".favorite span").click(function (e) {
-                if (!auth) return;
-                    IndexController.favoriteQuestionAction(e);
-                });
-
-            $(".js-vote").click(function (e) {
-                if (!auth) return;
-                    IndexController.voteAction(e);
-                });
-            });
+        });
 
     </script>
 }

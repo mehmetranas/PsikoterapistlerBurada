@@ -115,8 +115,9 @@
         setAuthState(isAuth);
 
         NotificationController.getNotifications();
-        NotificationController.notificationClose();
-        NotificationController.notificationRead();
+        $(document).on("click","i.js-notification-close",NotificationController.notificationClose);
+        $(document).on("click", "a.js-notification-close", NotificationController.notificationRead);
+
      });
 </script>
 </body>

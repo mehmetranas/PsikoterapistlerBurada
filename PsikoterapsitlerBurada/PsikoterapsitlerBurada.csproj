@@ -347,6 +347,17 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\app\app.js" />
+    <Content Include="Scripts\app\controllers\GetAnswersController.js" />
+    <Content Include="Scripts\app\controllers\IndexController.js" />
+    <Content Include="Scripts\app\controllers\NotificationController.js" />
+    <Content Include="Scripts\app\controllers\SelectUserToAskQuestionController.js" />
+    <Content Include="Scripts\app\services\FavoriteQuestionService.js" />
+    <Content Include="Scripts\app\services\GetAnswersService.js" />
+    <Content Include="Scripts\app\services\IndexService.js" />
+    <Content Include="Scripts\app\services\LikeService.js" />
+    <Content Include="Scripts\app\services\NotificationService.js" />
+    <Content Include="Scripts\app\services\SelectedUserService.js" />
+    <Content Include="Scripts\app\services\VoteService.js" />
     <Content Include="Scripts\bootbox.min.js" />
     <Content Include="Scripts\bootstrap-tagsinput.js" />
     <Content Include="Scripts\bootstrap.js" />

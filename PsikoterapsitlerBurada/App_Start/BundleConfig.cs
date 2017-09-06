@@ -25,6 +25,17 @@ namespace PsikoterapsitlerBurada
                         "~/Scripts/bootstrap.js",
                         "~/Scripts/respond.js",
                         "~/Scripts/bootbox.min.js",
+                        "~/Scripts/app/services/IndexService.js",
+                        "~/Scripts/app/services/FavoriteQuestionService.js",
+                        "~/Scripts/app/services/GetAnswersService.js",
+                        "~/Scripts/app/services/VoteService.js",
+                        "~/Scripts/app/services/LikeService.js",
+                        "~/Scripts/app/services/SelectedUserService.js",
+                        "~/Scripts/app/services/NotificationService.js",
+                        "~/Scripts/app/controllers/NotificationController.js",
+                        "~/Scripts/app/controllers/GetAnswersController.js",
+                        "~/Scripts/app/controllers/IndexController.js",
+                        "~/Scripts/app/controllers/SelectUserToAskQuestionController.js",
                         "~/Scripts/app/app.js"
                     ));
 

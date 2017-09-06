@@ -1,4 +1,5 @@
-﻿@model PsikoterapsitlerBurada.Core.Models.ViewModels.GetAnswerViewModel
+﻿@using Microsoft.AspNet.Identity
+@model PsikoterapsitlerBurada.Core.Models.ViewModels.GetAnswerViewModel
 @{
     ViewBag.Title = "GetAnswers";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -48,22 +49,21 @@
             <i class="glyphicon glyphicon-heart like"
                data-toggle="tooltip"
                title="Giriş yapmalısınız"
-               id=@answer.Id onclick="GetAnswersController.likeAction(id)"></i>
+               id=@answer.Id 
+               data-answer-userId=@answer.UserId
+               data-userId=@User.Identity.GetUserId()
+               onclick="GetAnswersController.likeAction(event)"></i>
         </div>
     </div>
 }
 
-
 @section scripts{
     <script>
 
-        var isAuth = @User.Identity.IsAuthenticated.ToString().ToLower();
-
         $(document).ready(function () {
-            GetAnswersController.authState(isAuth);
-            GetAnswersController.tooltip(isAuth);
+            setAuthState(@User.Identity.IsAuthenticated.ToString().ToLower());
+            tooltip();
             GetAnswersController.getLikeAnswersId(@Model.QuestionViewModel.Id);
         });
-
     </script>
 }
