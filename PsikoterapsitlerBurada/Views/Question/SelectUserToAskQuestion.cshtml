@@ -3,68 +3,71 @@
     ViewBag.Title = "SelectUserToAskQuestion";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<div class="js-loader loader hide"></div>
 
-<h2>Soru</h2>
+<div id="js-document">
+    <h2>Soru</h2>
 
-<div class="panel panel-success">
-    <div class="panel-heading">
-        <span>Bu soru kimlere sormak istersiniz? </span>
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            <span>Bu soru kimlere sormak istersiniz? </span>
+        </div>
+        <div class="panel-body">
+            @Model.Question.QuestionText
+        </div>
     </div>
-    <div class="panel-body">
-        @Model.Question.QuestionText
-    </div>
-</div>
 
-<hr />
+    <hr />
 
-<table cellspacing="0" class="table" id="js-users" width="100%">
-    <caption>
-        <hr />
-    </caption>
-    <thead>
-    <tr>
-        <th>İsim</th>
-        <th>Kategori</th>
-        <th>
-        </th>
-    </tr>
-    </thead>
-    <tfoot class="text-center">
-    <tr>
-        <td></td>
-        <td></td>
-        <td>
-            <button type="button" class="btn btn-info btn-sm js-submit" disabled ="disabled">Tamam</button>
-        </td>
-    </tr>
-    </tfoot>
-    <tbody class="text-center">
-    @foreach (var user in Model.Users)
-    {
+    <table class="table" id="js-users" width="100%">
+        <caption>
+            <hr />
+        </caption>
+        <thead>
+            <tr>
+                <th>İsim</th>
+                <th>Kategori</th>
+                <th>
+                </th>
+            </tr>
+        </thead>
+        <tfoot class="text-center">
+            <tr>
+                <td></td>
+                <td></td>
+                <td>
+                    <button type="button" class="btn btn-info btn-sm js-submit" disabled="disabled">Tamam</button>
+                </td>
+            </tr>
+        </tfoot>
+        <tbody class="text-center">
+            @foreach (var user in Model.Users)
+            {
+                <tr>
+                    <td>
+                        <a href=@Url.Action("UserProfile", "User", new {id = user.Id})>
+                            @user.UserName
+                        </a>
+                    </td>
+                    <td>Kategori</td>
+                    <td>
+                        <button class="btn btn-link js-username" id="@user.Id" data-username="@user.UserName">Seç</button>
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+
+    <hr />
+
+    <table class="table table-striped" id="js-selected" width="100%">
         <tr>
-            <td>
-                <a href=@Url.Action("UserProfile", "User", new {id = user.Id})>
-                    @user.UserName
-                </a>
-            </td>
-            <td>Kategori</td>
-            <td>
-                <button class="btn btn-link js-username" id="@user.Id" data-username="@user.UserName">Seç</button>
-            </td>
+            <th>Seçilenler</th>
+            <th></th>
         </tr>
-    }
-
-    </tbody>
-</table>
-
-<hr />
-
-<table class="table table-striped" id="js-selected" width="100%">
-    <tr>
-        <th>Seçilenler</th>
-        <th></th>
-    </tr>
-</table>
+    </table>
+</div>
 
 
 @section scripts

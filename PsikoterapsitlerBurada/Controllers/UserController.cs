@@ -3,6 +3,7 @@ using Microsoft.AspNet.Identity;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using Microsoft.Ajax.Utilities;
 using PsikoterapsitlerBurada.Core.Models;
 using PsikoterapsitlerBurada.Core.Models.ViewModels;
 using PsikoterapsitlerBurada.Core.Repositories;
@@ -62,6 +63,8 @@ namespace PsikoterapsitlerBurada.Controllers
         {
             var question = _unitOfWork.Questions
                 .GetQuestionByQuestionId(id);
+            var userId = User.Identity.GetUserId();
+            if (question.AskedToWhom.All(u => u.Id != userId)) return HttpNotFound();
 
             var viewModel = new AnswerViewModel()
             {

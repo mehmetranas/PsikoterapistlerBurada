@@ -41,7 +41,7 @@ namespace PsikoterapsitlerBurada.Controllers.API
 
                 selectedUser?.Notify(notification);
             }
-            
+
             _unitOfWork.Complete();
             return Ok();
         }

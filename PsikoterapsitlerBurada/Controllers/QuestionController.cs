@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System;
+using AutoMapper;
 using Microsoft.AspNet.Identity;
 using PsikoterapsitlerBurada.Core.Models.ViewModels;
 using PsikoterapsitlerBurada.Core.Repositories;
@@ -6,6 +7,7 @@ using PsikoterapsitlerBurada.Persistence.Models;
 using PsikoterapsitlerBurada.Persistence.Repositories;
 using System.Linq;
 using System.Web.Mvc;
+using PsikoterapsitlerBurada.Core.Models;
 
 namespace PsikoterapsitlerBurada.Controllers
 {
@@ -34,21 +36,23 @@ namespace PsikoterapsitlerBurada.Controllers
         [HttpPost]
         public ActionResult Create(QuestionViewModel model)
         {
-            //var userId = User.Identity.GetUserId();
-            //var user = _unitOfWork.Users.GetUserById(userId);
-            //var category = _unitOfWork.Categories.GetCategoryByCategoryId(model.Category.Id);
+            if (string.IsNullOrWhiteSpace(model.QuestionText) || model.Category == null) return View(model);
 
-            //var question = new Question()
-            //{
-            //    QuestionText = model.QuestionText,
-            //    DateTime = DateTime.Now,
-            //    WhoAsked = user,
-            //    Category = category
-            //};
+            var userId = User.Identity.GetUserId();
+            var user = _unitOfWork.Users.GetUserById(userId);
+            var category = _unitOfWork.Categories.GetCategoryByCategoryId(model.Category.Id);
 
-            //_unitOfWork.Questions.Add(question);
+            var question = new Question()
+            {
+                QuestionText = model.QuestionText,
+                DateTime = DateTime.Now,
+                WhoAsked = user,
+                Category = category
+            };
 
-            //_unitOfWork.Complete();
+            _unitOfWork.Questions.Add(question);
+
+            _unitOfWork.Complete();
 
             var questionId = _unitOfWork.Questions.GetAllQuestions().Max(q => q.Id);
             return RedirectToAction("SelectUserToAskQuestion", new { id = questionId });

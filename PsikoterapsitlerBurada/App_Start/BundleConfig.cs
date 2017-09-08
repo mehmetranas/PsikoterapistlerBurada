@@ -43,7 +43,8 @@ namespace PsikoterapsitlerBurada
                         "~/Content/jquery.dataTables.css",
                         "~/Content/bootstrap.css",
                         "~/Content/site.css",
-                        "~/Content/animate.css"
+                        "~/Content/animate.css",
+                        "~/Content/font-awesome-4.7.0/css/font-awesome.min.css"
                       ));
         }
     }

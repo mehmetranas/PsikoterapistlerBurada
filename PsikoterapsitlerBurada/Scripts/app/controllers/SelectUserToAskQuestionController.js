@@ -83,7 +83,9 @@
             $(".js-submit").attr("disabled", true);
     }
 
-    var sendUsers = function(questionId) {
+    var sendUsers = function (questionId) {
+     
+       
         SelectedUserService.submitSelectedUsers(selectedUsers, questionId);
     };
     
