@@ -1,5 +1,4 @@
-﻿using PsikoterapsitlerBurada.Core.Models;
-using PsikoterapsitlerBurada.Core.Repositories;
+﻿using PsikoterapsitlerBurada.Core.Repositories;
 using PsikoterapsitlerBurada.Persistence.Models;
 
 namespace PsikoterapsitlerBurada.Persistence.Repositories
@@ -30,7 +29,7 @@ namespace PsikoterapsitlerBurada.Persistence.Repositories
             Questions = new QuestionRepository(_context);
         }
 
-        public void Complate()
+        public void Complete()
         {
             _context.SaveChanges();
         }

@@ -32,25 +32,23 @@ namespace PsikoterapsitlerBurada.Controllers.API
             if (isVote)
             {
                 var userVote = question.Votes.SingleOrDefault(v => v.UserId == userId);
-                if (userVote != null)
-                {
-                    var userVoteState = userVote.VoteState;
-                    var canVote = userVoteState + voteDto.VoteAction == 0 || userVoteState == 0;
+                if (userVote == null) return Ok();
 
-                    if (!canVote)
-                    {
-                        return Json(new {isVoteUp = true});
-                    }
+                var userVoteState = userVote.VoteState;
+                var canVote = userVoteState + voteDto.VoteAction == 0 || userVoteState == 0;
+
+                if (!canVote)
+                {
+                    return Json(new { isVoteUp = true });
                 }
 
-                if (userVote == null) return Ok();
                 userVote.VoteState += voteDto.VoteAction;
-                _unitOfWork.Complate();
-                if (userVote.VoteState == 0) return Json(new {isRollBack = true});
+                _unitOfWork.Complete();
+                if (userVote.VoteState == 0) return Json(new { isRollBack = true });
 
                 return Ok();
             }
-           
+
             var vote = new Vote()
             {
                 QuestionId = voteDto.QuestionId,
@@ -60,7 +58,7 @@ namespace PsikoterapsitlerBurada.Controllers.API
             };
 
             _unitOfWork.Votes.Add(vote);
-            _unitOfWork.Complate();
+            _unitOfWork.Complete();
 
             return Ok();
         }

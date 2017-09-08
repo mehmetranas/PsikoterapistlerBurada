@@ -11,6 +11,6 @@
         IUserRepository Users { get; }
         IVoteRepository Votes { get; }
 
-        void Complate();
+        void Complete();
     }
 }

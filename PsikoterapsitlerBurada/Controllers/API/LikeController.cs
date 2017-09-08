@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNet.Identity;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http;
 using PsikoterapsitlerBurada.Core.Models;
 using PsikoterapsitlerBurada.Core.Repositories;
 using PsikoterapsitlerBurada.Persistence.Models;
 using PsikoterapsitlerBurada.Persistence.Repositories;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web.Http;
 
 namespace PsikoterapsitlerBurada.Controllers.API
 {
@@ -38,7 +38,7 @@ namespace PsikoterapsitlerBurada.Controllers.API
 
             answer.User.Notify(notification);
 
-            _unitOfWork.Complate();
+            _unitOfWork.Complete();
 
             return Ok();
         }
@@ -59,7 +59,7 @@ namespace PsikoterapsitlerBurada.Controllers.API
             if (notification != null) _unitOfWork.Notifications.Remove(notification);
 
             user.LikesAnswers.Remove(answer);
-            _unitOfWork.Complate();
+            _unitOfWork.Complete();
 
             return Ok();
         }

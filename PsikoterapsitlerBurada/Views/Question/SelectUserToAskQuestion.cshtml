@@ -9,7 +9,7 @@
 <div class="panel panel-success">
     <div class="panel-heading">
         <span>Bu soru kimlere sormak istersiniz? </span>
-        </div>
+    </div>
     <div class="panel-body">
         @Model.Question.QuestionText
     </div>
@@ -17,31 +17,43 @@
 
 <hr />
 
-<table cellspacing="0" class="table table-striped" id="js-users" width="100%">
+<table cellspacing="0" class="table" id="js-users" width="100%">
+    <caption>
+        <hr />
+    </caption>
     <thead>
-        <tr>
-            <th>İsim</th>
-            <th>Kategori</th>
-            <th>
-                <button type="button" class="btn btn-default btn-sm js-submit">Tamam</button>
-            </th>
-        </tr>
+    <tr>
+        <th>İsim</th>
+        <th>Kategori</th>
+        <th>
+        </th>
+    </tr>
     </thead>
-    <tbody>
-        @foreach (var user in Model.Users)
-        {
-            <tr>
-                <td>
-                    <a href=@Url.Action("UserProfile", "User", new {id = user.Id})>
-                        @user.UserName
-                    </a>
-                </td>
-                <td>Kategori</td>
-                <td>
-                    <button class="btn btn-link js-username" id="@user.Id" data-username="@user.UserName">Seç</button>
-                </td>
-            </tr>
-        }
+    <tfoot class="text-center">
+    <tr>
+        <td></td>
+        <td></td>
+        <td>
+            <button type="button" class="btn btn-info btn-sm js-submit" disabled ="disabled">Tamam</button>
+        </td>
+    </tr>
+    </tfoot>
+    <tbody class="text-center">
+    @foreach (var user in Model.Users)
+    {
+        <tr>
+            <td>
+                <a href=@Url.Action("UserProfile", "User", new {id = user.Id})>
+                    @user.UserName
+                </a>
+            </td>
+            <td>Kategori</td>
+            <td>
+                <button class="btn btn-link js-username" id="@user.Id" data-username="@user.UserName">Seç</button>
+            </td>
+        </tr>
+    }
+
     </tbody>
 </table>
 
@@ -64,15 +76,15 @@
 
             //Datatable
             SelectUserToAskQuestionController.usersTable("#js-users");
-            
+
             $(".js-username").click(SelectUserToAskQuestionController.userSelect);
-              
+
             $(document).on("click", ".js-remove-user", SelectUserToAskQuestionController.userRemove);
 
             $(".js-submit").click(function() {
                 SelectUserToAskQuestionController.sendUsers(questionId);
             });
-            
+
         });
 
     </script>

@@ -10,6 +10,6 @@ namespace PsikoterapsitlerBurada.Core.Models
         public int QuestionId { get; set; }
         public string UserId { get; set; }
         public DateTime DateTime { get; set; }
-        public int VoteState { get; set; }
+        public int VoteState { get; set; }       
     }
 }

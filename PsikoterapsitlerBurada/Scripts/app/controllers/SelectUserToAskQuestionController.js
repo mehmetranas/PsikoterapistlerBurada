@@ -45,6 +45,8 @@
             });
             return;
         }
+
+        $(".js-submit").attr("disabled", false);
         var selectButton = document.getElementById($(e.target).attr("id"));
         selectButton.innerText = "Eklendi";
         selectButton.disabled = true;
@@ -64,7 +66,7 @@
     }
 
     var userRemove = function (remove) {
-
+        
         var removeUserId = $(remove.target).attr("user-id");
         var removeButton = $(this);
         var userButton = document.getElementById(removeUserId);
@@ -77,6 +79,8 @@
                     $(this).remove();
                 });
         selectedUsers.splice(selectedUsers.indexOf(removeUserId), 1);
+        if (selectedUsers.length === 0)
+            $(".js-submit").attr("disabled", true);
     }
 
     var sendUsers = function(questionId) {

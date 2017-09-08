@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNet.Identity;
-using PsikoterapsitlerBurada.DTOs;
-using System;
-using System.Web.Http;
 using PsikoterapsitlerBurada.Core.Models;
 using PsikoterapsitlerBurada.Core.Repositories;
+using PsikoterapsitlerBurada.DTOs;
 using PsikoterapsitlerBurada.Persistence.Models;
 using PsikoterapsitlerBurada.Persistence.Repositories;
+using System;
+using System.Web.Http;
 
 namespace PsikoterapsitlerBurada.Controllers.API
 {
@@ -44,7 +44,7 @@ namespace PsikoterapsitlerBurada.Controllers.API
 
             whoAsked.Notify(notification);
 
-            _unitOfWork.Complate();
+            _unitOfWork.Complete();
             return Ok();
         }
     }

@@ -1,9 +1,9 @@
-﻿using PsikoterapsitlerBurada.DTOs;
-using System.Web.Http;
-using PsikoterapsitlerBurada.Core.Models;
+﻿using PsikoterapsitlerBurada.Core.Models;
 using PsikoterapsitlerBurada.Core.Repositories;
+using PsikoterapsitlerBurada.DTOs;
 using PsikoterapsitlerBurada.Persistence.Models;
 using PsikoterapsitlerBurada.Persistence.Repositories;
+using System.Web.Http;
 
 namespace PsikoterapsitlerBurada.Controllers.API
 {
@@ -22,8 +22,11 @@ namespace PsikoterapsitlerBurada.Controllers.API
         {
             if (userDto.SelectedUsersId.Length > 3)
                 return BadRequest("3 kişiden fazla seçim yapılamaz");
+            if (userDto.SelectedUsersId.Length == 0)
+                return BadRequest("En az bir kişi seçilmeli");
 
             var question = _unitOfWork.Questions.GetQuestionByQuestionId(userDto.QuestionId);
+
             var notification = new Notification()
             {
                 Question = question,
@@ -39,7 +42,7 @@ namespace PsikoterapsitlerBurada.Controllers.API
                 selectedUser?.Notify(notification);
             }
             
-            _unitOfWork.Complate();
+            _unitOfWork.Complete();
             return Ok();
         }
 

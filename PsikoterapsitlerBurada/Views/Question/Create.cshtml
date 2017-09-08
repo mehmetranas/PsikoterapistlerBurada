@@ -6,7 +6,7 @@
 }
 
 <h2>Soru Oluştur</h2>
-@using (Html.BeginForm("Create", "Question"))
+@using (Html.BeginForm("Create", "Question", FormMethod.Post ,new { enctype = "multipart/form-data", onsubmit ="return validateQuestionForm(event)"}))
 {
     <div class="form-group">
         @Html.LabelFor(q => q.QuestionText)
@@ -17,4 +17,14 @@
         @Html.DropDownListFor(q => q.Category.Id, new SelectList(Model.Categories, "Id","CategoryName"), "Seçiniz", new {@class = "form-control"})
     </div>
     <button type="submit" class="btn btn-primary">Oluştur</button>
+}
+
+@section scripts{
+    <script>
+        function validateQuestionForm(e) {
+            console.log(e);
+            //console.log(e.)
+            return false;
+        }
+    </script>
 }
