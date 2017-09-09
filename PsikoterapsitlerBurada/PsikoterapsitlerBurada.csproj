@@ -53,6 +53,7 @@
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.3\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -227,78 +228,96 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201708071502304_InitialAuthModel.cs" />
-    <Compile Include="Migrations\201708071502304_InitialAuthModel.Designer.cs">
+    <Compile Include="Persistence\Migrations\201708071502304_InitialAuthModel.cs" />
+    <Compile Include="Persistence\Migrations\201708071502304_InitialAuthModel.Designer.cs">
       <DependentUpon>201708071502304_InitialAuthModel.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201708071514355_CreateQuestionAndCategoryTables.cs" />
-    <Compile Include="Migrations\201708071514355_CreateQuestionAndCategoryTables.Designer.cs">
+    <Compile Include="Persistence\Migrations\201708071514355_CreateQuestionAndCategoryTables.cs" />
+    <Compile Include="Persistence\Migrations\201708071514355_CreateQuestionAndCategoryTables.Designer.cs">
       <DependentUpon>201708071514355_CreateQuestionAndCategoryTables.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201708071614248_PopulateCategoryTable.cs" />
-    <Compile Include="Migrations\201708071614248_PopulateCategoryTable.Designer.cs">
+    <Compile Include="Persistence\Migrations\201708071614248_PopulateCategoryTable.cs" />
+    <Compile Include="Persistence\Migrations\201708071614248_PopulateCategoryTable.Designer.cs">
       <DependentUpon>201708071614248_PopulateCategoryTable.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201708121958543_AddedVoteClass.cs" />
-    <Compile Include="Migrations\201708121958543_AddedVoteClass.Designer.cs">
+    <Compile Include="Persistence\Migrations\201708121958543_AddedVoteClass.cs" />
+    <Compile Include="Persistence\Migrations\201708121958543_AddedVoteClass.Designer.cs">
       <DependentUpon>201708121958543_AddedVoteClass.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201708131243081_AddedVoteStatePrpertyToVoteClass.cs" />
-    <Compile Include="Migrations\201708131243081_AddedVoteStatePrpertyToVoteClass.Designer.cs">
+    <Compile Include="Persistence\Migrations\201708131243081_AddedVoteStatePrpertyToVoteClass.cs" />
+    <Compile Include="Persistence\Migrations\201708131243081_AddedVoteStatePrpertyToVoteClass.Designer.cs">
       <DependentUpon>201708131243081_AddedVoteStatePrpertyToVoteClass.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201708150102051_AddedAnswerClass.cs" />
-    <Compile Include="Migrations\201708150102051_AddedAnswerClass.Designer.cs">
+    <Compile Include="Persistence\Migrations\201708150102051_AddedAnswerClass.cs" />
+    <Compile Include="Persistence\Migrations\201708150102051_AddedAnswerClass.Designer.cs">
       <DependentUpon>201708150102051_AddedAnswerClass.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201708150234286_AddedAnswerTextToAnswerClass.cs" />
-    <Compile Include="Migrations\201708150234286_AddedAnswerTextToAnswerClass.Designer.cs">
+    <Compile Include="Persistence\Migrations\201708150234286_AddedAnswerTextToAnswerClass.cs" />
+    <Compile Include="Persistence\Migrations\201708150234286_AddedAnswerTextToAnswerClass.Designer.cs">
       <DependentUpon>201708150234286_AddedAnswerTextToAnswerClass.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201708150752446_RenameForeignKeyBetweenAnswerAndAppUser.cs" />
-    <Compile Include="Migrations\201708150752446_RenameForeignKeyBetweenAnswerAndAppUser.Designer.cs">
+    <Compile Include="Persistence\Migrations\201708150752446_RenameForeignKeyBetweenAnswerAndAppUser.cs" />
+    <Compile Include="Persistence\Migrations\201708150752446_RenameForeignKeyBetweenAnswerAndAppUser.Designer.cs">
       <DependentUpon>201708150752446_RenameForeignKeyBetweenAnswerAndAppUser.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201708181140151_AddedFavoriteQuestionToQuestionClass.cs" />
-    <Compile Include="Migrations\201708181140151_AddedFavoriteQuestionToQuestionClass.Designer.cs">
+    <Compile Include="Persistence\Migrations\201708181140151_AddedFavoriteQuestionToQuestionClass.cs" />
+    <Compile Include="Persistence\Migrations\201708181140151_AddedFavoriteQuestionToQuestionClass.Designer.cs">
       <DependentUpon>201708181140151_AddedFavoriteQuestionToQuestionClass.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201708190822469_AddedFallowsListToUser.cs" />
-    <Compile Include="Migrations\201708190822469_AddedFallowsListToUser.Designer.cs">
+    <Compile Include="Persistence\Migrations\201708190822469_AddedFallowsListToUser.cs" />
+    <Compile Include="Persistence\Migrations\201708190822469_AddedFallowsListToUser.Designer.cs">
       <DependentUpon>201708190822469_AddedFallowsListToUser.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201708240909100_AddedNotificationAndUserNotificationTable.cs" />
-    <Compile Include="Migrations\201708240909100_AddedNotificationAndUserNotificationTable.Designer.cs">
+    <Compile Include="Persistence\Migrations\201708240909100_AddedNotificationAndUserNotificationTable.cs" />
+    <Compile Include="Persistence\Migrations\201708240909100_AddedNotificationAndUserNotificationTable.Designer.cs">
       <DependentUpon>201708240909100_AddedNotificationAndUserNotificationTable.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201708241351354_AddedIsReadPropToUserNotification.cs" />
-    <Compile Include="Migrations\201708241351354_AddedIsReadPropToUserNotification.Designer.cs">
+    <Compile Include="Persistence\Migrations\201708241351354_AddedIsReadPropToUserNotification.cs" />
+    <Compile Include="Persistence\Migrations\201708241351354_AddedIsReadPropToUserNotification.Designer.cs">
       <DependentUpon>201708241351354_AddedIsReadPropToUserNotification.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201708250852010_AddedUserLikePropToNotificationTable.cs" />
-    <Compile Include="Migrations\201708250852010_AddedUserLikePropToNotificationTable.Designer.cs">
+    <Compile Include="Persistence\Migrations\201708250852010_AddedUserLikePropToNotificationTable.cs" />
+    <Compile Include="Persistence\Migrations\201708250852010_AddedUserLikePropToNotificationTable.Designer.cs">
       <DependentUpon>201708250852010_AddedUserLikePropToNotificationTable.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="Models\AccountViewModels.cs" />
-    <Compile Include="Models\Answer.cs" />
-    <Compile Include="Models\ApplicationDbContext.cs" />
-    <Compile Include="Models\Category.cs" />
-    <Compile Include="Models\ApplicationUser.cs" />
-    <Compile Include="Models\Following.cs" />
-    <Compile Include="Models\Notification.cs" />
-    <Compile Include="Models\NotificationType.cs" />
-    <Compile Include="Models\UserNotification.cs" />
-    <Compile Include="Models\ViewModels\AnswersViewModelWillDelete.cs" />
-    <Compile Include="Models\ViewModels\AnswerViewModel.cs" />
-    <Compile Include="Models\ViewModels\GetAnswerViewModel.cs" />
-    <Compile Include="Models\ViewModels\ManageViewModels.cs" />
-    <Compile Include="Models\Question.cs" />
-    <Compile Include="Models\ViewModels\ProfileViewModel.cs" />
-    <Compile Include="Models\ViewModels\QuestionViewModel.cs" />
-    <Compile Include="Models\ViewModels\SelectUserToAskQuestionViewModel.cs" />
-    <Compile Include="Models\Vote.cs" />
+    <Compile Include="Persistence\Migrations\Configuration.cs" />
+    <Compile Include="ViewModels\AccountViewModels.cs" />
+    <Compile Include="Core\Models\Answer.cs" />
+    <Compile Include="Persistence\Models\ApplicationDbContext.cs" />
+    <Compile Include="Core\Models\Category.cs" />
+    <Compile Include="Core\Models\ApplicationUser.cs" />
+    <Compile Include="Core\Models\Following.cs" />
+    <Compile Include="Core\Models\Notification.cs" />
+    <Compile Include="Core\Models\NotificationType.cs" />
+    <Compile Include="Core\Models\UserNotification.cs" />
+    <Compile Include="Core\Models\ViewModels\AnswersViewModelWillDelete.cs" />
+    <Compile Include="Core\Models\ViewModels\AnswerViewModel.cs" />
+    <Compile Include="Core\Models\ViewModels\GetAnswerViewModel.cs" />
+    <Compile Include="ViewModels\ManageViewModels.cs" />
+    <Compile Include="Core\Models\Question.cs" />
+    <Compile Include="Core\Models\ViewModels\ProfileViewModel.cs" />
+    <Compile Include="Core\Models\ViewModels\QuestionViewModel.cs" />
+    <Compile Include="Core\Models\ViewModels\SelectUserToAskQuestionViewModel.cs" />
+    <Compile Include="Core\Models\Vote.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Persistence\Repositories\AnswerRepository.cs" />
+    <Compile Include="Persistence\Repositories\CategoryRepository.cs" />
+    <Compile Include="Persistence\Repositories\FollowingRepository.cs" />
+    <Compile Include="Core\Repositories\IAnswerRepository.cs" />
+    <Compile Include="Core\Repositories\ICategoryRepository.cs" />
+    <Compile Include="Core\Repositories\IFollowingRepository.cs" />
+    <Compile Include="Core\Repositories\INotificationRepository.cs" />
+    <Compile Include="Core\Repositories\IQuestionRepository.cs" />
+    <Compile Include="Core\Repositories\IUnitOfWork.cs" />
+    <Compile Include="Core\Repositories\IUserNotificationRepository.cs" />
+    <Compile Include="Core\Repositories\IUserRepository.cs" />
+    <Compile Include="Core\Repositories\IVoteRepository.cs" />
+    <Compile Include="Persistence\Repositories\NotificationRepository.cs" />
+    <Compile Include="Persistence\Repositories\QuestionRepository.cs" />
+    <Compile Include="Persistence\Repositories\UnitOfWork.cs" />
+    <Compile Include="Persistence\Repositories\UserNotificationRepository.cs" />
+    <Compile Include="Persistence\Repositories\UserRepository.cs" />
+    <Compile Include="Persistence\Repositories\VoteRepository.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -323,10 +342,28 @@
     <Content Include="Content\datatables\jquery.dataTables.css" />
     <Content Include="Content\datatables\jquery.dataTables.min.css" />
     <Content Include="Content\datatables\jquery.dataTables_themeroller.css" />
+    <Content Include="Content\font-awesome-4.7.0\css\font-awesome.css" />
+    <Content Include="Content\font-awesome-4.7.0\css\font-awesome.min.css" />
+    <Content Include="Content\font-awesome-4.7.0\fonts\fontawesome-webfont.svg" />
+    <Content Include="Content\font-awesome-4.7.0\HELP-US-OUT.txt" />
     <Content Include="favicon.ico" />
-    <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Scripts\app\app.js" />
+    <Content Include="Scripts\app\controllers\GetAnswersController.js" />
+    <Content Include="Scripts\app\controllers\IndexController.js" />
+    <Content Include="Scripts\app\controllers\NotificationController.js" />
+    <Content Include="Scripts\app\controllers\SelectUserToAskQuestionController.js" />
+    <Content Include="Scripts\app\controllers\WriteAnswerController.js" />
+    <Content Include="Scripts\app\services\FavoriteQuestionService.js" />
+    <Content Include="Scripts\app\services\GetAnswersService.js" />
+    <Content Include="Scripts\app\services\IndexService.js" />
+    <Content Include="Scripts\app\services\LikeService.js" />
+    <Content Include="Scripts\app\services\NotificationService.js" />
+    <Content Include="Scripts\app\services\SelectedUserService.js" />
+    <Content Include="Scripts\app\services\VoteService.js" />
+    <Content Include="Scripts\app\services\WriteAnswerService.js" />
     <Content Include="Scripts\bootbox.min.js" />
     <Content Include="Scripts\bootstrap-tagsinput.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -334,10 +371,43 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="Content\font-awesome-4.7.0\fonts\fontawesome-webfont.eot" />
+    <Content Include="Content\font-awesome-4.7.0\fonts\fontawesome-webfont.ttf" />
+    <Content Include="Content\font-awesome-4.7.0\fonts\fontawesome-webfont.woff" />
+    <Content Include="Content\font-awesome-4.7.0\fonts\fontawesome-webfont.woff2" />
+    <Content Include="Content\font-awesome-4.7.0\fonts\FontAwesome.otf" />
+    <Content Include="Content\font-awesome-4.7.0\less\animated.less" />
+    <Content Include="Content\font-awesome-4.7.0\less\bordered-pulled.less" />
+    <Content Include="Content\font-awesome-4.7.0\less\core.less" />
+    <Content Include="Content\font-awesome-4.7.0\less\fixed-width.less" />
+    <Content Include="Content\font-awesome-4.7.0\less\font-awesome.less" />
+    <Content Include="Content\font-awesome-4.7.0\less\icons.less" />
+    <Content Include="Content\font-awesome-4.7.0\less\larger.less" />
+    <Content Include="Content\font-awesome-4.7.0\less\list.less" />
+    <Content Include="Content\font-awesome-4.7.0\less\mixins.less" />
+    <Content Include="Content\font-awesome-4.7.0\less\path.less" />
+    <Content Include="Content\font-awesome-4.7.0\less\rotated-flipped.less" />
+    <Content Include="Content\font-awesome-4.7.0\less\screen-reader.less" />
+    <Content Include="Content\font-awesome-4.7.0\less\stacked.less" />
+    <Content Include="Content\font-awesome-4.7.0\less\variables.less" />
+    <Content Include="Content\font-awesome-4.7.0\scss\font-awesome.scss" />
+    <Content Include="Content\font-awesome-4.7.0\scss\_animated.scss" />
+    <Content Include="Content\font-awesome-4.7.0\scss\_bordered-pulled.scss" />
+    <Content Include="Content\font-awesome-4.7.0\scss\_core.scss" />
+    <Content Include="Content\font-awesome-4.7.0\scss\_fixed-width.scss" />
+    <Content Include="Content\font-awesome-4.7.0\scss\_icons.scss" />
+    <Content Include="Content\font-awesome-4.7.0\scss\_larger.scss" />
+    <Content Include="Content\font-awesome-4.7.0\scss\_list.scss" />
+    <Content Include="Content\font-awesome-4.7.0\scss\_mixins.scss" />
+    <Content Include="Content\font-awesome-4.7.0\scss\_path.scss" />
+    <Content Include="Content\font-awesome-4.7.0\scss\_rotated-flipped.scss" />
+    <Content Include="Content\font-awesome-4.7.0\scss\_screen-reader.scss" />
+    <Content Include="Content\font-awesome-4.7.0\scss\_stacked.scss" />
+    <Content Include="Content\font-awesome-4.7.0\scss\_variables.scss" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\datatables\dataTables.bootstrap.js" />
     <Content Include="Scripts\datatables\dataTables.bootstrap.min.js" />
@@ -408,14 +478,15 @@
     <Content Include="Views\User\GetUnAskedQuestions.cshtml" />
     <Content Include="Views\User\GetQustionAskedToMe.cshtml" />
     <Content Include="Views\Answers\GetAnswers.cshtml" />
-    <Content Include="Views\User\WriteAnswer.cshtml" />
     <Content Include="Views\User\UserProfile.cshtml" />
     <Content Include="Views\Shared\_UserAskedQuestions.cshtml" />
     <Content Include="Views\Shared\_UserQuestionsAsked.cshtml" />
-    <Content Include="Views\Shared\_Following.cshtml" />
+    <Content Include="Views\Shared\_UserProfiles.cshtml" />
+    <Content Include="Views\Home\Search.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Persistence\Models\ViewModes\" />
     <Folder Include="Views\Vote\" />
   </ItemGroup>
   <ItemGroup>
@@ -425,43 +496,43 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201708071502304_InitialAuthModel.resx">
+    <EmbeddedResource Include="Persistence\Migrations\201708071502304_InitialAuthModel.resx">
       <DependentUpon>201708071502304_InitialAuthModel.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201708071514355_CreateQuestionAndCategoryTables.resx">
+    <EmbeddedResource Include="Persistence\Migrations\201708071514355_CreateQuestionAndCategoryTables.resx">
       <DependentUpon>201708071514355_CreateQuestionAndCategoryTables.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201708071614248_PopulateCategoryTable.resx">
+    <EmbeddedResource Include="Persistence\Migrations\201708071614248_PopulateCategoryTable.resx">
       <DependentUpon>201708071614248_PopulateCategoryTable.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201708121958543_AddedVoteClass.resx">
+    <EmbeddedResource Include="Persistence\Migrations\201708121958543_AddedVoteClass.resx">
       <DependentUpon>201708121958543_AddedVoteClass.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201708131243081_AddedVoteStatePrpertyToVoteClass.resx">
+    <EmbeddedResource Include="Persistence\Migrations\201708131243081_AddedVoteStatePrpertyToVoteClass.resx">
       <DependentUpon>201708131243081_AddedVoteStatePrpertyToVoteClass.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201708150102051_AddedAnswerClass.resx">
+    <EmbeddedResource Include="Persistence\Migrations\201708150102051_AddedAnswerClass.resx">
       <DependentUpon>201708150102051_AddedAnswerClass.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201708150234286_AddedAnswerTextToAnswerClass.resx">
+    <EmbeddedResource Include="Persistence\Migrations\201708150234286_AddedAnswerTextToAnswerClass.resx">
       <DependentUpon>201708150234286_AddedAnswerTextToAnswerClass.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201708150752446_RenameForeignKeyBetweenAnswerAndAppUser.resx">
+    <EmbeddedResource Include="Persistence\Migrations\201708150752446_RenameForeignKeyBetweenAnswerAndAppUser.resx">
       <DependentUpon>201708150752446_RenameForeignKeyBetweenAnswerAndAppUser.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201708181140151_AddedFavoriteQuestionToQuestionClass.resx">
+    <EmbeddedResource Include="Persistence\Migrations\201708181140151_AddedFavoriteQuestionToQuestionClass.resx">
       <DependentUpon>201708181140151_AddedFavoriteQuestionToQuestionClass.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201708190822469_AddedFallowsListToUser.resx">
+    <EmbeddedResource Include="Persistence\Migrations\201708190822469_AddedFallowsListToUser.resx">
       <DependentUpon>201708190822469_AddedFallowsListToUser.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201708240909100_AddedNotificationAndUserNotificationTable.resx">
+    <EmbeddedResource Include="Persistence\Migrations\201708240909100_AddedNotificationAndUserNotificationTable.resx">
       <DependentUpon>201708240909100_AddedNotificationAndUserNotificationTable.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201708241351354_AddedIsReadPropToUserNotification.resx">
+    <EmbeddedResource Include="Persistence\Migrations\201708241351354_AddedIsReadPropToUserNotification.resx">
       <DependentUpon>201708241351354_AddedIsReadPropToUserNotification.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201708250852010_AddedUserLikePropToNotificationTable.resx">
+    <EmbeddedResource Include="Persistence\Migrations\201708250852010_AddedUserLikePropToNotificationTable.resx">
       <DependentUpon>201708250852010_AddedUserLikePropToNotificationTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>

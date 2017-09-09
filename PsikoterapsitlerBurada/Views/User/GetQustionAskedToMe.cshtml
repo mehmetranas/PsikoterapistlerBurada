@@ -1,6 +1,6 @@
 ﻿
 @using Microsoft.AspNet.Identity
-@model IEnumerable<PsikoterapsitlerBurada.Models.Question>
+@model IEnumerable<PsikoterapsitlerBurada.Core.Models.Question>
 @{
     ViewBag.Title = "GetQustionAskedToMe";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -57,7 +57,7 @@
         }
         else
         {
-            @Html.ActionLink("Cevapla","WriteAnswer","User", new { id = question.Id}, new {@class = "btn btn-link btn-sm pull-right"})
+            @Html.ActionLink("Cevapla","GetAnswers","Answers", new { id = question.Id}, new {@class = "btn btn-link btn-sm pull-right"})
         }
     </div>
 }

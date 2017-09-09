@@ -1,38 +1,29 @@
 ﻿using AutoMapper;
-using PsikoterapsitlerBurada.Models;
-using PsikoterapsitlerBurada.Models.ViewModels;
-using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
+using PsikoterapsitlerBurada.Core.Models;
+using PsikoterapsitlerBurada.Core.Models.ViewModels;
+using PsikoterapsitlerBurada.Core.Repositories;
+using PsikoterapsitlerBurada.Persistence.Models;
+using PsikoterapsitlerBurada.Persistence.Repositories;
 
 namespace PsikoterapsitlerBurada.Controllers
 {
 
     public class AnswersController : Controller
     {
-        private ApplicationDbContext _context;
+        private readonly IUnitOfWork _unitOfWork;
 
         public AnswersController()
         {
-            _context = new ApplicationDbContext();
+            _unitOfWork = new UnitOfWork(new ApplicationDbContext());
         }
 
         public ActionResult GetAnswers(int id)
         {
-            var answers = _context.Answers.Where(a => a.Question.Id == id)
-                .Include(a => a.Question)
-                .Include(a => a.User)
-                .Include(a => a.Likes)
-                .Select(Mapper.Map<AnswerViewModel>)
-                .ToList();
-           
-            var question = _context.Questions
-                .Include(q => q.AskedToWhom)
-                .Include(q => q.WhoAsked)
-                .Select(Mapper.Map<QuestionViewModel>)
-                .SingleOrDefault(q => q.Id == id);
+            var answers = _unitOfWork.Answers.GetAnswersByQuestion(id).Select(Mapper.Map<AnswerViewModel>);
 
-            
+            var question = Mapper.Map<QuestionViewModel>(_unitOfWork.Questions.GetQuestionByQuestionId(id));
 
             var viewModel = new GetAnswerViewModel()
             {
@@ -43,4 +34,4 @@ namespace PsikoterapsitlerBurada.Controllers
             return View(viewModel);
         }
     }
-}
+    }

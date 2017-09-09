@@ -1,0 +1,48 @@
+﻿@model IEnumerable<PsikoterapsitlerBurada.Core.Models.ViewModels.ProfileViewModel>
+
+<h4>Followings</h4>
+<div class="row">
+    @foreach (var viewModel in Model)
+    {
+
+        <div class="col-sm-6 col-md-4">
+            <div class="thumbnail">
+                <img src="http://lorempixel.com/242/200/people" alt="@viewModel.User.UserName">
+                <div class="caption">
+                    <a href="@Url.Action("UserProfile","User",new {id = viewModel.User.Id})">
+                        <h5>
+                            <strong>@viewModel.User.UserName</strong>
+                        </h5>
+                    </a>
+                    <p>Kategori</p>
+                    @if (!viewModel.IsAuthUser)
+                    {
+                        <p>
+                            <input type="button"
+                                   class="btn btn-primary btn-sm js-follow-action"
+                                   value="@viewModel.FollowState"
+                                   data-follow="@viewModel.Follow"
+                                   data-user-id="@viewModel.User.Id">
+                        </p>
+                    }
+                    <div class="social-profile">
+                        <table class="table table-responsive">
+                            <tr>
+                                <th>Takip Edilen</th>
+                                <th>Takipçi</th>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <b class="js-followers">@viewModel.User.Followers.Count</b>
+                                </td>
+                                <td>
+                                    <b class="js-followees">@viewModel.User.Followees.Count</b>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

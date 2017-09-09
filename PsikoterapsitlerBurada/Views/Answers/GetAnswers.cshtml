@@ -1,4 +1,5 @@
-﻿@model PsikoterapsitlerBurada.Models.ViewModels.GetAnswerViewModel
+﻿@using Microsoft.AspNet.Identity
+@model PsikoterapsitlerBurada.Core.Models.ViewModels.GetAnswerViewModel
 @{
     ViewBag.Title = "GetAnswers";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -48,65 +49,41 @@
             <i class="glyphicon glyphicon-heart like"
                data-toggle="tooltip"
                title="Giriş yapmalısınız"
-               id=@answer.Id onclick="onClick(id)"></i>
+               id=@answer.Id 
+               data-answer-userId=@answer.UserId
+               data-userId=@User.Identity.GetUserId()
+               onclick="GetAnswersController.likeAction(event)"></i>
         </div>
     </div>
 }
-
+    @if (Model.QuestionViewModel.IsAskedToUser(User.Identity.GetUserId()) &&
+        !Model.QuestionViewModel.IsAnsweredByUser(User.Identity.GetUserId()))
+    {
+        <form>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-md-12">
+                    @Html.TextArea("AnswerText", new
+                    {
+                        placeholder = "Cevabınız...",
+                        @class = "form-control input-lg js-answer-text",
+                        rows = 8
+                    })
+                </div>
+            </div>
+        </div>
+        </form>
+        <button class="btn btn-primary js-send-button" id="@Model.QuestionViewModel.Id"><i class="fa fa-paper-plane" aria-hidden="true"></i>&nbsp; Gönder</button>
+    }
 
 @section scripts{
     <script>
 
-        var isAuth = @User.Identity.IsAuthenticated.ToString().ToLower();
-
         $(document).ready(function () {
-            if (!isAuth) {
-                $('[data-toggle = "tooltip"]').tooltip();
-                return;
-            } else {
-                $('[data-toggle = "tooltip"]').tooltip("destroy");
-            }
-            $.ajax({
-                url: "/api/like/" + @Model.QuestionViewModel.Id,
-                method: "Get",
-                success: function(data) {
-                    data.forEach(function(id) {
-                        document.getElementById(id).style.color = "deeppink";
-                    });
-                }
-            });
-
+            setAuthState(@User.Identity.IsAuthenticated.ToString().ToLower());
+            tooltip();
+            GetAnswersController.getLikeAnswersId(@Model.QuestionViewModel.Id);
+            WriteAnswerController.create();
         });
-
-        function onClick(answerId) {
-            if (!isAuth) {
-                return;
-            }
-            var element = document.getElementById(answerId);
-            var likeCountElement = $(element).closest("div").find("span.like");
-            var likeCount = parseInt(likeCountElement.text());
-            var animatedClasses = " animated bounceIn";
-            if (element.style.color === "deeppink") {
-
-                $.ajax({
-                    method: "delete",
-                    url: "/api/like/" + answerId
-                }).success(function() {
-                    element.style.color = "black";
-                    $(element).removeClass(animatedClasses);
-                    likeCount--;
-                    likeCountElement.text(likeCount);
-                });
-                return;
-            }
-
-            $.post("/api/like/" + answerId).success(function() {
-                $(element).addClass(animatedClasses);
-                element.style.color = "deeppink";
-                likeCount++;
-                likeCountElement.text(likeCount);
-            });
-            return;
-        }
     </script>
 }

@@ -1,0 +1,41 @@
+﻿@model string
+
+@{
+    ViewBag.Title = "Search";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Search</h2>
+
+<div class="row">
+<div class="col-lg-6">
+    <div class="input-group">
+        @Html.BeginForm("GetSearchList","Home")
+        
+        @Html.TextBox("query", Model)
+        <span class="input-group-btn">
+            <button class="btn btn-default search" type="submit">Ara</button>
+        </span>
+    </div><!-- /input-group --> 
+</div><!-- /.col-lg-6 -->
+</div><!-- /.row -->
+<div class="js-searchList">
+    <div class="js-loader hide"></div>
+</div>
+
+@section scripts{
+    <script>
+        $(document).ready(function() {
+            $("button.search").click(function() {
+                var text = $("input.search").val();
+                var url = '@Url.Action("GetSearchList", "Home")';
+                $(".js-loader").removeClass("hide");
+                $("div.js-searchList").load(url,
+                    function () {
+                        $(".js-loader").addClass("hide");
+                    });
+            });
+        });
+    </script>
+}
+

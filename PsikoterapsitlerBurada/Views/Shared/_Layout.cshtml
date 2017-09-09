@@ -18,11 +18,12 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            @Html.ActionLink("Psikoterapistler Burada", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
                 <li>@Html.ActionLink("Soru Sor","Create","Question")</li>
+                <li>@Html.ActionLink("Ara","Search","Home")</li>
             </ul>
             @Html.Partial("_LoginPartial")
         </div>
@@ -108,58 +109,16 @@
 
 </script>
 <script>
-    $(document).ready(function() {
-        $.getJSON("/api/notification",
-            function(notifications) {
-                console.log(notifications);
-               if (notifications.length > 0) {
-                   $(".js-notification-count").text(notifications.length)
-                       .removeClass("hide")
-                       .addClass("animated bounce");
-                   $(".notification").popover({
-                       html: true,
-                       placement: "bottom",
-                       content: function () {
-                           var template = $("#notification-template").html();
-                           var content = _.template(template);
-                           return content({notifications: notifications});
-                       }
-                   });
-               }
-            });
+    $(document).ready(function () {
+        var isAuth = @User.Identity.IsAuthenticated.ToString().ToLower();
 
-        $(document).on("click",
-            "i.js-notification-close",
-            function (e) {
-                var notificationId = $(e.target).attr("data-notification");
-                var element = $(e.target);
-                $.post("/api/readnotification/" + notificationId)
-                    .success(function () {
-                        element.closest("li").addClass("animated fadeOut")
-                            .one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend',
-                            function () {
-                                var count = parseInt($(".js-notification-count").text());
-                                count--;
-                                if (count === 0) {
-                                    $(".js-notification-count").text("").addClass("hide");
-                                    $(".notification").popover("destroy");
-                                    return;
-                                }
-                                element.closest("li").remove();
-                                $(".js-notification-count").text(count);
-                            });
-                    });
+        setAuthState(isAuth);
 
-            });
+        NotificationController.getNotifications();
+        $(document).on("click","i.js-notification-close",NotificationController.notificationClose);
+        $(document).on("click", "a.js-notification-close", NotificationController.notificationRead);
 
-        $(document).on("click",
-            "a.js-notification-close",
-            function(e) {
-                var notificationId = $(e.target).attr("data-notification");
-                $.post("/api/readnotification/" + notificationId);
-            });
-
-    });
+     });
 </script>
 </body>
 </html>

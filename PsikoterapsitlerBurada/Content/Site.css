@@ -25,6 +25,13 @@ textarea {
 
 /*Override bootstrap behavior where site color consept is define*/
 
+@font-face {
+    font-family: 'Glyphicons Halflings';
+
+    src: url('fonts/glyphicons-halflings-regular.eot');
+    src: url('fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('fonts/glyphicons-halflings-regular.woff2') format('woff2'), url('fonts/glyphicons-halflings-regular.woff') format('woff'), url('fonts/glyphicons-halflings-regular.ttf') format('truetype'), url('fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
+}
+
 .navbar-inverse {
     background-color: #B5F536;
     border-color: #91D900;
@@ -32,6 +39,10 @@ textarea {
 
     .navbar-inverse .navbar-brand {
         color: #1B2506;
+    }
+
+    .navbar-inverse .navbar-nav > li > a {
+        color: black;
     }
 
     .navbar-inverse .navbar-nav > li.notification {
@@ -116,10 +127,15 @@ a.question-text:hover {
     margin-top: 5px;
 }
 
-.favorite > span {
-    cursor: pointer;
-    font-size: 20px;
-}
+    .favorite > span {
+        cursor: pointer;
+        font-size: 20px;
+    }
+
+    .favorite > span.isFavorite {
+        color: goldenrod;
+
+    }
 
 .favorite > span:hover {
     color: goldenrod;
@@ -164,10 +180,13 @@ i.like:hover {
     color:deeppink
 }
 
+i.isLike {
+    color: deeppink;
+}
+
 div.like {
     margin-bottom: 10px;
 }
-
 
 /*Profile Page*/
 div.social-profile table td,th {
@@ -179,7 +198,7 @@ div.social-profile table td a {
     font-size: 15px;
 }
 
-div.action div.loader {
+div.loader {
     margin: 250px;
     border: 6px solid #f3f3f3; /* Light grey */
     border-top: 6px solid #B5F536; /* Blue */
@@ -209,7 +228,7 @@ ul.notification {
 
 ul.notificaiton > li {
     padding: 10px 0;
-    animation-duration: 0.3s;
+    animation-duration: 0,05s;
     border-bottom: #a38bd7 solid 1px;
 }
 

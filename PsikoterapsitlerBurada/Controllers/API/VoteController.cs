@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNet.Identity;
+using PsikoterapsitlerBurada.Core.Models;
+using PsikoterapsitlerBurada.Core.Repositories;
 using PsikoterapsitlerBurada.DTOs;
-using PsikoterapsitlerBurada.Models;
+using PsikoterapsitlerBurada.Persistence.Models;
+using PsikoterapsitlerBurada.Persistence.Repositories;
 using System;
 using System.Linq;
 using System.Web.Http;
@@ -10,20 +13,18 @@ namespace PsikoterapsitlerBurada.Controllers.API
     [Authorize]
     public class VoteController : ApiController
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IUnitOfWork _unitOfWork;
 
         public VoteController( )
         {
-            _context = new ApplicationDbContext();
+            _unitOfWork = new UnitOfWork(new ApplicationDbContext());
         }
 
         [HttpPost]
         public IHttpActionResult VoteAction(VoteDto voteDto)
         {
             var userId = User.Identity.GetUserId();
-            var question = _context.Questions
-                .Include("Votes")
-                .SingleOrDefault(q => q.Id == voteDto.QuestionId);
+            var question = _unitOfWork.Questions.GetQuestionByQuestionId(voteDto.QuestionId);
 
 
             var isVote = question != null && question.Votes.Any(v => v.UserId == userId);
@@ -31,25 +32,23 @@ namespace PsikoterapsitlerBurada.Controllers.API
             if (isVote)
             {
                 var userVote = question.Votes.SingleOrDefault(v => v.UserId == userId);
-                if (userVote != null)
-                {
-                    var userVoteState = userVote.VoteState;
-                    var canVote = userVoteState + voteDto.VoteAction == 0 || userVoteState == 0;
+                if (userVote == null) return Ok();
 
-                    if (!canVote)
-                    {
-                        return Json(new {isVoteUp = true});
-                    }
+                var userVoteState = userVote.VoteState;
+                var canVote = userVoteState + voteDto.VoteAction == 0 || userVoteState == 0;
+
+                if (!canVote)
+                {
+                    return Json(new { isVoteUp = true });
                 }
 
-                if (userVote == null) return Ok();
                 userVote.VoteState += voteDto.VoteAction;
-                _context.SaveChanges();
-                if (userVote.VoteState == 0) return Json(new {isRollBack = true});
+                _unitOfWork.Complete();
+                if (userVote.VoteState == 0) return Json(new { isRollBack = true });
 
                 return Ok();
             }
-           
+
             var vote = new Vote()
             {
                 QuestionId = voteDto.QuestionId,
@@ -58,17 +57,18 @@ namespace PsikoterapsitlerBurada.Controllers.API
                 VoteState = voteDto.VoteAction
             };
 
-            _context.Votes.Add(vote);
-            _context.SaveChanges();
+            _unitOfWork.Votes.Add(vote);
+            _unitOfWork.Complete();
 
             return Ok();
         }
 
-        [System.Web.Http.HttpGet]
+        [HttpGet]
         public int GetVotes(int id)
         {
-            var votes = _context.Votes.Where(v => v.QuestionId == id).Sum(s => s.VoteState);
+            var votes = _unitOfWork.Votes.GetVotesByQuestion(id);
             return votes;
         }
+
     }
 }

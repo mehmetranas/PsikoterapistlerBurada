@@ -1,20 +1,23 @@
-﻿using Microsoft.AspNet.Identity;
-using PsikoterapsitlerBurada.Models;
-using System;
+﻿using System;
+using AutoMapper;
+using Microsoft.AspNet.Identity;
+using PsikoterapsitlerBurada.Core.Models.ViewModels;
+using PsikoterapsitlerBurada.Core.Repositories;
+using PsikoterapsitlerBurada.Persistence.Models;
+using PsikoterapsitlerBurada.Persistence.Repositories;
 using System.Linq;
 using System.Web.Mvc;
-using AutoMapper;
-using PsikoterapsitlerBurada.Models.ViewModels;
+using PsikoterapsitlerBurada.Core.Models;
 
 namespace PsikoterapsitlerBurada.Controllers
 {
     public class QuestionController : Controller
     {
-        private ApplicationDbContext _context;
+        private readonly IUnitOfWork _unitOfWork;
 
         public QuestionController()
         {
-            _context = new ApplicationDbContext();
+            _unitOfWork = new UnitOfWork(new ApplicationDbContext());
         }
 
         // GET: Question
@@ -23,8 +26,8 @@ namespace PsikoterapsitlerBurada.Controllers
         {
             var viewModel = new QuestionViewModel()
             {
-                Categories = _context.Categories.ToList(),
-                AskedToWhom = _context.Users.ToList() //There is a problem that get all users properties, only get username and Id
+                Categories = _unitOfWork.Categories.GetCategories(),
+                AskedToWhom = _unitOfWork.Users.GetAllUsers() //There is a problem that get all users properties, only get username and Id
             };
             return View(viewModel);
         }
@@ -33,9 +36,11 @@ namespace PsikoterapsitlerBurada.Controllers
         [HttpPost]
         public ActionResult Create(QuestionViewModel model)
         {
+            if (string.IsNullOrWhiteSpace(model.QuestionText) || model.Category == null) return View(model);
+
             var userId = User.Identity.GetUserId();
-            var user = _context.Users.SingleOrDefault(u => u.Id == userId);
-            var category = _context.Categories.SingleOrDefault(c => c.Id == model.Category.Id);
+            var user = _unitOfWork.Users.GetUserById(userId);
+            var category = _unitOfWork.Categories.GetCategoryByCategoryId(model.Category.Id);
 
             var question = new Question()
             {
@@ -45,27 +50,30 @@ namespace PsikoterapsitlerBurada.Controllers
                 Category = category
             };
 
-            _context.Questions.Add(question);
+            _unitOfWork.Questions.Add(question);
 
-            _context.SaveChanges();
-            var questionId = _context.Questions.Max(q => q.Id);
-            return RedirectToAction("SelectUserToAskQuestion", new {id = questionId});
+            _unitOfWork.Complete();
+
+            var questionId = _unitOfWork.Questions.GetAllQuestions().Max(q => q.Id);
+            return RedirectToAction("SelectUserToAskQuestion", new { id = questionId });
         }
+
+        
 
         [Authorize]
         public ActionResult SelectUserToAskQuestion(int id)
         {
-            var askedToWhom = _context.Questions.Include("AskedToWhom").SingleOrDefault(q => q.Id == id).AskedToWhom;
+            var askedToWhom = _unitOfWork.Questions.GetQuestionByQuestionId(id).AskedToWhom;
 
             if (askedToWhom.Count != 0)
             {
                 return HttpNotFound();
             }
 
-            var question = _context.Questions.SingleOrDefault(q => q.Id == id);
+            var question = _unitOfWork.Questions.GetQuestionByQuestionId(id);
             var questionViewModel = Mapper.Map<QuestionViewModel>(question);
             var userId = User.Identity.GetUserId();
-            var users = _context.Users.Where(u => u.Id != userId).ToList(); //There is a problem that get all users properties, only get username, ctg. and rating
+            var users = _unitOfWork.Users.GetAllUsersWithOutAuthUser(userId); //There is a problem that get all users properties, only get username, ctg. and rating
             var viewModel = new SelectUserToAskQuestionViewModel()
             {
                 Users = users,
@@ -73,7 +81,5 @@ namespace PsikoterapsitlerBurada.Controllers
             };
             return View(viewModel);
         }
-
-        
     }
-}
+ }

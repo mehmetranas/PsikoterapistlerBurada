@@ -1,174 +1,93 @@
-﻿@using PsikoterapsitlerBurada.Models 
-@model PsikoterapsitlerBurada.Models.ViewModels.SelectUserToAskQuestionViewModel
+﻿@model PsikoterapsitlerBurada.Core.Models.ViewModels.SelectUserToAskQuestionViewModel
 @{
     ViewBag.Title = "SelectUserToAskQuestion";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<div class="js-loader loader hide"></div>
 
-<h2>Soru</h2>
+<div id="js-document">
+    <h2>Soru</h2>
 
-<div class="panel panel-success">
-    <div class="panel-heading">
-        <span>Bu soru kimlere sormak istersiniz? </span>
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            <span>Bu soru kimlere sormak istersiniz? </span>
         </div>
-    <div class="panel-body">
-        @Model.Question.QuestionText
+        <div class="panel-body">
+            @Model.Question.QuestionText
+        </div>
     </div>
-</div>
 
-<hr />
+    <hr />
 
-<table cellspacing="0" class="table table-striped" id="js-users" width="100%">
-    <thead>
-        <tr>
-            <th>İsim</th>
-            <th>Kategori</th>
-            <th>
-                <button type="button" class="btn btn-default btn-sm js-submit">Tamam</button>
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var user in Model.Users)
-        {
+    <table class="table" id="js-users" width="100%">
+        <caption>
+            <hr />
+        </caption>
+        <thead>
             <tr>
+                <th>İsim</th>
+                <th>Kategori</th>
+                <th>
+                </th>
+            </tr>
+        </thead>
+        <tfoot class="text-center">
+            <tr>
+                <td></td>
+                <td></td>
                 <td>
-                    <a href=@Url.Action("UserProfile", "User", new {id = user.Id})>
-                        @user.UserName
-                    </a>
-                </td>
-                <td>Kategori</td>
-                <td>
-                    <button class="btn btn-link js-username" id="@user.Id" data-username="@user.UserName">Seç</button>
+                    <button type="button" class="btn btn-info btn-sm js-submit" disabled="disabled">Tamam</button>
                 </td>
             </tr>
-        }
-    </tbody>
-</table>
+        </tfoot>
+        <tbody class="text-center">
+            @foreach (var user in Model.Users)
+            {
+                <tr>
+                    <td>
+                        <a href=@Url.Action("UserProfile", "User", new {id = user.Id})>
+                            @user.UserName
+                        </a>
+                    </td>
+                    <td>Kategori</td>
+                    <td>
+                        <button class="btn btn-link js-username" id="@user.Id" data-username="@user.UserName">Seç</button>
+                    </td>
+                </tr>
+            }
 
-<hr />
+        </tbody>
+    </table>
 
-<table class="table table-striped" id="js-selected" width="100%">
-    <tr>
-        <th>Seçilenler</th>
-        <th></th>
-    </tr>
-</table>
+    <hr />
+
+    <table class="table table-striped" id="js-selected" width="100%">
+        <tr>
+            <th>Seçilenler</th>
+            <th></th>
+        </tr>
+    </table>
+</div>
 
 
 @section scripts
 {
     <script>
-       
-        $(document).ready(function () {
-            //Datatable
-            $("#js-users").DataTable(
-                {
-                    "language":{
-                        "sDecimal": ",",
-                        "sEmptyTable": "Tabloda herhangi bir veri mevcut değil",
-                        "sInfo": "_TOTAL_ kayıttan _START_ - _END_ arasındaki kayıtlar gösteriliyor",
-                        "sInfoEmpty": "Kayıt yok",
-                        "sInfoFiltered": "(_MAX_ kayıt içerisinden bulunan)",
-                        "sInfoPostFix": "",
-                        "sInfoThousands": ".",
-                        "sLengthMenu": "Sayfada _MENU_ kayıt göster",
-                        "sLoadingRecords": "Yükleniyor...",
-                        "sProcessing": "İşleniyor...",
-                        "sSearch": "Ara:",
-                        "sZeroRecords": "Eşleşen kayıt bulunamadı",
-                        "oPaginate": {
-                            "sFirst": "İlk",
-                            "sLast": "Son",
-                            "sNext": "Sonraki",
-                            "sPrevious": "Önceki"
-                        },
-                        "oAria": {
-                            "sSortAscending": ": artan sütun sıralamasını aktifleştir",
-                            "sSortDescending": ": azalan sütun sıralamasını aktifleştir"
-                        }
-                    }
-                });
 
-            var selectedUsers = [];
+        $(document).ready(function () {
             var questionId = @Model.Question.Id;
 
-            $(".js-username").click(function (select) {
+            //Datatable
+            SelectUserToAskQuestionController.usersTable("#js-users");
 
-                if (selectedUsers.length === 3) {
-                    bootbox.alert({
-                        title: "Oops!",
-                        message: "Üzgünüz 3 kişiden fazlasını seçemezsiniz",
-                        buttons: {
-                            ok: {
-                                label: "Tamam"
-                            }
-                        }
-                    });
-                    return;
-                }
+            $(".js-username").click(SelectUserToAskQuestionController.userSelect);
 
-                var selectedUserId = $(select.target).attr('id');
-                var selectButton = document.getElementById(selectedUserId);
-                selectButton.innerText = "Eklendi";
-                selectButton.disabled = true;
-                var username = $(select.target).attr("data-username");
-                var table = document.getElementById("js-selected");
-                var row = table.insertRow(table.rows.length);
-                var userCell = row.insertCell(0);
-                var actionCell = row.insertCell(1);
-                var removeUser = document.createElement("button");
-                removeUser.innerText = "Çıkar";
-                removeUser.setAttribute("user-id", selectedUserId);
-                removeUser.className = "btn btn-link js-remove-user";
-                userCell.innerHTML = username;
-                actionCell.appendChild(removeUser);
-                $(row).addClass("animated pulse");
-                selectedUsers.push(selectedUserId);
+            $(document).on("click", ".js-remove-user", SelectUserToAskQuestionController.userRemove);
+
+            $(".js-submit").click(function() {
+                SelectUserToAskQuestionController.sendUsers(questionId);
             });
-            
-            $(document).on("click",
-                ".js-remove-user",
-                function (remove) {
-                    var removeUserId = $(remove.target).attr("user-id");
-                    var removeButton = $(this);
-                    var userButton = document.getElementById(removeUserId);
-                    var row = removeButton.closest("tr");
-                    userButton.innerText = "Seç";
-                    userButton.disabled = false;
-                    $(row).addClass("animated fadeOut")
-                        .one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend',
-                            function() {
-                                $(this).remove();
-                            });
-                    selectedUsers.splice(selectedUsers.indexOf(removeUserId), 1);
-                });
 
-            $(".js-submit").click(function () {
-                $.ajax({
-                    url: "/api/selectedusers",
-                    type: "post",
-                    contentType: "application/json",
-                    data: JSON.stringify({selectedUsersId:selectedUsers, questionId:questionId}),
-                    success: function() {
-                        bootbox.alert({
-                            title: "Tebrikler",
-                            message: "Sorunuz yola çıktı bile",
-                            buttons: {
-                                ok: {
-                                    label: "Tamam"
-                                }
-                            },
-                            callback: function() {
-                                window.location.href = "/User/GetMyQuestions";
-                            }
-                        });
-                    },
-                    error: function (data) {
-                        console.log(data.responseJSON.message);
-                    }
-                });
-            });
         });
 
     </script>

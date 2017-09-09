@@ -1,42 +1,35 @@
 ﻿using AutoMapper;
+using Microsoft.AspNet.Identity;
 using PsikoterapsitlerBurada.DTOs;
-using PsikoterapsitlerBurada.Models;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using System.Web.Http;
-using Microsoft.AspNet.Identity;
+using PsikoterapsitlerBurada.Core.Models;
+using PsikoterapsitlerBurada.Core.Repositories;
+using PsikoterapsitlerBurada.Persistence.Models;
+using PsikoterapsitlerBurada.Persistence.Repositories;
 
 namespace PsikoterapsitlerBurada.Controllers.API
 {
     [Authorize]
     public class NotificationController : ApiController
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IUnitOfWork _unitOfWork;
 
         public NotificationController()
         {
-            _context = new ApplicationDbContext();
+            _unitOfWork = new UnitOfWork(new ApplicationDbContext());
         }
 
         [HttpGet]
         public IEnumerable<NotificationDto> GetAllNotifications()
         {
             var id = User.Identity.GetUserId();
-            var notifications = _context.UserNotifications
-                .Where(un => un.UserId == id && un.IsRead == false)
-                .Select(un => un.Notification)
-                .Include(un => un.Answer)
-                .Include(un => un.Answer.User)
-                .Include(un => un.UserLike)
-                .Include(un => un.Question.WhoAsked)
-                .Include(un => un.Following)
-                .Include(f => f.Following.Follower)
-                .Include(f => f.Following.Followee)
+            var notifications = _unitOfWork.Notifications.GetUserNotiicationwithNotificationByUserId(id)
                 .Select(Mapper.Map<NotificationDto>);
 
             return notifications;
         }
 
-    }
+      }
 }

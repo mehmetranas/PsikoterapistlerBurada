@@ -1,5 +1,5 @@
 ﻿@using Microsoft.AspNet.Identity
-@model IEnumerable<PsikoterapsitlerBurada.Models.ViewModels.QuestionViewModel>
+@model IEnumerable<PsikoterapsitlerBurada.Core.Models.ViewModels.QuestionViewModel>
 
 
 @foreach (var question in Model)
@@ -15,16 +15,19 @@
                         </a>
                     </p> 
                 </div>
-                <div class="col-md-4">
-                    @if (question.Answers.Any(a => a.UserId == User.Identity.GetUserId()))
+                <div class="col-md-2">
+                    @if (!question.IsAnsweredByUser(User.Identity.GetUserId()) &&
+                        question.IsAskedToUser(User.Identity.GetUserId()))
                     {
-                        @Html.ActionLink("Cevabı Gör", "GetAnswers", "Answers", new {id = question.Id}, new {@class = "btn btn-link btn-sm"})
+                        @Html.ActionLink("Cevapla", "GetAnswers","Answers", new { id = question.Id}, new {@class = "btn btn-link btn-sm"})
                     }
-                    else
+                  </div>
+                <div class="col-md-2">
+                    @if (question.Answers.Count > 0)
                     {
-                        @Html.ActionLink("Henüz Cevaplanmadı", "WriteAnswer","User", new { id = question.Id}, new {@class = "btn btn-link btn-sm"})
+                        @Html.ActionLink("Tüm Cevaplar", "GetAnswers", "Answers", new {id = question.Id}, new {@class = "btn btn-link btn-sm"})
                     }
-                </div>
+                   </div>
             </div>
         </div>
         <div class="panel-body">

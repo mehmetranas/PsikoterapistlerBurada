@@ -1,34 +1,33 @@
 ﻿using AutoMapper;
 using Microsoft.AspNet.Identity;
-using PsikoterapsitlerBurada.Models;
-using PsikoterapsitlerBurada.Models.ViewModels;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
+using Microsoft.Ajax.Utilities;
+using PsikoterapsitlerBurada.Core.Models;
+using PsikoterapsitlerBurada.Core.Models.ViewModels;
+using PsikoterapsitlerBurada.Core.Repositories;
+using PsikoterapsitlerBurada.Persistence.Models;
+using PsikoterapsitlerBurada.Persistence.Repositories;
 
 namespace PsikoterapsitlerBurada.Controllers
 {
     [Authorize]
     public class UserController : Controller
     {
-        private ApplicationDbContext _context;
+        private readonly IUnitOfWork _unitOfWork;
 
         public UserController()
         {
-            _context = new ApplicationDbContext();
+            _unitOfWork = new UnitOfWork(new ApplicationDbContext());
         }
 
         public ActionResult GetMyQuestions()
         {
             var userId = User.Identity.GetUserId();
-            var myQuestions = _context.Questions
-                .Where(q => q.WhoAsked.Id == userId)
-                .Include(q => q.WhoAsked)
-                .Include(q => q.AskedToWhom)
-                .Include(q => q.Votes)
-                .Include(q => q.Answers)
-                .OrderByDescending(q => q.DateTime).Select(Mapper.Map<QuestionViewModel>);
+            var myQuestions = _unitOfWork.Questions
+                .GetUserQuestions(userId)
+                .Select(Mapper.Map<QuestionViewModel>);
 
             return View(myQuestions);
         }
@@ -36,8 +35,8 @@ namespace PsikoterapsitlerBurada.Controllers
         public ActionResult GetUnAskedQuestions()
         {
             var userId = User.Identity.GetUserId();
-            var questions = _context.Questions
-                .Where(q => q.WhoAsked.Id == userId && q.AskedToWhom.Count == 0)
+            var questions = _unitOfWork.Questions
+                .GetUserUnAskedQuestions(userId)
                 .Select(Mapper.Map<QuestionViewModel>);
 
             return View(questions);
@@ -46,37 +45,22 @@ namespace PsikoterapsitlerBurada.Controllers
         public ActionResult GetQustionAskedToMe()
         {
             var userId = User.Identity.GetUserId();
-            var user = _context.Users.
-                SingleOrDefault(u => u.Id == userId);
+            var user = _unitOfWork.Users.GetUserById(userId);
 
-            var questions = _context.Questions.Include("WhoAsked").Include("Answers").Where(q => q.AskedToWhom.Any(u => u.Id == userId)).ToList().OrderBy(d => d.DateTime);
+            var questions = _unitOfWork.Questions
+                .GetQuestionsAskedToUser(userId)
+                .OrderBy(d => d.DateTime);
 
             if (user == null) return HttpNotFound();
 
             return View(questions);
         }
 
-        [Authorize]
-        public ActionResult WriteAnswer(int id)
-        {
-            var question = _context.Questions.Include("WhoAsked").SingleOrDefault(q => q.Id == id);
-            var viewModel = new AnswerViewModel()
-            {
-                Question = question
-            };
-
-            return View(viewModel);
-        }
-
         public ActionResult UserProfile(string id)
         {
-            var user = _context.Users
-                .Include(u => u.Followees)
-                .Include(u => u.Followers)
-                .Include(u => u.FavoriteQuestions)
-                .Include(u => u.LikesAnswers)
-                .SingleOrDefault(u => u.Id == id);
             var authUserId = User.Identity.GetUserId();
+            var user = _unitOfWork.Users
+                .GetUsers(id);
 
             var viewModel = new ProfileViewModel(authUserId, user);
            
@@ -85,11 +69,8 @@ namespace PsikoterapsitlerBurada.Controllers
 
         public ActionResult GetUserQuestions(string id)
         {
-            var userQuestions = _context.Questions
-                .Where(q => q.WhoAsked.Id == id)
-                .Include(q => q.WhoAsked)
-                .Include(q => q.AskedToWhom)
-                .Include(q => q.Answers)
+            var userQuestions = _unitOfWork.Questions
+                .GetUserQuestionsWithWhoAskAskToWhomAns(id)
                 .Select(Mapper.Map<QuestionViewModel>);
 
             return PartialView("_UserAskedQuestions", userQuestions);
@@ -97,9 +78,8 @@ namespace PsikoterapsitlerBurada.Controllers
 
         public ActionResult GetUserQuestionsAsked(string id)
         {
-            var userQuestions = _context.Questions.Include(q => q.WhoAsked)
-                .Include(q => q.Answers)
-                .Where(q => q.AskedToWhom.Any(u => u.Id == id))
+            var userQuestions = _unitOfWork.Questions
+                .GetUsersQuestionsAskedWithAns(id)
                 .Select(Mapper.Map<QuestionViewModel>);
 
             return PartialView("_UserQuestionsAsked", userQuestions);
@@ -107,11 +87,8 @@ namespace PsikoterapsitlerBurada.Controllers
 
         public ActionResult GetUserFollowers(string id)
         {
-
-            var followers = _context.Followings
-                .Include(f => f.Followee)
-                .Include(f => f.Follower)
-                .Where(f => f.FollowerId == id);
+            var followers = _unitOfWork.Followings
+                .GetFollowingsByFollower(id);
 
             var authUserId = User.Identity.GetUserId();
 
@@ -124,16 +101,14 @@ namespace PsikoterapsitlerBurada.Controllers
                 viewModel.Add(profileViewModel);
             }
 
-            return PartialView("_Following", viewModel);
+            return PartialView("_UserProfiles", viewModel);
         }
 
         public ActionResult GetUserFollowees(string id)
         {
 
-            var followees = _context.Followings
-                .Include(f => f.Followee)
-                .Include(f => f.Follower)
-                .Where(f => f.FolloweeId == id);
+            var followees = _unitOfWork.Followings
+                .GetFollowingsByFollowee(id);
 
             var authUserId = User.Identity.GetUserId();
 
@@ -146,19 +121,17 @@ namespace PsikoterapsitlerBurada.Controllers
                 viewModel.Add(profileViewModel);
             }
 
-            return PartialView("_Following", viewModel);
+            return PartialView("_UserProfiles", viewModel);
         }
 
         public ActionResult GetUserFavoriteQuestions(string id)
         {
-            var favoriteQuestions = _context.Questions
-                .Include(q => q.Answers)
-                .Include(q => q.AskedToWhom)
-                .Include(q => q.WhoAsked)
+            var favoriteQuestions = _unitOfWork.Questions
+                .GetUserFavoriteQuestionsWithAnsAskToWhomWhoAsk(id)
                 .OrderByDescending(q => q.DateTime)
-                .Where(q => q.UsersTrack.Any(u => u.Id == id)).Select(Mapper.Map<QuestionViewModel>);
+                .Select(Mapper.Map<QuestionViewModel>);
+
             return PartialView("_UserAskedQuestions", favoriteQuestions);
         }
-
     }
 }

@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNet.Identity;
-using PsikoterapsitlerBurada.Models;
+using PsikoterapsitlerBurada.Core.Repositories;
+using PsikoterapsitlerBurada.Persistence.Models;
+using PsikoterapsitlerBurada.Persistence.Repositories;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
@@ -9,37 +11,38 @@ namespace PsikoterapsitlerBurada.Controllers.API
     [Authorize]
     public class FavoriteController : ApiController
     {
-        private ApplicationDbContext _context;
+        private readonly IUnitOfWork _unitOfWork;
 
         public FavoriteController()
         {
-            _context = new ApplicationDbContext();
+            _unitOfWork = new UnitOfWork(new ApplicationDbContext());
         }
 
         [HttpPost]
         public IHttpActionResult FavoriteState(int id)
         {
-            var userId = User.Identity.GetUserId();
-            var user = _context.Users.Find(userId);
-            var question = _context.Questions.Find(id);
-            var isFavorite = user.FavoriteQuestions.Any(q => q.Id == id);
+            var user = _unitOfWork.Users.GetUserById(User.Identity.GetUserId());
+            var question = _unitOfWork.Questions.GetQuestionByQuestionId(id);
+            var isFavorite = _unitOfWork.Users.GetUserFavoriteQuestions(User.Identity.GetUserId()).Contains(question);
+
             if (isFavorite)
             {
                 user.FavoriteQuestions.Remove(question);
-                _context.SaveChanges();
+                _unitOfWork.Complete();
                 return Json(new { action = "delete" });
             }
+
             user.FavoriteQuestions.Add(question);
-            _context.SaveChanges();
+            _unitOfWork.Complete();
             return Json(new { action = "add" });
         }
 
         [HttpGet]
         public IEnumerable<int> GetFavoriteQuestions()
         {
-            var userId = User.Identity.GetUserId();
-            var user = _context.Users.Find(userId);
-            var questionsId = user.FavoriteQuestions.Select(q => q.Id);
+            var questionsId = _unitOfWork.Users
+                .GetUserFavoriteQuestions(User.Identity.GetUserId())
+                .Select(q => q.Id);
 
             return questionsId;
         }

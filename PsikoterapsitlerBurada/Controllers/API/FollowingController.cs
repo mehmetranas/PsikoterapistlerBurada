@@ -1,30 +1,29 @@
 ﻿using Microsoft.AspNet.Identity;
-using PsikoterapsitlerBurada.Models;
-using System.Linq;
+using PsikoterapsitlerBurada.Core.Models;
+using PsikoterapsitlerBurada.Core.Repositories;
+using PsikoterapsitlerBurada.Persistence.Models;
+using PsikoterapsitlerBurada.Persistence.Repositories;
 using System.Web.Http;
 
 namespace PsikoterapsitlerBurada.Controllers.API
 {
-    [System.Web.Http.Authorize]
+    [Authorize]
     public class FollowingController : ApiController
     {
-        private ApplicationDbContext _context;
+        private readonly IUnitOfWork _unitOfWork ;
 
         public FollowingController()
         {
-            _context = new ApplicationDbContext();        
+            _unitOfWork = new UnitOfWork(new ApplicationDbContext());        
         }
 
-        [System.Web.Http.HttpPost]
+        [HttpPost]
         public IHttpActionResult Follow(string id)
         {
-            var userId = User.Identity.GetUserId();
-            var user = _context.Users.SingleOrDefault(u => u.Id == userId);
-
             var following = new Following()
             {
                 FolloweeId = id,
-                FollowerId = userId
+                FollowerId = User.Identity.GetUserId()
             };
 
             var notification = new Notification()
@@ -33,33 +32,31 @@ namespace PsikoterapsitlerBurada.Controllers.API
                 NotificationType = NotificationType.Follow
             };
 
-            _context.Followings.Add(following);
+            _unitOfWork.Followings.Add(following);
 
-            var followee = _context.Users.SingleOrDefault(u => u.Id == id);
+            var followee = _unitOfWork.Users.GetUserById(id);
 
             followee?.Notify(notification);
 
-            _context.SaveChanges();
-
+            _unitOfWork.Complete();
             return Ok();
         }
 
-        [System.Web.Http.HttpDelete]
+        [HttpDelete]
         public IHttpActionResult UnFollow(string id)
         {
             var userId = User.Identity.GetUserId();
 
-            var following = _context.Followings.SingleOrDefault(f => f.FollowerId == userId && f.FolloweeId == id);
+            var following = _unitOfWork.Notifications.GetFollowingsByFollowerAndFollowee(id, userId);
 
             if (following == null) return BadRequest();
 
-            var notification = _context.Notifications.SingleOrDefault(n => n.FollowingId == following.Id);
+            var notification = _unitOfWork.Notifications.GetNotificationByFollowing(following.Id);
 
-            if (notification != null) _context.Notifications.Remove(notification);
+            if (notification != null) _unitOfWork.Notifications.Remove(notification);
 
-            _context.Followings.Remove(following);
-
-            _context.SaveChanges();
+            _unitOfWork.Followings.Remove(following);
+            _unitOfWork.Complete();
 
             return Ok();
         }

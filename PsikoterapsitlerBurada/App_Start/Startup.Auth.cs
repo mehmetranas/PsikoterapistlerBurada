@@ -5,7 +5,8 @@ using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.Google;
 using Owin;
-using PsikoterapsitlerBurada.Models;
+using PsikoterapsitlerBurada.Core.Models;
+using PsikoterapsitlerBurada.Persistence.Models;
 
 namespace PsikoterapsitlerBurada
 {
