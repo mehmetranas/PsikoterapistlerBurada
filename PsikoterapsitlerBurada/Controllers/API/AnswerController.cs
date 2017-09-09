@@ -22,6 +22,8 @@ namespace PsikoterapsitlerBurada.Controllers.API
         [HttpPost]
         public IHttpActionResult Create(AnswerDto answerDto)
         {
+            if (string.IsNullOrWhiteSpace(answerDto.AnswerText)) return BadRequest();
+
             var currentAnswer = new Answer()
             {
                 AnswerText = answerDto.AnswerText,
