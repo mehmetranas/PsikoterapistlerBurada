@@ -56,6 +56,25 @@
         </div>
     </div>
 }
+    @if (Model.QuestionViewModel.IsAskedToUser(User.Identity.GetUserId()) &&
+        !Model.QuestionViewModel.IsAnsweredByUser(User.Identity.GetUserId()))
+    {
+        <form>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-md-12">
+                    @Html.TextArea("AnswerText", new
+                    {
+                        placeholder = "Cevabınız...",
+                        @class = "form-control input-lg js-answer-text",
+                        rows = 8
+                    })
+                </div>
+            </div>
+        </div>
+        </form>
+        <button class="btn btn-primary js-send-button" id="@Model.QuestionViewModel.Id"><i class="fa fa-paper-plane" aria-hidden="true"></i>&nbsp; Gönder</button>
+    }
 
 @section scripts{
     <script>
@@ -64,6 +83,7 @@
             setAuthState(@User.Identity.IsAuthenticated.ToString().ToLower());
             tooltip();
             GetAnswersController.getLikeAnswersId(@Model.QuestionViewModel.Id);
+            WriteAnswerController.create();
         });
     </script>
 }

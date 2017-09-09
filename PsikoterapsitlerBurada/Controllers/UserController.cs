@@ -42,8 +42,6 @@ namespace PsikoterapsitlerBurada.Controllers
             return View(questions);
         }
 
-       
-
         public ActionResult GetQustionAskedToMe()
         {
             var userId = User.Identity.GetUserId();
@@ -58,22 +56,6 @@ namespace PsikoterapsitlerBurada.Controllers
             return View(questions);
         }
 
-      [Authorize]
-        public ActionResult WriteAnswer(int id)
-        {
-            var question = _unitOfWork.Questions
-                .GetQuestionByQuestionId(id);
-            var userId = User.Identity.GetUserId();
-            if (question.AskedToWhom.All(u => u.Id != userId)) return HttpNotFound();
-
-            var viewModel = new AnswerViewModel()
-            {
-                Question = question
-            };
-
-            return View(viewModel);
-        }
-
         public ActionResult UserProfile(string id)
         {
             var authUserId = User.Identity.GetUserId();
@@ -84,8 +66,6 @@ namespace PsikoterapsitlerBurada.Controllers
            
             return View(viewModel);
         }
-
-        
 
         public ActionResult GetUserQuestions(string id)
         {
@@ -143,8 +123,6 @@ namespace PsikoterapsitlerBurada.Controllers
 
             return PartialView("_UserProfiles", viewModel);
         }
-
-       
 
         public ActionResult GetUserFavoriteQuestions(string id)
         {

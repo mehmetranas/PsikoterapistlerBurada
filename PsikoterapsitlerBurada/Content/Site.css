@@ -188,13 +188,6 @@ div.like {
     margin-bottom: 10px;
 }
 
-/*Select User to Ask Question Page*/
-
-#js-document {
-    
-}
-
-
 /*Profile Page*/
 div.social-profile table td,th {
     text-align: center
@@ -235,7 +228,7 @@ ul.notification {
 
 ul.notificaiton > li {
     padding: 10px 0;
-    animation-duration: 0.3s;
+    animation-duration: 0,05s;
     border-bottom: #a38bd7 solid 1px;
 }
 
