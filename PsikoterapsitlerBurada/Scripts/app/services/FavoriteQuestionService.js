@@ -8,6 +8,7 @@ var FavoriteQuestionService = function() {
             success: function (data) {
                 data.forEach(function (id) {
                     var favoriteQuestion = $(".favorite [data-questionId ='" + id + "']");
+                    if(favoriteQuestion[0])
                     favoriteQuestion[0].className += " isFavorite animated rubberBand";
                 });
             }

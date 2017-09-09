@@ -33,6 +33,8 @@ namespace PsikoterapsitlerBurada
                         "~/Scripts/app/services/WriteAnswerService.js",
                         "~/Scripts/app/services/SelectedUserService.js",
                         "~/Scripts/app/services/NotificationService.js",
+                        "~/Scripts/app/services/SearchService.js",
+                        "~/Scripts/app/controllers/SearchController.js",
                         "~/Scripts/app/controllers/WriteAnswerController.js",
                         "~/Scripts/app/controllers/NotificationController.js",
                         "~/Scripts/app/controllers/GetAnswersController.js",

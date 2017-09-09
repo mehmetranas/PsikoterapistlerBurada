@@ -1,5 +1,4 @@
-﻿@model string
-
+﻿@model IEnumerable<PsikoterapsitlerBurada.Core.Models.ViewModels.QuestionViewModel>
 @{
     ViewBag.Title = "Search";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -8,34 +7,35 @@
 <h2>Search</h2>
 
 <div class="row">
-<div class="col-lg-6">
-    <div class="input-group">
-        @Html.BeginForm("GetSearchList","Home")
-        
-        @Html.TextBox("query", Model)
-        <span class="input-group-btn">
-            <button class="btn btn-default search" type="submit">Ara</button>
-        </span>
-    </div><!-- /input-group --> 
-</div><!-- /.col-lg-6 -->
+    <div class="col-lg-10">
+        @Html.TextBox("query", null, new { @class = "form-control", placeholder = "Anahtar kelime"})
+    </div><!-- /.col-lg-8 -->
+    <div class="col-lg-2">
+        <button class="btn btn-info js-search form-control" type="button">
+            <i class="fa fa-search" aria-hidden="true"></i>
+            Ara
+            <i class="fa fa-spin fa-spinner hide js-loader pull-right"></i>
+        </button>
+    </div>
 </div><!-- /.row -->
-<div class="js-searchList">
-    <div class="js-loader hide"></div>
+<hr />
+<div class="js-search">
+    <div class="js-searchList">
+    </div>
 </div>
 
 @section scripts{
-    <script>
-        $(document).ready(function() {
-            $("button.search").click(function() {
-                var text = $("input.search").val();
-                var url = '@Url.Action("GetSearchList", "Home")';
+  <script>
+        $(document).ready(function () {
+            $(".js-search").click(function () {
                 $(".js-loader").removeClass("hide");
-                $("div.js-searchList").load(url,
-                    function () {
-                        $(".js-loader").addClass("hide");
-                    });
+                var url = '@Url.Action("GetSearchList","Home")';
+                var query = $("#query").val();
+                SearchController
+                    .search(url, query, @User.Identity.IsAuthenticated.ToString().ToLower());
             });
+
         });
-    </script>
+</script>
 }
 

@@ -20,12 +20,12 @@
         VoteService.vote(voteDto, voteCounter,e);
     }
 
-    $(".favorite span").click(function (e) {
+    $(document).on("click",".favorite span", function (e) {
         if (!isAuth) return;
         favoriteQuestionAction(e);
     });
 
-    $(".js-vote").click(function (e) {
+    $(document).on("click", ".js-vote", function (e) {
         if (!isAuth) return;
         voteAction(e);
     });
