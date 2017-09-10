@@ -1,4 +1,4 @@
-﻿namespace PsikoterapsitlerBurada.DTOs
+﻿namespace PsikoterapsitlerBurada.Core.DTOs
 {
     public class VoteDto
     {

@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using AutoMapper;
+﻿using AutoMapper;
+using PsikoterapsitlerBurada.Core.DTOs;
 using PsikoterapsitlerBurada.Core.Models;
 using PsikoterapsitlerBurada.Core.Models.ViewModels;
-using PsikoterapsitlerBurada.DTOs;
 
 namespace PsikoterapsitlerBurada.App_Start
 {

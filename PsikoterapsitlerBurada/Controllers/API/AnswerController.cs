@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNet.Identity;
+using PsikoterapsitlerBurada.Core.DTOs;
 using PsikoterapsitlerBurada.Core.Models;
 using PsikoterapsitlerBurada.Core.Repositories;
-using PsikoterapsitlerBurada.DTOs;
 using PsikoterapsitlerBurada.Persistence.Models;
 using PsikoterapsitlerBurada.Persistence.Repositories;
 using System;

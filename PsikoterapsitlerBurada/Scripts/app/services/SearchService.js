@@ -7,7 +7,6 @@
                tooltip();
                IndexController.getFavoriteQuestions();
             });
-        return false;
     };
 
     return {

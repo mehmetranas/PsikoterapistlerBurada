@@ -16,7 +16,8 @@ var FavoriteQuestionService = function() {
 
     }
 
-    var signAsFavoriteQuestion = function(id, e) {
+    var signAsFavoriteQuestion = function (id, e) {
+        console.log(e);
         $.post("/api/favorite/" + id)
             .success(function () {
                 $(e.target).toggleClass("animated rubberBand").toggleClass("isFavorite");

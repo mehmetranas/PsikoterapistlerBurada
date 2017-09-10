@@ -209,22 +209,22 @@
     <Compile Include="Controllers\API\AnswerController.cs" />
     <Compile Include="Controllers\API\FavoriteController.cs" />
     <Compile Include="Controllers\API\ReadNotificationController.cs" />
-    <Compile Include="DTOs\FollowingDto.cs" />
+    <Compile Include="Core\DTOs\FollowingDto.cs" />
     <Compile Include="Controllers\API\FollowingController.cs" />
     <Compile Include="Controllers\API\NotificationController.cs" />
     <Compile Include="Controllers\API\LikeController.cs" />
-    <Compile Include="DTOs\NotificationDto.cs" />
-    <Compile Include="DTOs\QuestionDto.cs" />
-    <Compile Include="DTOs\AnswerDto.cs" />
+    <Compile Include="Core\DTOs\NotificationDto.cs" />
+    <Compile Include="Core\DTOs\QuestionDto.cs" />
+    <Compile Include="Core\DTOs\AnswerDto.cs" />
     <Compile Include="Controllers\API\SelectedUsersController.cs" />
     <Compile Include="Controllers\API\VoteController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\QuestionController.cs" />
     <Compile Include="Controllers\UserController.cs" />
-    <Compile Include="DTOs\SelectedUserDto.cs" />
-    <Compile Include="DTOs\UserDto.cs" />
-    <Compile Include="DTOs\VoteDto.cs" />
+    <Compile Include="Core\DTOs\SelectedUserDto.cs" />
+    <Compile Include="Core\DTOs\UserDto.cs" />
+    <Compile Include="Core\DTOs\VoteDto.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

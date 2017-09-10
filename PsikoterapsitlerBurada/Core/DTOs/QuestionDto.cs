@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace PsikoterapsitlerBurada.DTOs
+namespace PsikoterapsitlerBurada.Core.DTOs
 {
     public class QuestionDto
     {

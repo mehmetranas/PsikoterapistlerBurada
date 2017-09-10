@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using Microsoft.Build.Framework;
 
-namespace PsikoterapsitlerBurada.DTOs
+namespace PsikoterapsitlerBurada.Core.DTOs
 {
     public class AnswerDto
     {

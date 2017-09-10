@@ -11,6 +11,13 @@
             setAuthState(@User.Identity.IsAuthenticated.ToString().ToLower());
             tooltip();
             IndexController.getFavoriteQuestions();
+            $(document).on("click",".favorite span", function (e) {
+                IndexController.favoriteQuestionAction(e);
+            });
+
+            $(document).on("click", ".js-vote", function (e) {
+                IndexController.voteAction(e);
+            });
         });
     </script>
 }

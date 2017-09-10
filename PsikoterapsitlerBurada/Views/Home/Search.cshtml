@@ -1,10 +1,11 @@
 ﻿@model IEnumerable<PsikoterapsitlerBurada.Core.Models.ViewModels.QuestionViewModel>
+
 @{
     ViewBag.Title = "Search";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Search</h2>
+<h2>Arama...</h2>
 
 <div class="row">
     <div class="col-lg-10">
@@ -34,7 +35,13 @@
                 SearchController
                     .search(url, query, @User.Identity.IsAuthenticated.ToString().ToLower());
             });
+            $(document).on("click",".favorite span", function (e) {
+                IndexController.favoriteQuestionAction(e);
+            });
 
+            $(document).on("click", ".js-vote", function (e) {
+                IndexController.voteAction(e);
+            });
         });
 </script>
 }

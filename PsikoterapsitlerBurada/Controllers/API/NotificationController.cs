@@ -1,13 +1,12 @@
 ﻿using AutoMapper;
 using Microsoft.AspNet.Identity;
-using PsikoterapsitlerBurada.DTOs;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http;
-using PsikoterapsitlerBurada.Core.Models;
+using PsikoterapsitlerBurada.Core.DTOs;
 using PsikoterapsitlerBurada.Core.Repositories;
 using PsikoterapsitlerBurada.Persistence.Models;
 using PsikoterapsitlerBurada.Persistence.Repositories;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web.Http;
 
 namespace PsikoterapsitlerBurada.Controllers.API
 {
