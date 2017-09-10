@@ -10,7 +10,16 @@
         });
     }
 
+    var checkValidation = function (e) {
+        var value = $(e.target).val();
+        if (value)
+            $(".js-send-button").removeAttr("disabled");
+        else
+            $(".js-send-button").attr("disabled", true);
+    }
+
     return {
-        create: create
+        create: create,
+        checkValidation: checkValidation
     }
 }();

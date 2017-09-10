@@ -84,11 +84,8 @@
     }
 
     var sendUsers = function (questionId) {
-     
-       
         SelectedUserService.submitSelectedUsers(selectedUsers, questionId);
     };
-    
 
     return {
         usersTable: usersTable,

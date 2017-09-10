@@ -1,6 +1,6 @@
 ﻿using PsikoterapsitlerBurada.Core.Models;
 
-namespace PsikoterapsitlerBurada.DTOs
+namespace PsikoterapsitlerBurada.Core.DTOs
 {
     public class NotificationDto
     {

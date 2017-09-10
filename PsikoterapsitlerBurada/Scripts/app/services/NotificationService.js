@@ -4,6 +4,7 @@
         $.getJSON("/api/notification",
             function (notifications) {
                 if (notifications.length > 0) {
+                    $("li.notification").removeClass("hide");
                     $(".js-notification-count").text(notifications.length)
                         .removeClass("hide")
                         .addClass("animated bounce");
@@ -34,6 +35,7 @@
                             if (count === 0) {
                                 $(".js-notification-count").text("").addClass("hide");
                                 $(".notification").popover("destroy");
+                                $("li.notification").addClass("hide");
                                 return;
                             }
                             element.closest("li").remove();

@@ -1,81 +1,9 @@
-﻿@model IEnumerable<PsikoterapsitlerBurada.Core.Models.Question>
+﻿@model IEnumerable<PsikoterapsitlerBurada.Core.Models.ViewModels.QuestionViewModel>
 @{
     ViewBag.Title = "Home Page";
 }
 
-<h4>Sorular</h4>
-
-@foreach (var question in Model)
-{
-    <div class="jumbotron question-table">
-        <table class="table-condensed questions">
-            <tr>
-                <td>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="vote">
-                                <div class="text-center">
-                                    <span class="glyphicon glyphicon-chevron-up js-vote"
-                                          data-vote-action="1"
-                                          data-toggle ="tooltip"
-                                          title="Giriş yapmalısınız"
-                                          data-questionId=@question.Id></span>
-                                </div>
-                                <div class="text-center">
-                                    <p class="vote-counter">@question.TotalVotes</p>
-                                </div>
-                                <div class="text-center">
-                                    <span class="glyphicon glyphicon-chevron-down js-vote"
-                                          data-vote-action="-1"
-                                          data-toggle ="tooltip"
-                                          title="Giriş yapmalısınız"
-                                          data-questionId=@question.Id></span>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                </td>
-                <td class="question-text">
-                    <div class="question">
-                        <div class="who-asked">
-                            <a href=@Url.Action("UserProfile", "User", new {id = question.WhoAsked.Id})>
-                                <small>@question.WhoAsked.UserName</small>
-                            </a>
-                        </div>
-                        <div class="question-text">
-                            <a href=@Url.Action("GetAnswers", "Answers", new {id = question.Id}) class="question-text">
-                                @question.QuestionText
-                            </a>
-                        </div>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div class="text-center">
-                        <p>@question.Answers.Count</p>
-                        <span class="label label-default">Cevap</span>
-                    </div>
-                </td>
-                <td>
-                    @foreach (var user in question.AskedToWhom)
-                    {
-                        <a href=@Url.Action("UserProfile","User", new {id = user.Id})>
-                            <span class="tag">@user.UserName</span>
-                        </a>
-                    }
-                </td>
-            </tr>
-        </table>
-        <div class="favorite">
-            <span class="glyphicon glyphicon-star pull-right" 
-                  data-toggle ="tooltip"
-                  title = "Giriş yapmalısınız"
-                  data-questionId = @question.Id></span>
-        </div>
-</div>
-}
+@Html.Partial("_GetQuestions", Model)
 
 @section scripts{
     <script>
@@ -83,7 +11,13 @@
             setAuthState(@User.Identity.IsAuthenticated.ToString().ToLower());
             tooltip();
             IndexController.getFavoriteQuestions();
-        });
+            $(document).on("click",".favorite span", function (e) {
+                IndexController.favoriteQuestionAction(e);
+            });
 
+            $(document).on("click", ".js-vote", function (e) {
+                IndexController.voteAction(e);
+            });
+        });
     </script>
 }

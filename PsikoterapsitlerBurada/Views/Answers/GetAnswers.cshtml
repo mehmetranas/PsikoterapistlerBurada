@@ -64,26 +64,32 @@
             <div class="row">
                 <div class="col-md-12">
                     @Html.TextArea("AnswerText", new
-                    {
-                        placeholder = "Cevabınız...",
-                        @class = "form-control input-lg js-answer-text",
-                        rows = 8
-                    })
+               {
+                   placeholder = "Cevabınız...",
+                   @class = "form-control input-lg js-answer-text",
+                   rows = 8,
+                   onkeyup = "checkValidation(event);"
+               })
                 </div>
             </div>
         </div>
         </form>
-        <button class="btn btn-primary js-send-button" id="@Model.QuestionViewModel.Id"><i class="fa fa-paper-plane" aria-hidden="true"></i>&nbsp; Gönder</button>
+        <button class="btn btn-primary js-send-button" 
+                id="@Model.QuestionViewModel.Id"
+                disabled="disabled"><i class="fa fa-paper-plane" aria-hidden="true"></i>&nbsp; Gönder</button>
     }
 
 @section scripts{
     <script>
-
         $(document).ready(function () {
             setAuthState(@User.Identity.IsAuthenticated.ToString().ToLower());
             tooltip();
             GetAnswersController.getLikeAnswersId(@Model.QuestionViewModel.Id);
             WriteAnswerController.create();
         });
+
+        function checkValidation(e) {
+            WriteAnswerController.checkValidation(e)
+        }
     </script>
 }

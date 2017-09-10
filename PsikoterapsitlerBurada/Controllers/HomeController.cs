@@ -1,11 +1,10 @@
-﻿using Microsoft.AspNet.Identity;
-using System.Linq;
-using System.Web.Mvc;
-using PsikoterapsitlerBurada.Core.Models;
+﻿using AutoMapper;
 using PsikoterapsitlerBurada.Core.Models.ViewModels;
 using PsikoterapsitlerBurada.Core.Repositories;
 using PsikoterapsitlerBurada.Persistence.Models;
 using PsikoterapsitlerBurada.Persistence.Repositories;
+using System.Linq;
+using System.Web.Mvc;
 
 namespace PsikoterapsitlerBurada.Controllers
 {
@@ -20,7 +19,9 @@ namespace PsikoterapsitlerBurada.Controllers
         
         public ActionResult Index()
         {
-            var questions =  _unitOfWork.Questions.GetAllAnsweredQuestionsWithCtgWhoAskVtsAnsAskToWhom();
+            var questions =  _unitOfWork.Questions
+                .GetAllAnsweredQuestionsWithCtgWhoAskVtsAnsAskToWhom()
+                .Select(Mapper.Map<QuestionViewModel>);
                 
             return View(questions);
         }
@@ -44,15 +45,18 @@ namespace PsikoterapsitlerBurada.Controllers
             return View();
         }
 
+        [HttpPost]
         public ActionResult GetSearchList(string query)
         {
-            var users =_unitOfWork.Users.GetUsersByQuery(query);
+            var questions = _unitOfWork.Questions.GetAllAnsweredQuestionsWithCtgWhoAskVtsAnsAskToWhom();
 
-            var authUserId = User.Identity.GetUserId();
+            var viewModel = questions
+                .Where(q => q.QuestionText.ToLower().Contains(query.ToLower()))
+                .Select(Mapper.Map<QuestionViewModel>);
+            if (!viewModel.Any())
+                return PartialView("_EmptySearchResult", "Aramanızla eşleşen bir soru bulamadık.");
 
-            var viewModel = users.Select(user => new ProfileViewModel(authUserId, user)).ToList();
-
-            return PartialView("_UserProfiles", viewModel);
+            return PartialView("_GetQuestions", viewModel);
         }
 
        

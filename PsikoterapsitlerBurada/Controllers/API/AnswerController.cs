@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNet.Identity;
+using PsikoterapsitlerBurada.Core.DTOs;
 using PsikoterapsitlerBurada.Core.Models;
 using PsikoterapsitlerBurada.Core.Repositories;
-using PsikoterapsitlerBurada.DTOs;
 using PsikoterapsitlerBurada.Persistence.Models;
 using PsikoterapsitlerBurada.Persistence.Repositories;
 using System;
@@ -22,6 +22,8 @@ namespace PsikoterapsitlerBurada.Controllers.API
         [HttpPost]
         public IHttpActionResult Create(AnswerDto answerDto)
         {
+            if (string.IsNullOrWhiteSpace(answerDto.AnswerText)) return BadRequest();
+
             var currentAnswer = new Answer()
             {
                 AnswerText = answerDto.AnswerText,

@@ -209,22 +209,22 @@
     <Compile Include="Controllers\API\AnswerController.cs" />
     <Compile Include="Controllers\API\FavoriteController.cs" />
     <Compile Include="Controllers\API\ReadNotificationController.cs" />
-    <Compile Include="DTOs\FollowingDto.cs" />
+    <Compile Include="Core\DTOs\FollowingDto.cs" />
     <Compile Include="Controllers\API\FollowingController.cs" />
     <Compile Include="Controllers\API\NotificationController.cs" />
     <Compile Include="Controllers\API\LikeController.cs" />
-    <Compile Include="DTOs\NotificationDto.cs" />
-    <Compile Include="DTOs\QuestionDto.cs" />
-    <Compile Include="DTOs\AnswerDto.cs" />
+    <Compile Include="Core\DTOs\NotificationDto.cs" />
+    <Compile Include="Core\DTOs\QuestionDto.cs" />
+    <Compile Include="Core\DTOs\AnswerDto.cs" />
     <Compile Include="Controllers\API\SelectedUsersController.cs" />
     <Compile Include="Controllers\API\VoteController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\QuestionController.cs" />
     <Compile Include="Controllers\UserController.cs" />
-    <Compile Include="DTOs\SelectedUserDto.cs" />
-    <Compile Include="DTOs\UserDto.cs" />
-    <Compile Include="DTOs\VoteDto.cs" />
+    <Compile Include="Core\DTOs\SelectedUserDto.cs" />
+    <Compile Include="Core\DTOs\UserDto.cs" />
+    <Compile Include="Core\DTOs\VoteDto.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -290,7 +290,6 @@
     <Compile Include="Core\Models\Notification.cs" />
     <Compile Include="Core\Models\NotificationType.cs" />
     <Compile Include="Core\Models\UserNotification.cs" />
-    <Compile Include="Core\Models\ViewModels\AnswersViewModelWillDelete.cs" />
     <Compile Include="Core\Models\ViewModels\AnswerViewModel.cs" />
     <Compile Include="Core\Models\ViewModels\GetAnswerViewModel.cs" />
     <Compile Include="ViewModels\ManageViewModels.cs" />
@@ -354,6 +353,7 @@
     <Content Include="Scripts\app\controllers\GetAnswersController.js" />
     <Content Include="Scripts\app\controllers\IndexController.js" />
     <Content Include="Scripts\app\controllers\NotificationController.js" />
+    <Content Include="Scripts\app\controllers\SearchController.js" />
     <Content Include="Scripts\app\controllers\SelectUserToAskQuestionController.js" />
     <Content Include="Scripts\app\controllers\WriteAnswerController.js" />
     <Content Include="Scripts\app\services\FavoriteQuestionService.js" />
@@ -361,6 +361,7 @@
     <Content Include="Scripts\app\services\IndexService.js" />
     <Content Include="Scripts\app\services\LikeService.js" />
     <Content Include="Scripts\app\services\NotificationService.js" />
+    <Content Include="Scripts\app\services\SearchService.js" />
     <Content Include="Scripts\app\services\SelectedUserService.js" />
     <Content Include="Scripts\app\services\VoteService.js" />
     <Content Include="Scripts\app\services\WriteAnswerService.js" />
@@ -483,6 +484,8 @@
     <Content Include="Views\Shared\_UserQuestionsAsked.cshtml" />
     <Content Include="Views\Shared\_UserProfiles.cshtml" />
     <Content Include="Views\Home\Search.cshtml" />
+    <Content Include="Views\Shared\_GetQuestions.cshtml" />
+    <Content Include="Views\Shared\_EmptySearchResult.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
