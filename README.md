@@ -7,7 +7,7 @@ Kendi alanında uzmanlaşmış psikoterapistlerin, kendilerine, yine bu platform
 * Kişiler birbirini takip edebilir. Böylece takip edilen üyenin cevapları ve soruları bildirim olarak gelir.
 * Takip, Like, Vote işlemlerinde bildirim oluşur.
 
-Şunlar kullanılacak:
+Şunları kullandım:
   * Asp.Net MVC5
   * RestFul API
   * Mssql
