@@ -2,8 +2,6 @@
 using Microsoft.AspNet.Identity;
 using PsikoterapsitlerBurada.Core.DTOs;
 using PsikoterapsitlerBurada.Core.Repositories;
-using PsikoterapsitlerBurada.Persistence.Models;
-using PsikoterapsitlerBurada.Persistence.Repositories;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
@@ -15,9 +13,9 @@ namespace PsikoterapsitlerBurada.Controllers.API
     {
         private readonly IUnitOfWork _unitOfWork;
 
-        public NotificationController()
+        public NotificationController(IUnitOfWork unitOfWork)
         {
-            _unitOfWork = new UnitOfWork(new ApplicationDbContext());
+            _unitOfWork = unitOfWork;
         }
 
         [HttpGet]
