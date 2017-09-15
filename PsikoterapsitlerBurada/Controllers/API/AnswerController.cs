@@ -14,9 +14,9 @@ namespace PsikoterapsitlerBurada.Controllers.API
     {
         private readonly IUnitOfWork _unitOfWork;
 
-        public AnswerController()
+        public AnswerController(IUnitOfWork unitOfWork)
         {
-            _unitOfWork = new UnitOfWork(new ApplicationDbContext());
+            _unitOfWork = unitOfWork;
         }
 
         [HttpPost]

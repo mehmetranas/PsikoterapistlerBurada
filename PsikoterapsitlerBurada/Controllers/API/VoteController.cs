@@ -2,8 +2,6 @@
 using PsikoterapsitlerBurada.Core.DTOs;
 using PsikoterapsitlerBurada.Core.Models;
 using PsikoterapsitlerBurada.Core.Repositories;
-using PsikoterapsitlerBurada.Persistence.Models;
-using PsikoterapsitlerBurada.Persistence.Repositories;
 using System;
 using System.Linq;
 using System.Web.Http;
@@ -15,9 +13,9 @@ namespace PsikoterapsitlerBurada.Controllers.API
     {
         private readonly IUnitOfWork _unitOfWork;
 
-        public VoteController( )
+        public VoteController(IUnitOfWork unitOfWork)
         {
-            _unitOfWork = new UnitOfWork(new ApplicationDbContext());
+            _unitOfWork = unitOfWork;
         }
 
         [HttpPost]

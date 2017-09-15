@@ -1,11 +1,8 @@
 ﻿using AutoMapper;
-using System.Linq;
-using System.Web.Mvc;
-using PsikoterapsitlerBurada.Core.Models;
 using PsikoterapsitlerBurada.Core.Models.ViewModels;
 using PsikoterapsitlerBurada.Core.Repositories;
-using PsikoterapsitlerBurada.Persistence.Models;
-using PsikoterapsitlerBurada.Persistence.Repositories;
+using System.Linq;
+using System.Web.Mvc;
 
 namespace PsikoterapsitlerBurada.Controllers
 {
@@ -14,9 +11,9 @@ namespace PsikoterapsitlerBurada.Controllers
     {
         private readonly IUnitOfWork _unitOfWork;
 
-        public AnswersController()
+        public AnswersController(IUnitOfWork unitOfWork)
         {
-            _unitOfWork = new UnitOfWork(new ApplicationDbContext());
+            _unitOfWork = unitOfWork;
         }
 
         public ActionResult GetAnswers(int id)
