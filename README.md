@@ -20,15 +20,17 @@ __Şunları kullandım:__
   * BootBox.js
   * Jquery
   
-  Mimari Yapı
+  __Mimari Yapı__
   
-     Proje iki katmandan oluşuyor. Database ile ilişkili olan __Persistence Katmanı__ ve ilişkili olmayan __Core Katmanı__   
+ Proje iki katmandan oluşuyor. Database ile ilişkili olan __Persistence Katmanı__ ve ilişkili olmayan __Core Katmanı__   
+     
    __Controller => Core <= Persistance__
-   şeklinde bir bağımlılık diagramından söz edebiliriz. 
-   _Core Katmanı_ Interface sınıflarını barındırıyor. _Persistence_ ise bu interfaceleri tanımladığım sınıfları içeriyor.
-   Controller tarafında, _Controller DBContext_ bağımlılığını azaltmak için __UnitOfWork__ sınıfını kullandım. 
-   Fakat controller _high-level_ bir katman olduğu halde _low-level_ bir katman olan UnitOfWork ile tightly coupled oluşturuyordu. Bunun için de __IUnitOfWork__ sınıfını kullandım. 
-   _IUnitOfWork_ IRepository'leri içeren tamamen Abstract bir sınıfı tanımlıyor. Daha sonra _UnitOfWork_ sınıfını _IUnitOfWork_ sınıfına bağımlı hale getirdim. Yine aynı şekilde _Controller_ katmanı ile _IUnitOfWork_ arasında bir bağımlılık oluşturdum.
+   
+şeklinde bir bağımlılık diagramından söz edebiliriz. 
+_Core Katmanı_ Interface sınıflarını barındırıyor. _Persistence_ ise bu interfaceleri tanımladığım sınıfları içeriyor.
+Controller tarafında, _Controller DBContext_ bağımlılığını azaltmak için __UnitOfWork__ sınıfını kullandım. 
+Fakat controller _high-level_ bir katman olduğu halde _low-level_ bir katman olan UnitOfWork ile tightly coupled oluşturuyordu. Bunun için de __IUnitOfWork__ sınıfını kullandım. 
+_IUnitOfWork_ IRepository'leri içeren tamamen Abstract bir sınıfı tanımlıyor. Daha sonra _UnitOfWork_ sınıfını _IUnitOfWork_ sınıfına bağımlı hale getirdim. Yine aynı şekilde _Controller_ katmanı ile _IUnitOfWork_ arasında bir bağımlılık oluşturdum.
    
 __Controller => IUnitOfWork <= UnitOfWork__
 
