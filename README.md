@@ -7,7 +7,7 @@ Kendi alanında uzmanlaşmış psikoterapistlerin, kendilerine, yine bu platform
 * Kişiler birbirini takip edebilir. Böylece takip edilen üyenin cevapları ve soruları bildirim olarak gelir.
 * Takip, Like, Vote işlemlerinde bildirim oluşur.
 
-Şunları kullandım:
+__Şunları kullandım:__
   * Asp.Net MVC5
   * RestFul API
   * Mssql
@@ -21,17 +21,17 @@ Kendi alanında uzmanlaşmış psikoterapistlerin, kendilerine, yine bu platform
   * Jquery
   
   ## Mimari Yapı
-     Proje iki katmandan oluşuyor. Database ile ilişkili olan Persistence Katmanı ve ilişkili olmayan Core Katmanı.
+     Proje iki katmandan oluşuyor. Database ile ilişkili olan __Persistence Katmanı__ ve ilişkili olmayan __Core Katmanı__.
    #### Controller => Core <= Persistance 
    şeklinde bir bağımlılık diagramından söz edebiliriz. 
-   Core katmanı Interface sınıflarını barındırıyor. Persistence ise bu interfaceleri tanımladığım sınıfları içeriyor.
-   Controller DBContext bağımlılığını azaltmak için UnitOfWork sınıfını kullandım. 
-   Fakat controller high-level bir katman olduğu halde low-level bir katman olan UnitOfWork ile tightly coupled oluşturuyordu. Bunun için de IUnitOfWork sınıfını kullandım. 
-   IUnitOfWork IRepository'leri içeren tamamen Abstract bir sınıfı tanımlıyor. Daha sonra UnitOfWork sınıfını IUnitOfWork sınıfına bağımlı hale getirdim. Yine aynı şekilde Controller katmanı ile IUnitOfWork arasında bir bağımlılık oluşturdum.
+   _Core Katmanı_ Interface sınıflarını barındırıyor. _Persistence_ ise bu interfaceleri tanımladığım sınıfları içeriyor.
+   Controller tarafında, _Controller DBContext_ bağımlılığını azaltmak için __UnitOfWork__ sınıfını kullandım. 
+   Fakat controller _high-level_ bir katman olduğu halde _low-level_ bir katman olan UnitOfWork ile tightly coupled oluşturuyordu. Bunun için de __IUnitOfWork__ sınıfını kullandım. 
+   _IUnitOfWork_ IRepository'leri içeren tamamen Abstract bir sınıfı tanımlıyor. Daha sonra _UnitOfWork_ sınıfını _IUnitOfWork_ sınıfına bağımlı hale getirdim. Yine aynı şekilde _Controller_ katmanı ile _IUnitOfWork_ arasında bir bağımlılık oluşturdum.
    
    #### Controller => IUnitOfWork <= UnitOfWork
 
-Artık Controller hig-level katmanı bir Abstract sınıfa bağımlı hale geldi. Yine aynı şekilde, low-level ve detay sınıf olan UnitOfWork'da Abstrack bir sınıfa bağımlı hale geldi. Aslında yaptığım şey Core Katmanı tamamen bağımsız bir hale getirmek oldu. Uygulamanın test edilebilirliği artmış oldu. Ayrıca Core Katamanı ORM Frameworkten bağımsız bir yapıya kavuştu. UnitOfWork'te yapılacak değişiklik IUnitOfWork Katmanını etkilememiş olacak.
+Artık _Controller_ hig-level katmanı bir Abstract sınıfa bağımlı hale geldi. Yine aynı şekilde, low-level ve detay sınıf olan _UnitOfWork'da_ Abstrack bir sınıfa bağımlı hale geldi. Aslında yaptığım şey _Core Katmanı_ tamamen bağımsız bir hale getirmek oldu. Uygulamanın test edilebilirliği artmış oldu. Ayrıca Core Katamanı ORM Frameworkten bağımsız bir yapıya kavuştu. UnitOfWork'te yapılacak değişiklik IUnitOfWork Katmanını etkilememiş olacak.
 
-Diğer tarafta uygulamada UnitOfWork Katmanında hala bir DbContext bağımlılığı da devam ediyordu. Bu da dolaylı yoldan Controller - DbContext tightly coupled problemine sebep oluyordu. Bunu çözmek içinde bir Dependency Injection Framework'ü kullandım. (Ninject 3.2.1.0)
+Diğer tarafta uygulamada _UnitOfWork Katmanında_ _DbContext_ bağımlılığı hala devam ediyordu. Bu da dolaylı yoldan _Controller - DbContext_ tightly coupled problemine sebep oluyordu. Bunu çözmek içinde bir _Dependency Injection Framework'ü_ kullandım. (Ninject 3.2.1.0)
    
