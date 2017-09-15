@@ -20,16 +20,17 @@ __Şunları kullandım:__
   * BootBox.js
   * Jquery
   
-  ## Mimari Yapı
-     Proje iki katmandan oluşuyor. Database ile ilişkili olan __Persistence Katmanı__ ve ilişkili olmayan __Core Katmanı__.
-   #### Controller => Core <= Persistance 
+  Mimari Yapı
+  
+     Proje iki katmandan oluşuyor. Database ile ilişkili olan __Persistence Katmanı__ ve ilişkili olmayan __Core Katmanı__   
+   __Controller => Core <= Persistance__
    şeklinde bir bağımlılık diagramından söz edebiliriz. 
    _Core Katmanı_ Interface sınıflarını barındırıyor. _Persistence_ ise bu interfaceleri tanımladığım sınıfları içeriyor.
    Controller tarafında, _Controller DBContext_ bağımlılığını azaltmak için __UnitOfWork__ sınıfını kullandım. 
    Fakat controller _high-level_ bir katman olduğu halde _low-level_ bir katman olan UnitOfWork ile tightly coupled oluşturuyordu. Bunun için de __IUnitOfWork__ sınıfını kullandım. 
    _IUnitOfWork_ IRepository'leri içeren tamamen Abstract bir sınıfı tanımlıyor. Daha sonra _UnitOfWork_ sınıfını _IUnitOfWork_ sınıfına bağımlı hale getirdim. Yine aynı şekilde _Controller_ katmanı ile _IUnitOfWork_ arasında bir bağımlılık oluşturdum.
    
-   #### Controller => IUnitOfWork <= UnitOfWork
+__Controller => IUnitOfWork <= UnitOfWork__
 
 Artık _Controller_ hig-level katmanı bir Abstract sınıfa bağımlı hale geldi. Yine aynı şekilde, low-level ve detay sınıf olan _UnitOfWork'da_ Abstrack bir sınıfa bağımlı hale geldi. Aslında yaptığım şey _Core Katmanı_ tamamen bağımsız bir hale getirmek oldu. Uygulamanın test edilebilirliği artmış oldu. Ayrıca Core Katamanı ORM Frameworkten bağımsız bir yapıya kavuştu. UnitOfWork'te yapılacak değişiklik IUnitOfWork Katmanını etkilememiş olacak.
 
