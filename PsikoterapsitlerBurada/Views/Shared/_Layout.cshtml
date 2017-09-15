@@ -33,7 +33,7 @@
     @RenderBody()
     <hr />
     <footer>
-        <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+        <p>&copy; @DateTime.Now.Year - By Mehmet S. Tanas</p>
     </footer>
 </div>
 
@@ -65,7 +65,7 @@
             </span>
             <a data-notification="<%=notification.id%>"
                class="js-notification-close"
-               href="/User/WriteAnswer/<%=notification.question.id%>" >sana bir soru sordu</a>
+               href="/Answers/GetAnswers/<%=notification.question.id%>" >sana bir soru sordu</a>
             <i class="glyphicon glyphicon-remove pull-right notification-close js-notification-close"
                data-notification="<%=notification.id%>"></i>
         </li>
