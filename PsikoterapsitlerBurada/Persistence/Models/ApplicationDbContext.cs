@@ -17,6 +17,7 @@ namespace PsikoterapsitlerBurada.Persistence.Models
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {
+            Database.SetInitializer(new CreateDatabaseIfNotExists<ApplicationDbContext>());
         }
 
         public static ApplicationDbContext Create() => new ApplicationDbContext();
